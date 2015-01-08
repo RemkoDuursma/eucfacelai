@@ -350,6 +350,8 @@ makeCloudy <- function(df,
   # Toss nighttime data. 
   df <- subset(df, sunelevation > minSolarElevation)
     
+  df$PAR_Den_2_Avg[df$Ring == "R4" & df$Date == as.Date("2013-9-8")] <- NA
+  
   # Fdiff , fraction diffuse radiation.
   df$Fdiff <- with(df, DiffuseSS / TotalSS)
   
