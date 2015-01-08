@@ -12,8 +12,8 @@ Kell <- function(z, x=1){
 }
 
 # Transmittance for direct beam
-Tdir <- function(z,LAI,...){
-  exp(-Kell(z,...)*LAI)
+Tdir <- function(z,LAI,clump,...){
+  exp(-Kell(z,...)*clump*LAI)
 }
 
 # Transmittance for diffuse light:

@@ -57,11 +57,9 @@ aggFACEPARbyring <- function(df, x=1){
   
   facegap <- merge(facegap, eucface(), by="Ring")
   
-  # Add LAI estimate
-  facegap$LAI <- with(facegap, mapply(LAI_Tdiff, Td=Gapfraction.mean, x=x))
-  
   return(facegap)
 }
+
 
 
 subsetFACEPARbyring <- function(df, minnrHH=4, maxSD=0.05){
@@ -104,6 +102,77 @@ aggFACEPARbysensor <- function(df, minnrHH=4){
   return(facegap)
 }
 
+
+
+
+make_dLAI_drought2013 <- function(df, clump=1){
+  
+  
+  # Calculate LAI.
+  df <- df[!is.na(df$Gapfraction.mean),]
+  df$LAI <- with(df, mapply(LAI_Tdiff, Td=Gapfraction.mean, clump=clump))
+  
+  # diffuse transmittance after mid-July (data two weeks before stable and a bit noisy)
+  df1 <- subset(df, Date > as.Date("2013-7-14") & Date < as.Date("2013-11-12"))
+  
+  # litter fall since early july
+  df2 <- subset(litter, Date >= as.Date("2013-7-8") & Date < as.Date("2013-11-12"))
+  df2$dLAI.mean[df2$Date == min(df2$Date)] <- 0
+  
+  # cumulative litterfall
+  df2$dLAI_litter <- do.call(c,with(df2, tapply(dLAI.mean,Ring,cumsum)))
+  
+  # change in LAI for diffuse transmittance data.
+  l <-  sapply(split(df1, df1$Ring),function(x)x$LAI[x$Date==min(x$Date)])
+  lai0 <- data.frame(Ring=names(l), LAI0=as.vector(l))
+  df1 <- merge(df1, lai0)
+  df1$dLAI <- with(df1, LAI0 - LAI)
+  
+  # Interpolate.
+  df1 <- split(df1, df1$Ring)
+  df2 <- split(df2, df2$Ring)
+  
+  for(i in 1:6){
+    
+    ap <- Hmisc::approxExtrap(x=as.numeric(df1[[i]]$Date),
+                              y=df1[[i]]$Gapfraction.mean,
+                              xout=as.numeric(df2[[i]]$Date))
+    df2[[i]]$Gapfraction.mean <- ap$y
+    
+    ap <- Hmisc::approxExtrap(x=as.numeric(df1[[i]]$Date),
+                              y=df1[[i]]$dLAI,
+                              xout=as.numeric(df2[[i]]$Date))
+    df2[[i]]$dLAI_PAR <- ap$y
+  }
+  df2 <- do.call(rbind, df2)
+  df2$Ring <- as.factor(df2$Ring)
+  
+return(df2[,c("Ring","Date","treatment","dLAI_litter","dLAI_PAR")])
+}
+
+
+
+calibrateToDrought <- function(df){
+  
+  o <- function(clump){
+    r <- make_dLAI_drought2013(df,clump)
+    sum((r$dLAI_litter - r$dLAI_PAR)^2)
+  }
+  opt <- optimize(o,c(0.5,3))
+  
+return(opt$minimum)
+}
+
+
+
+
+calculate_LAI <- function(df,x=1, clump=1){
+  
+  # Add LAI estimate
+  df$LAI <- with(df, mapply(LAI_Tdiff, Td=Gapfraction.mean, x=x, clump=clump))
+  
+  return(df)
+}
 
 
 
@@ -182,11 +251,12 @@ get_rain <- function(how=c("daily", "raw", "rawmean")){
                                          Source_rain=first(Source)))
   
   if(how == "daily"){
+    rain$Date <- as.Date(rain$DateTime)
     rainagg <- summaryBy(Rain_mm_Tot ~ Ring + Date, FUN=sum, data=rain, keep.names=TRUE)
     names(rainagg)[3] <-"Rain"
     rainw <- reshape(rainagg, direction="wide", timevar="Ring", idvar="Date")
     
-    ros <- downloadTOA5("ROS_WS_Table15", cachefile="cache/rosws.RData")
+    ros <- downloadTOA5("ROS_WS_Table15")
     rosrain <- summaryBy(Rain_mm_Tot ~ Date, FUN=sum, data=ros, keep.names=TRUE)
     names(rosrain)[2] <- "Rain.ROS"
     

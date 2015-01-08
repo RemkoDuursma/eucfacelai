@@ -9,6 +9,7 @@ facepar <- makeFACEPAR(uploadnew=FALSE)
 
 # Rainfall data, averaged across 3 rain gauges.
 facerain <- get_rain("rawmean")
+faceraindaily <- get_rain("daily")
 facepar <- merge(facepar, facerain, by=c("DateTime"))
 
 
@@ -28,7 +29,7 @@ facepar_all <- makeCloudy(facepar,
                            minSolarElevation =10)
 
 
-# Aggregate into daily gapfraction, calculate LAI based on daily gapfraction.
+# Aggregate into daily gapfraction
 facegap_cloudy_byring <- aggFACEPARbyring(facepar_cloudy)
 facegap_all_byring <- aggFACEPARbyring(facepar_all)
 
@@ -39,15 +40,29 @@ facegap_cloudy_byring <- subsetFACEPARbyring(facegap_cloudy_byring,
                                       minnrHH=4,  
                                       maxSD=0.03)
 
+# Litter fall.
+litter <- make_litter(SLA=43)
+litter_byCO2 <- agglitter(litter)
+
+# Find calibration constant, from 2013 drought.
+calib <- calibrateToDrought(facegap_cloudy_byring)
+
+# Calculate LAI
+facegap_cloudy_byring <- calculate_LAI(facegap_cloudy_byring, clump=calib)
+facegap_all_byring <- calculate_LAI(facegap_all_byring, clump=calib)
+
+
 # Aggregate by CO2 treatment
 facegap_cloudy_byCO2 <- aggfacegapbyCO2(facegap_cloudy_byring)
+facegap_all_byCO2 <- aggfacegapbyCO2(facegap_all_byring)
+
+
+# Dataset with dLAI from litter and PAR during 2013 drought (used in above calibration).
+face_dLAIdrought2013 <- make_dLAI_drought2013(facegap_cloudy_byring,clump=calib)
 
 # Soil water
 facesoilwater <- get_soilwater()
 
-# Litter fall.
-litter <- make_litter(SLA=43)
-litter_byCO2 <- agglitter(litter)
 
 # Figures
 source("make_figures.R")
