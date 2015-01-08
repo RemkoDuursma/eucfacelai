@@ -1,0 +1,25 @@
+
+library(plyr)
+library(dplyr)
+library(HIEv)
+library(doBy)
+library(plantecophys)
+library(canopyphoto)
+library(plotrix)
+library(RColorBrewer)
+library(plotBy)
+library(scales)
+library(Hmisc)
+
+if(packageVersion('HIEv') < '0.6.2')
+  stop("Please update the HIEv package!")
+
+# set path for HIEv
+if(!file.exists("cache"))dir.create("cache")
+setToPath("cache")
+
+# Load all functions
+source("R/data_processing.R")
+source("R/data_define.R")
+source("R/LAI-functions.R")
+
