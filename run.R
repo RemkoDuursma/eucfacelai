@@ -70,8 +70,8 @@ flatcan_byring <- add_PARLAI_to_flatcan(facegap_cloudy_byring,flatcan_byring)
 
 flatcan_byCO2 <- agg_flatcan(flatcan, by="CO2")
 
-
-
+# Dataset with litter fall comparison to changes in LAI during same period.
+dLAIlitter <- make_dLAI_litter(facegap_cloudy_byring, kgam=20)
 
 
 # Figures

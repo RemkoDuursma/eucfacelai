@@ -2,7 +2,23 @@
 my_co2cols <- function()c("blue","red")
 
 
-figure_LAI_byCO2_4 <- function(df,
+figure_smoothgapfraction <- function(df){
+  
+  par(mar=c(3,5,2,2), cex.axis=0.9, cex.lab=1.1)
+  smoothplot(Date, Gapfraction.mean, g=Ring, data=df, k=15,axes=FALSE,
+             ylim=c(0,0.4),
+             xlab="",
+             ylab=expression(tau[PAR]~~("-")),
+             pointcols=rep("grey",8), linecols=rich.colors(6))
+  timeseries_axis()
+  axis(2)
+  box()
+  legend("bottomleft", as.character(1:6), lty=1, col=rich.colors(6), title="Ring", cex=0.8, lwd=2)
+}
+
+
+
+figure_LAI_timeseries <- function(df,
                                xlim=NULL, ylim=NULL,
                                legend=TRUE,
                                ylab=expression(Total~area~index~~(m^2~m^-2)),
@@ -19,10 +35,7 @@ figure_LAI_byCO2_4 <- function(df,
   if(setpar)par(cex.axis=cex.axis, mar=c(5,5,2,5), las=1, cex.lab=1.2)
   par(cex.lab=cex.lab)
   palette(my_co2cols())
-  
-  xAT <- seq.Date(as.Date("2012-11-1"), by="2 months", length=50)
-  xATminor <- seq.Date(as.Date("2012-11-1"), by="1 month", length=100)
-  
+
   if(is.null(xlim))xlim <- with(df, c(min(Date)-15, max(Date)+15))
   if(is.null(ylim))ylim <- with(df, c(0, 1.08*max(LAI.mean)))
   
@@ -33,17 +46,9 @@ figure_LAI_byCO2_4 <- function(df,
             ylim=ylim,
             xlim=xlim,
             panel.first={
-              if(greyrect){
-                y <- ylim[2]/2
-                cols_rect <- alpha(c("royalblue","hotpink"),0.5)
-                
-                rect(as.Date("2013-1-28"),-1,as.Date("2013-3-12"),100,col=cols_rect[1],border=NA)
-                text(as.Date("2013-2-18"),y, "1",cex=2)
-                rect(as.Date("2013-8-1"),-1,as.Date("2013-11-1"),100,col=cols_rect[2],border=NA)
-                text(as.Date("2013-9-15"),y, "2",cex=2)
-                rect(as.Date("2013-12-1"),-1,as.Date("2014-2-1"),100,col=cols_rect[1],border=NA)
-                text(as.Date("2014-1-1"),y, "3",cex=2)
-              }
+              smoothplot(Date, LAI, g=treatment, R="Ring", 
+                         data=facegap_cloudy_byring, kgam=15, pointcols="white", 
+                         linecols=alpha("lightgrey",0.7), add=TRUE)              
             }
        ))
   
@@ -63,9 +68,8 @@ figure_LAI_byCO2_4 <- function(df,
     with(df, points(Date, LAI.mean, pch=19, cex=0.05, col="white"))
   }
   
-  axis.Date(1, at=xAT, format="%b-'%y" )
-  axis.Date(1, at=xATminor, labels=FALSE, tcl=-0.25 )
-  
+  timeseries_axis()  
+
   axis(2)
   box()
   
@@ -110,7 +114,7 @@ figure_dLAIdrought2013 <- function(df){
   palette(my_co2cols())
   with(df, plot(dLAI_litter, dLAI_PAR, pch=19, col=treatment,
                 xlab=expression(Delta*LAI~from~litter~fall~~(m^2~m^-2)),
-                ylab=expression(Delta*LAI~from~PAR~data~~(m^2~m^-2)),
+                ylab=expression(Delta*LAI~from~tau[PAR]~~(m^2~m^-2)),
                 xlim=c(0,0.6), ylim=c(0,0.6)))
   abline(0,1)
   predline(lm(dLAI_PAR ~ dLAI_litter, data=df), lty=5)
@@ -121,23 +125,34 @@ figure_flatcan_PARLAI_comparison <- function(df){
 
   par(mar=c(5,5,2,2), cex.axis=0.9)
   
-  with(df, plot(LAI.PAR.mean, LAI, 
-                xlab=expression(LAI~from~diffuse~transmittance~~(m^2~m^-2)),
-                ylab=expression(LAI~from~canopy~photos~~(m^2~m^-2)),
+  with(df, plot(LAI, LAI.PAR.mean, 
+                ylab=expression(LAI~from~tau[PAR]~~(m^2~m^-2)),
+                xlab=expression(LAI~from~canopy~photos~~(m^2~m^-2)),
                 pch=19, col=my_co2cols()[treatment],
                 xlim=c(0.8,2), ylim=c(0.8,2)))
   abline(0,1)
-  predline(lm(LAI ~ LAI.PAR.mean, data=df), lty=5)
+  predline(lm(LAI.PAR.mean ~ LAI, data=df), lty=5)
   
 
 }
 
 
+figure_dLAI_litter <- function(df){
 
+  par(mar=c(5,5,2,2), cex.lab=1.1, cex.axis=0.9, las=1, xaxs="i", yaxs="i")
+  with(df, plot(dLAI.mean * 30.5/ndays, dLAI * 30.5/ndays, pch=19, 
+               col=c("darkorange","forestgreen")[LAIchange],
+               xlab=expression(Delta*LAI~from~litter~~(m^2~m^-2~mon^-1)),
+               xlim=c(0,0.6),
+               ylim=c(-0.3,0.5),
+               ylab=expression(Delta*LAI~from~tau[PAR]~(m^2~m^-2~mon^-1))))
+  abline(h=0, lty=5)
+  abline(0,1)
+  abline(0,-1)
+  predline(lm(dLAI ~ dLAI.mean, data=r, subset=dLAI>0), col="forestgreen")
+  predline(lm(dLAI ~ dLAI.mean, data=r, subset=dLAI<0), col="darkorange")
 
-
-
-
+}
 
 
 

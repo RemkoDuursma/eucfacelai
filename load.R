@@ -10,6 +10,8 @@ library(RColorBrewer)
 library(plotBy)
 library(scales)
 library(Hmisc)
+library(gplots)
+library(mgcv)
 
 if(packageVersion('HIEv') < '0.6.2')
   stop("Please update the HIEv package!")

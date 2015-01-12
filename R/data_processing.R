@@ -208,6 +208,59 @@ calculate_LAI <- function(df,x=1, clump=1){
 
 
 
+splitbydate <- function(dfr, datevec){
+  
+  datevec <- as.Date(datevec)
+  
+  l <- list()
+  for(i in 2:length(datevec)){
+    l[[i]] <- subset(dfr, Date >= datevec[i-1] & Date < datevec[i])
+  }
+  l[[1]] <- NULL
+  
+  return(l)
+}
+
+
+make_dLAI_litter <- function(dat, kgam=15){
+  
+  # LAI by ring with smoother
+  dat <- makesmoothLAI(dat, kgam=kgam, timestep="1 day")
+  
+  # Make LAI change, combine with litter fall
+  litterDates <- sort(unique(litter$Date))
+  dat <- lapply(dat, splitbydate, litterDates)
+  
+  # Get change in LAI for each inter-litter interval.
+  getdlai <- function(x){
+    do.call(rbind,lapply(x, function(z){
+      n <- nrow(z)
+      dLAI <- z$LAIsm[n] - z$LAIsm[1]
+      d <- diff(z$LAIsm)
+      dnegLAI <- sum(d[d < 0])
+      dposLAI <- sum(d[d > 0])
+      ndays <- as.numeric(max(z$Date - min(z$Date)))
+      return(data.frame(dLAI=dLAI, dnegLAI=dnegLAI, dposLAI=dposLAI, ndays=ndays))
+    }))
+  }
+  
+  # r will be a dataframe with litterfall and change in LAI
+  r <- list()
+  for(i in 1:6){
+    r[[i]] <- cbind(data.frame(Date=litterDates[2:length(litterDates)]), getdlai(dat[[i]]))
+    r[[i]] <- merge(r[[i]], subset(litter, Ring == paste0("R",i)))
+  }
+  r <- do.call(rbind,r)
+  
+  # Absolute change in LAI
+  r$absdLAI <- with(r, -dnegLAI + dposLAI)
+  r$LAIchange <- as.factor(r$dLAI > 0)
+  levels(r$LAIchange) <- c("decreasing","increasing")
+  return(r)
+}
+
+
+
 analyzeFlat <- function(path, Date, pathout="", reProcess=FALSE, suffix="", ...){
   
   o <- getwd()
@@ -603,7 +656,7 @@ uploadPARAGGtoHIEv <- function(){
 
 
 
-makesmoothLAI <- function(dat=facegap_byring, timestep="3 days", kgam=15, how=c("byring","mean")){
+makesmoothLAI <- function(dat, timestep="3 days", kgam=15, how=c("byring","mean")){
   
   how <- match.arg(how)
   

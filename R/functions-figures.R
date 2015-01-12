@@ -1,4 +1,11 @@
 
+timeseries_axis <- function(){
+  xAT <- seq.Date(as.Date("2012-11-1"), by="2 months", length=50)
+  xATminor <- seq.Date(as.Date("2012-11-1"), by="1 month", length=100)
+  axis.Date(1, at=xAT, format="%b-'%y" )
+  axis.Date(1, at=xATminor, labels=FALSE, tcl=-0.25 )
+}
+
 to.pdf <- function(expr, filename, ..., verbose=TRUE) {
   if(!file.exists(dirname(filename)))
     dir.create(dirname(filename), recursive=TRUE)
@@ -137,6 +144,7 @@ smoothplot <- function(x,y,g=NULL,data,
                        R=NULL,
                        randommethod=c("lmer","aggregate"),
                        log="",
+                       axes=TRUE,
                        fitoneline=FALSE,
                        pointcols=NULL,
                        linecols=NULL, 
@@ -218,7 +226,7 @@ smoothplot <- function(x,y,g=NULL,data,
                         ...))
     }
     
-    if(!add){
+    if(!add && axes){
       if(log=="xy")magaxis(side=1:2, unlog=1:2)
       if(log=="x"){
         magaxis(side=1, unlog=1)
