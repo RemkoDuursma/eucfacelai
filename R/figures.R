@@ -1,20 +1,5 @@
 
-
-
-
-
-figure_dLAIdrought2013 <- function(df){
-
-    palette(c("blue","red"))
-    with(df, plot(dLAI_litter, dLAI_PAR, pch=19, col=treatment,
-                  xlab=expression(Delta*LAI~from~litter~fall~~(m^2~m^-2)),
-                  ylab=expression(Delta*LAI~from~PAR~data~~(m^2~m^-2)),
-                  xlim=c(0,0.6), ylim=c(0,0.6)))
-    abline(0,1)
-    ablinepiece(lm(dLAI_PAR ~ dLAI_litter, data=df), lty=5)
-}
-
-
+my_co2cols <- function()c("blue","red")
 
 
 figure_LAI_byCO2_4 <- function(df,
@@ -33,7 +18,7 @@ figure_LAI_byCO2_4 <- function(df,
   
   if(setpar)par(cex.axis=cex.axis, mar=c(5,5,2,5), las=1, cex.lab=1.2)
   par(cex.lab=cex.lab)
-  palette(c("blue","red"))
+  palette(my_co2cols())
   
   xAT <- seq.Date(as.Date("2012-11-1"), by="2 months", length=50)
   xATminor <- seq.Date(as.Date("2012-11-1"), by="1 month", length=100)
@@ -85,7 +70,7 @@ figure_LAI_byCO2_4 <- function(df,
   box()
   
   l <- legend("topleft", c("Ambient","Elevated"), title=expression(italic(C)[a]~treatment), 
-              col=c("blue","red"), bty="n", lty=1, lwd=2, cex=cex.legend)
+              col=my_co2cols(), bty="n", lty=1, lwd=2, cex=cex.legend)
   
   r <- l$rect
   X <- as.Date("2013-7-1")
@@ -117,6 +102,59 @@ figure_LAI_byCO2_4 <- function(df,
 
 
 
+
+figure_dLAIdrought2013 <- function(df){
+  
+  
+  par(mar=c(5,5,2,2), cex.axis=0.9)
+  palette(my_co2cols())
+  with(df, plot(dLAI_litter, dLAI_PAR, pch=19, col=treatment,
+                xlab=expression(Delta*LAI~from~litter~fall~~(m^2~m^-2)),
+                ylab=expression(Delta*LAI~from~PAR~data~~(m^2~m^-2)),
+                xlim=c(0,0.6), ylim=c(0,0.6)))
+  abline(0,1)
+  predline(lm(dLAI_PAR ~ dLAI_litter, data=df), lty=5)
+}
+
+
+figure_flatcan_PARLAI_comparison <- function(df){
+
+  par(mar=c(5,5,2,2), cex.axis=0.9)
+  
+  with(df, plot(LAI.PAR.mean, LAI, 
+                xlab=expression(LAI~from~diffuse~transmittance~~(m^2~m^-2)),
+                ylab=expression(LAI~from~canopy~photos~~(m^2~m^-2)),
+                pch=19, col=my_co2cols()[treatment],
+                xlim=c(0.8,2), ylim=c(0.8,2)))
+  abline(0,1)
+  predline(lm(LAI ~ LAI.PAR.mean, data=df), lty=5)
+  
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#---------------------------------------------------------------------------------------------#
 
 figure_gapfraction_byCO2 <- function(filename="output/figures/gapfraction_bydateCO2.pdf",
                                      df=facegap_byCO2,

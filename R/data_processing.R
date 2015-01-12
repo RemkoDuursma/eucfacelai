@@ -6,6 +6,13 @@ get_solvars <- function(){
 }
 
 
+get_flatcan <- function(){
+  
+  # Should be posted to HIEv. For now, part of repository.
+  flatcan <- read.csv("data/FACE_flatcan_gapfraction_all.csv")
+  
+}
+
 agg_flatcan <- function(dfr, by=c("Ring","CO2"), k=0.5, ...){
   
   
@@ -36,6 +43,31 @@ agg_flatcan <- function(dfr, by=c("Ring","CO2"), k=0.5, ...){
   
   
 }
+
+
+
+add_PARLAI_to_flatcan <- function(df1, df2){
+  
+  x1 <- split(df1, df1$Ring)
+  x2 <- split(df2, df2$Ring)
+  
+  for(i in 1:length(x2)){
+    
+    ap <- approxExtrap(x=as.numeric(x1[[i]]$Date),
+                       y=x1[[i]]$Gapfraction.mean,
+                       xout=as.numeric(x2[[i]]$Date))
+    x2[[i]]$Gapfraction.PAR.mean <- ap$y
+    
+    ap <- approxExtrap(x=as.numeric(x1[[i]]$Date),
+                       y=x1[[i]]$LAI,
+                       xout=as.numeric(x2[[i]]$Date))
+    x2[[i]]$LAI.PAR.mean <- ap$y
+  }
+  
+  df2 <- rbind.fill(x2)
+return(df2)
+}
+
 
 
 aggfacegapbyCO2 <- function(df){

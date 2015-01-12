@@ -63,6 +63,16 @@ face_dLAIdrought2013 <- make_dLAI_drought2013(facegap_cloudy_byring,clump=calib)
 # Soil water
 facesoilwater <- get_soilwater()
 
+# Canopy photos.
+flatcan <- get_flatcan()
+flatcan_byring <- agg_flatcan(flatcan, by="Ring")
+flatcan_byring <- add_PARLAI_to_flatcan(facegap_cloudy_byring,flatcan_byring)
+
+flatcan_byCO2 <- agg_flatcan(flatcan, by="CO2")
+
+
+
+
 
 # Figures
 source("make_figures.R")
