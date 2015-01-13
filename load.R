@@ -23,5 +23,6 @@ setToPath("cache")
 # Load all functions
 source("R/data_processing.R")
 source("R/data_define.R")
+source("R/functions-figures.R")
 source("R/LAI-functions.R")
 

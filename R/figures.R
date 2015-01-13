@@ -149,8 +149,8 @@ figure_dLAI_litter <- function(df){
   abline(h=0, lty=5)
   abline(0,1)
   abline(0,-1)
-  predline(lm(dLAI ~ dLAI.mean, data=r, subset=dLAI>0), col="forestgreen")
-  predline(lm(dLAI ~ dLAI.mean, data=r, subset=dLAI<0), col="darkorange")
+  predline(lm(dLAI ~ dLAI.mean, data=df, subset=dLAI>0), col="forestgreen")
+  predline(lm(dLAI ~ dLAI.mean, data=df, subset=dLAI<0), col="darkorange")
 
 }
 
