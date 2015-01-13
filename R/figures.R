@@ -26,13 +26,10 @@ figure_LAI_timeseries <- function(df,
                                cex.lab=1.1, cex.axis=0.9, cex.legend=0.8,
                                legendwhere="topleft",
                                setpar=TRUE,axisline=3,horlines=TRUE,
-                               rain=c("daily","none"),
                                greyrect=FALSE,
                                addpoints=TRUE){
   
-  
-  rain <- match.arg(rain)
-  
+    
   if(setpar)par(cex.axis=cex.axis, mar=c(3,5,2,5), las=1, cex.lab=1.2)
   par(cex.lab=cex.lab)
   palette(my_co2cols())
@@ -78,28 +75,11 @@ figure_LAI_timeseries <- function(df,
   l <- legend("topleft", c("Ambient","Elevated"), title=expression(italic(C)[a]~treatment), 
               col=my_co2cols(), bty="n", lty=1, lwd=2, cex=cex.legend)
   
-  r <- l$rect
-  X <- as.Date("2013-7-1")
-  Y <- 2.9
-  txt <- "Mean SE:"
-  
-  text(X,Y, txt, pos=2, cex=cex.legend)
-  txtwd <- strwidth(txt, cex=cex.legend)
-  
-  meanSE <- mean(df$LAI.SE, na.rm=TRUE)
-  arrows(x0=X + 0.1*txtwd, x1=X + 0.1*txtwd,
-         y0=Y-0.4*meanSE, y1=Y+0.6*meanSE,
-         code=3, angle=90, length=0.03)
-  
-  # # option 1 : daily rainfalls
-  if(rain == "daily"){
-    par(new=TRUE)
-    with(faceraindaily, plot(Date, Rain.ROS, type='h', ylim=c(0,200),
-                       axes=FALSE, xlim=xlim, ann=FALSE))
-    axis(4, at=c(0,25,50,75,100))
-    mtext(side=4, cex=cex.lab, line=axisline, text="Daily rain (mm)", las=0)
-  }
-
+  par(new=TRUE)
+  with(faceraindaily, plot(Date, Rain.ROS, type='h', ylim=c(0,200),
+                     axes=FALSE, xlim=xlim, ann=FALSE))
+  axis(4, at=c(0,25,50,75,100))
+  mtext(side=4, cex=cex.lab, line=axisline, text="Daily rain (mm)", las=0)
   
   return(invisible(xlim))
 }
