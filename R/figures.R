@@ -1,19 +1,20 @@
 
 my_co2cols <- function()c("blue","red")
-
+my_ringcols <- function()rich.colors(6)
 
 figure_smoothgapfraction <- function(df){
   
   par(mar=c(3,5,2,2), cex.axis=0.9, cex.lab=1.1)
-  smoothplot(Date, Gapfraction.mean, g=Ring, data=df, k=15,axes=FALSE,
+  smoothplot(Date, Gapfraction.mean, g=Ring, data=df, k=20,axes=FALSE,
              ylim=c(0,0.4),
              xlab="",
              ylab=expression(tau[PAR]~~("-")),
-             pointcols=rep("grey",8), linecols=rich.colors(6))
+             pointcols=rep("grey",8), linecols=my_ringcols())
   timeseries_axis()
   axis(2)
   box()
-  legend("bottomleft", as.character(1:6), lty=1, col=rich.colors(6), title="Ring", cex=0.8, lwd=2)
+  legend("bottomleft", as.character(1:6), lty=1, 
+         col=my_ringcols(), title="Ring", cex=0.8, lwd=2)
 }
 
 
@@ -32,7 +33,7 @@ figure_LAI_timeseries <- function(df,
   
   rain <- match.arg(rain)
   
-  if(setpar)par(cex.axis=cex.axis, mar=c(5,5,2,5), las=1, cex.lab=1.2)
+  if(setpar)par(cex.axis=cex.axis, mar=c(3,5,2,5), las=1, cex.lab=1.2)
   par(cex.lab=cex.lab)
   palette(my_co2cols())
 
@@ -41,6 +42,7 @@ figure_LAI_timeseries <- function(df,
   
   with(subset(df, treatment == "ambient"),
        plot(Date, LAI.mean, col=palette()[1], type='l', lwd=2, 
+            xlab="",
             ylab=ylab,
             axes=FALSE,
             ylim=ylim,

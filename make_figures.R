@@ -2,6 +2,9 @@
 source("R/functions-figures.R")
 source("R/figures.R")
 
+to.pdf(figure_smoothgapfraction(facegap_cloudy_byring),
+       filename="output/figures/FACE_LAI_smoothtimeseries.pdf",
+       width=8, height=4)
 
 to.pdf(figure_LAI_timeseries(facegap_cloudy_byCO2),
        filename="output/figures/FACE_LAI_timeseries_byCO2_cloudy.pdf",
