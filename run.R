@@ -73,6 +73,8 @@ flatcan_byCO2 <- agg_flatcan(flatcan, by="CO2")
 # Dataset with litter fall comparison to changes in LAI during same period.
 dLAIlitter <- make_dLAI_litter(facegap_cloudy_byring, kgam=20)
 
+# Air temperature from ROS
+airt <- get_rosTair()
 
 # Figures
 source("make_figures.R")

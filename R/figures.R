@@ -139,7 +139,28 @@ figure_dLAI_litter <- function(df){
 
 
 
-
+figure_LAI_soilwc_Tair <- function(){
+  df <- facegap_cloudy_byring
+  
+  dfa <- summaryBy(LAI ~ Date, data=df, FUN=mean, keep.names=TRUE)
+  
+  xl <- range(dfa$Date)
+  
+  windows(10,8)
+  par(mfrow=c(3,1), mar=c(0,5,2,2))
+  smoothplot(Date, LAI, data=dfa, kgam=18, pointcols="dimgrey", linecols="black", xlim=xl,
+             ylim=c(1,2))
+  
+  par(mar=c(0,5,0,2))
+  with(subset(facesoilwater, Date > xl[1]), 
+       plot(Date, VWC, type='l', lwd=2, xlim=xl, ylim=c(0,0.4)))
+  
+  par(mar=c(5,5,0,2))
+  smoothplot(Date, Tair, data=subset(airt, Date > xl[1]), 
+             kgam=25, pointcols=alpha("grey",0.8), linecols="black",
+             ylim=c(0,30), xlim=xl)
+  
+}
 
 
 
