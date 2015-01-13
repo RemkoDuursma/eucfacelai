@@ -147,11 +147,14 @@ figure_LAI_soilwc_Tair <- function(){
   xl <- range(dfa$Date)
   
   windows(10,8)
-  par(mfrow=c(3,1), mar=c(0,5,2,2))
+  par(mfrow=c(3,1), mar=c(0,5,5,2))
   smoothplot(Date, LAI, data=dfa, kgam=18, pointcols="dimgrey", linecols="black", xlim=xl,
-             ylim=c(1,2))
+             ylim=c(1,2), axes=FALSE)
+  timeseries_axis(F)
+  axis(2)
+  box()
   
-  par(mar=c(0,5,0,2))
+  par(mar=c(1.5,5,1.5,2))
   with(subset(facesoilwater, Date > xl[1]), 
        plot(Date, VWC, type='l', lwd=2, xlim=xl, ylim=c(0,0.4)))
   

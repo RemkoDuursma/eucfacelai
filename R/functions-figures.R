@@ -1,9 +1,9 @@
 
-timeseries_axis <- function(){
+timeseries_axis <- function(labels=TRUE){
   xAT <- seq.Date(as.Date("2012-11-1"), by="2 months", length=50)
   xATminor <- seq.Date(as.Date("2012-11-1"), by="1 month", length=100)
-  axis.Date(1, at=xAT, format="%b-'%y" )
-  axis.Date(1, at=xATminor, labels=FALSE, tcl=-0.25 )
+  axis.Date(1, at=xAT, format="%b-'%y", labels=labels )
+  axis.Date(1, at=xATminor, labels=FALSE, tcl=-0.25)
 }
 
 to.pdf <- function(expr, filename, ..., verbose=TRUE) {
