@@ -139,15 +139,12 @@ figure_dLAI_litter <- function(df){
 
 
 
-figure_LAI_soilwc_Tair <- function(){
-  df <- facegap_cloudy_byring
+figure_LAI_soilwc_Tair <- function(df){
   
   dfa <- summaryBy(LAI ~ Date, data=df, FUN=mean, keep.names=TRUE)
   
   xl <- range(dfa$Date)
-  
-  windows(10,8)
-  par(mfrow=c(3,1), mar=c(0,5,5,2))
+    par(mfrow=c(3,1), mar=c(0,5,5,2))
   smoothplot(Date, LAI, data=dfa, kgam=18, pointcols="dimgrey", linecols="black", xlim=xl,
              ylim=c(1,2), axes=FALSE)
   timeseries_axis(F)

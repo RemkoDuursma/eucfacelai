@@ -22,3 +22,6 @@ to.pdf(figure_dLAI_litter(dLAIlitter),
        filename="output/figures/dLAI_litter_comparison.pdf",
        width=6, height=4)
 
+to.pdf(figure_LAI_soilwc_Tair(facegap_cloudy_byring),
+       filename="output/figures/LAI_timeseries_SWC_Tair.pdf",
+       width=10, height=8)
