@@ -620,20 +620,6 @@ makePARAGG <- function(startdate, enddate=as.Date(Sys.time())){
   return(FACE_PAR)
 }
 
-get_faceairt <- function(startdate,enddate){
-  
-  addRing <- function(x)as.factor(str_extract(x$Source, "R[1-6]"))
-  
-  general <- downloadTOA5(c("FACE","general"), startDate=startdate, endDate=enddate,
-                          maxnfiles=200)
-  general$Ring <- addRing(general)
-  
-  generalagg <- dplyr::summarize(group_by(general,DateTime=nearestTimeStep(DateTime,30),Ring),
-                                 AirTc_Avg=mean(AirTc_Avg),
-                                 Source_general=first(Source))
-return(generalagg)
-}
-
 
 # Make monthly chunk
 makeMonthPAR <- function(month, overwrite=FALSE){
