@@ -1,11 +1,22 @@
 
 my_co2cols <- function()c("blue","red")
-my_ringcols <- function()rich.colors(6)
+# my_ringcols <- function()rich.colors(6)
 
-figure_smoothgapfraction <- function(df){
+my_ringcols <- function(){
+  
+  reds <- brewer.pal(5,"Reds")[3:5]
+  blues <- brewer.pal(5,"Blues")[3:5]
+  
+  c(reds[1],blues[1:2],reds[2:3],blues[3])
+}
+
+
+
+# Smoothed gap fraction raw data
+figure1 <- function(df){
   
   par(mar=c(3,5,2,2), cex.axis=0.9, cex.lab=1.1)
-  smoothplot(Date, Gapfraction.mean, g=Ring, data=df, k=20,axes=FALSE,
+  smoothplot(Date, Gapfraction.mean, g=Ring, data=df, k=18,axes=FALSE,
              ylim=c(0,0.4),
              xlab="",
              ylab=expression(tau[PAR]~~("-")),
@@ -18,22 +29,51 @@ figure_smoothgapfraction <- function(df){
 }
 
 
-
-figure_LAI_timeseries <- function(df,
-                               xlim=NULL, ylim=NULL,
-                               legend=TRUE,
-                               ylab=expression(Total~area~index~~(m^2~m^-2)),
-                               cex.lab=1.1, cex.axis=0.9, cex.legend=0.8,
-                               legendwhere="topleft",
-                               setpar=TRUE,axisline=3,horlines=TRUE,
-                               greyrect=FALSE,
-                               addpoints=TRUE){
+figure2 <- function(df){
   
-    
+  par(mar=c(5,5,2,2), cex.axis=0.9)
+  palette(my_co2cols())
+  with(df, plot(dLAI_litter, dLAI_PAR, pch=19, col=treatment,
+                xlab=expression(Delta*LAI~from~litter~fall~~(m^2~m^-2)),
+                ylab=expression(Delta*LAI~from~tau[PAR]~~(m^2~m^-2)),
+                xlim=c(0,0.6), ylim=c(0,0.6)))
+  abline(0,1)
+  predline(lm(dLAI_PAR ~ dLAI_litter, data=df), lty=5)
+}
+
+
+figure3 <- function(df){
+  
+  par(mar=c(5,5,2,2), cex.axis=0.9)
+  
+  with(df, plot(LAI, LAI.PAR.mean, 
+                ylab=expression(LAI~from~tau[PAR]~~(m^2~m^-2)),
+                xlab=expression(LAI~from~canopy~photos~~(m^2~m^-2)),
+                pch=19, col=my_co2cols()[treatment],
+                xlim=c(0.8,2), ylim=c(0.8,2)))
+  abline(0,1)
+  predline(lm(LAI.PAR.mean ~ LAI, data=df), lty=5)
+  
+}
+
+
+
+figure4 <- function(df,
+                    xlim=NULL, ylim=NULL,
+                    legend=TRUE,
+                    ylab=expression(Total~area~index~~(m^2~m^-2)),
+                    cex.lab=1.1, cex.axis=0.9, cex.legend=0.8,
+                    legendwhere="topleft",
+                    setpar=TRUE,axisline=3,
+                    horlines=TRUE,
+                    greyrect=FALSE,
+                    addpoints=TRUE){
+
+  
   if(setpar)par(cex.axis=cex.axis, mar=c(3,5,2,5), las=1, cex.lab=1.2)
   par(cex.lab=cex.lab)
   palette(my_co2cols())
-
+  
   if(is.null(xlim))xlim <- with(df, c(min(Date)-15, max(Date)+15))
   if(is.null(ylim))ylim <- with(df, c(0, 1.08*max(LAI.mean)))
   
@@ -46,7 +86,7 @@ figure_LAI_timeseries <- function(df,
             xlim=xlim,
             panel.first={
               smoothplot(Date, LAI, g=treatment, R="Ring", 
-                         data=facegap_cloudy_byring, kgam=15, pointcols="white", 
+                         data=facegap_cloudy_byring, kgam=18, pointcols="white", 
                          linecols=alpha("lightgrey",0.7), add=TRUE)              
             }
        ))
@@ -68,7 +108,7 @@ figure_LAI_timeseries <- function(df,
   }
   
   timeseries_axis()  
-
+  
   axis(2)
   box()
   
@@ -77,7 +117,7 @@ figure_LAI_timeseries <- function(df,
   
   par(new=TRUE)
   with(faceraindaily, plot(Date, Rain.ROS, type='h', ylim=c(0,200),
-                     axes=FALSE, xlim=xlim, ann=FALSE))
+                           axes=FALSE, xlim=xlim, ann=FALSE))
   axis(4, at=c(0,25,50,75,100))
   mtext(side=4, cex=cex.lab, line=axisline, text="Daily rain (mm)", las=0)
   
@@ -86,45 +126,12 @@ figure_LAI_timeseries <- function(df,
 
 
 
-
-
-
-figure_dLAIdrought2013 <- function(df){
-  
-  
-  par(mar=c(5,5,2,2), cex.axis=0.9)
-  palette(my_co2cols())
-  with(df, plot(dLAI_litter, dLAI_PAR, pch=19, col=treatment,
-                xlab=expression(Delta*LAI~from~litter~fall~~(m^2~m^-2)),
-                ylab=expression(Delta*LAI~from~tau[PAR]~~(m^2~m^-2)),
-                xlim=c(0,0.6), ylim=c(0,0.6)))
-  abline(0,1)
-  predline(lm(dLAI_PAR ~ dLAI_litter, data=df), lty=5)
-}
-
-
-figure_flatcan_PARLAI_comparison <- function(df){
-
-  par(mar=c(5,5,2,2), cex.axis=0.9)
-  
-  with(df, plot(LAI, LAI.PAR.mean, 
-                ylab=expression(LAI~from~tau[PAR]~~(m^2~m^-2)),
-                xlab=expression(LAI~from~canopy~photos~~(m^2~m^-2)),
-                pch=19, col=my_co2cols()[treatment],
-                xlim=c(0.8,2), ylim=c(0.8,2)))
-  abline(0,1)
-  predline(lm(LAI.PAR.mean ~ LAI, data=df), lty=5)
-  
-
-}
-
-
-figure_dLAI_litter <- function(df){
+figure5 <- function(df){
 
   par(mar=c(5,5,2,2), cex.lab=1.1, cex.axis=0.9, las=1, xaxs="i", yaxs="i")
   with(df, plot(dLAI.mean * 30.5/ndays, dLAI * 30.5/ndays, pch=19, 
                col=c("darkorange","forestgreen")[LAIchange],
-               xlab=expression(Delta*LAI~from~litter~~(m^2~m^-2~mon^-1)),
+               xlab=expression(Leaf~litter~production~~(m^2~m^-2~mon^-1)),
                xlim=c(0,0.6),
                ylim=c(-0.3,0.5),
                ylab=expression(Delta*LAI~from~tau[PAR]~(m^2~m^-2~mon^-1))))
@@ -139,26 +146,37 @@ figure_dLAI_litter <- function(df){
 
 
 
-figure_LAI_soilwc_Tair <- function(df){
+figure6 <- function(df){
   
   dfa <- summaryBy(LAI ~ Date, data=df, FUN=mean, keep.names=TRUE)
   
   xl <- range(dfa$Date)
-    par(mfrow=c(3,1), mar=c(0,5,5,2))
+  
+  par(mfrow=c(3,1), mar=c(0,5,5,2), cex.lab=1.2)
+  
   smoothplot(Date, LAI, data=dfa, kgam=18, pointcols="dimgrey", linecols="black", xlim=xl,
+             ylab=expression(Total~area~index~~(m^2~m^-2)),
              ylim=c(1,2), axes=FALSE)
-  timeseries_axis(F)
+  timeseries_axis(FALSE)
   axis(2)
   box()
   
   par(mar=c(1.5,5,1.5,2))
   with(subset(facesoilwater, Date > xl[1]), 
-       plot(Date, VWC, type='l', lwd=2, xlim=xl, ylim=c(0,0.4)))
+       plot(Date, VWC, type='l', lwd=2, xlim=xl, ylim=c(0,0.4), axes=FALSE,
+            ylab=expression(SWC~~(m^3~m^-3))))
+  timeseries_axis(FALSE)
+  axis(2)
+  box()
   
   par(mar=c(5,5,0,2))
   smoothplot(Date, Tair, data=subset(airt, Date > xl[1]), 
-             kgam=25, pointcols=alpha("grey",0.8), linecols="black",
+             kgam=25, pointcols=alpha("grey",0.8), linecols="black",axes=FALSE,
+             ylab=expression(T[air]~~(degree*C)),
              ylim=c(0,30), xlim=xl)
+  timeseries_axis(TRUE)
+  axis(2)
+  box()
   
 }
 

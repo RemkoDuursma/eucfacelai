@@ -13,7 +13,7 @@ library(Hmisc)
 library(gplots)
 library(mgcv)
 
-if(packageVersion('HIEv') < '0.6.2')
+if(packageVersion('HIEv') < '0.6.4')
   stop("Please update the HIEv package!")
 
 # set path for HIEv

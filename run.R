@@ -79,17 +79,14 @@ airt <- get_rosTair()
 # Figures
 source("make_figures.R")
 
+# save cache.
+save.image(file="cache/lai_workspace.RData")
+
 # Messages.
 m1 <- paste0("Most recent day with usable cloudy data: ",max(facegap_cloudy_byring$Date))
+message(m1)
 
-d <- sort(unique(facegap_cloudy_byring$Date))
-m2 <- paste0("On average, we have an observation of LAI every ", 
-             round(as.numeric(difftime(max(d), min(d), "days")) / length(d),1), " days")
-m3 <- paste0("Longest period without an observation : ", round(max(diff(d)),0), " days")
 
-message(m1, "\n", m2,"\n",m3)
-
-save.image(file="cache/lai_workspace.RData")
 
 
 
