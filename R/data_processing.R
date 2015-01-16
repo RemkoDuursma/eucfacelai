@@ -376,7 +376,9 @@ get_soilwater <- function(how=c("mean","byring")){
   
   meanVWC <- function(dfr){
     vwccols <- grep("VWC_",names(dfr))
-    rowMeans(dfr[,vwccols], na.rm=TRUE)
+    dfr <- dfr[,vwccols]
+    dfr[dfr > 1] <- NA
+    rowMeans(dfr, na.rm=TRUE)
   }
   
   soilw <- downloadTOA5("SoilVars", maxnfiles=500)
@@ -393,8 +395,6 @@ get_soilwater <- function(how=c("mean","byring")){
     soilwd <- merge(soil, eucface())
   }
   
-  soilwd$VWC[soilwd$VWC > 1] <- NA
-
   return(soilwd)
 }
 
