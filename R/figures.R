@@ -164,7 +164,9 @@ figure6 <- function(df){
   par(mar=c(1.5,5,1.5,2))
   with(subset(facesoilwater, Date > xl[1]), 
        plot(Date, VWC, type='l', lwd=2, xlim=xl, ylim=c(0,0.4), axes=FALSE,
+            panel.first=abline(h=seq(0,0.4,by=0.05), col="grey", lty=5),
             ylab=expression(SWC~~(m^3~m^-3))))
+  
   timeseries_axis(FALSE)
   axis(2)
   box()
@@ -172,6 +174,7 @@ figure6 <- function(df){
   par(mar=c(5,5,0,2))
   smoothplot(Date, Tair, data=subset(airt, Date > xl[1]), 
              kgam=25, pointcols=alpha("grey",0.8), linecols="black",axes=FALSE,
+             panel.first=abline(h=seq(0,30,by=2), col="grey", lty=5),
              ylab=expression(T[air]~~(degree*C)),
              ylim=c(0,30), xlim=xl)
   timeseries_axis(TRUE)
