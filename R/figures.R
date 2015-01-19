@@ -152,11 +152,33 @@ figure6 <- function(df){
   
   xl <- range(dfa$Date)
   
-  par(mfrow=c(3,1), mar=c(0,5,5,2), cex.lab=1.2)
+  par(mfrow=c(4,1), mar=c(0,5,5,2), cex.lab=1.2)
   
+  # panel a
   smoothplot(Date, LAI, data=dfa, kgam=18, pointcols="dimgrey", linecols="black", xlim=xl,
              ylab=expression(Total~area~index~~(m^2~m^-2)),
              ylim=c(1,2), axes=FALSE)
+  timeseries_axis(FALSE)
+  axis(2)
+  box()
+  
+  # panel b
+  par(mar=c(1.5,5,1.5,2))
+  smoothlai <- makesmoothLAI(dat, kgam=15, how="byring")
+  with(smoothlai[[1]], plot(Date, dLAI/ndays, type='n', 
+                            ylab=expression(frac(dLAI,dt)~(m^2~m^-2~d^-1)),
+                            ylim=c(-0.02,0.02),
+                            
+                            xlim=xl))  
+  abline(h=0, lty=5)
+  if(how == "byring"){
+    for(i in 1:6)with(smoothlai[[i]], lines(Date, dLAI/ndays, 
+                                            col=c("red","blue","blue","red","red","blue")[i]))
+  }
+  if(how == "mean"){
+    with(smoothlai[[1]], lines(Date, dLAI/ndays, col="black", lwd=2))
+    
+  }
   timeseries_axis(FALSE)
   axis(2)
   box()
@@ -185,33 +207,16 @@ figure6 <- function(df){
 
 
 
-#---------------------------------------------------------------------------------------------#
-# Figures not used at the moment.s
-
-
-
-figure_dLAIdt_smooth <- function(makepdf=F, how=c("byring", "mean"), 
-                                 setpar=TRUE, axislabels=TRUE, xlab="Date",
+figure7 <- function(dat,
+                    how=c("byring", "mean"), 
+                                 setpar=TRUE, axislabels=TRUE, 
                                  kgam=15){
-  
-  
-  
-#   smoothlai <- makesmoothLAI(facegap_cloudy_byring, kgam=18, how="mean")
-#   
-#   windows()
-#   par(mfrow=c(2,1))
-#   with(smoothlai, plot(Date, dLAI, type='l', xlim= range(facesoilwater$Date)))
-#   abline(h=0)
-#   with(facesoilwater, plot(Date, VWC, type='l', xlim= range(facesoilwater$Date)))
-#   
+
   how <- match.arg(how)
   
-  smoothlai <- makesmoothLAI(facegap_byring, kgam=kgam, how=how)
+  smoothlai <- makesmoothLAI(dat, kgam=kgam, how=how)
   
   if(how == "mean")smoothlai <- list(smoothlai)
-  
-  xAT <- seq.Date(as.Date("2012-10-1"), by="2 months", length=50)
-  xATminor <- seq.Date(as.Date("2012-10-1"), by="1 month", length=100)
   
   xl <- c(as.Date("2012-10-1"),max(smoothlai[[1]]$Date))
   
@@ -228,122 +233,15 @@ figure_dLAIdt_smooth <- function(makepdf=F, how=c("byring", "mean"),
     with(smoothlai[[1]], lines(Date, dLAI/ndays, col="black", lwd=2))
     
   }
-  axis.Date(1, at=xAT, labels=FALSE)
-  axis.Date(1, at=xATminor, labels=FALSE, tcl=-0.25 )
+  timeseries_axis(FALSE)
   axis(2)
   box()
   
-  
-  mtext(side=1, text=xlab, line=3, outer=F, cex=1.2)
   mtext(side=2, text=expression(frac(dLAI,dt)~(m^2~m^-2~d^-1)), 
-        at=0, line=3, outer=F, cex=1.2)
+        at=0, line=3, outer=FALSE, cex=1.2)
   
-  axis.Date(1, at=xAT, format="%b-'%y" , labels=axislabels)
-  axis.Date(1, at=xATminor, labels=FALSE, tcl=-0.25 )
+  timeseries_axis(TRUE)
   
   return(invisible(xl))
 }
-
-
-
-
-
-figure_gapfrac_3methods_May <- function(df,
-                                        makepdf=TRUE,
-                                        filename="output/figures/FACE_gapfrac_3methods_May.pdf"){
-  
-  
-  if(makepdf){
-    pdf(filename, width=9, height=4)
-    on.exit(dev.off())
-  }
-  
-  if(!makepdf)windows(9,4)
-  par(mfrow=c(1,3), mar=c(5,5,1,1), cex.axis=1.1, cex.lab=1.4)
-  
-  plot11 <- function(x,y,...){
-    plot(x,y,...)
-    abline(0,1)
-    ablineclip(lm(y ~ x),x1=min(x,na.rm=TRUE),
-               x2=max(x,na.rm=TRUE), lty=5)
-    #     pointLabel(x,y,as.character(1:6))
-    thigmophobe.labels(x,y,as.character(1:6))
-  }
-  
-  with(df, plot11(Gapfraction.PAR.mean, DIFN,
-                  xlab=expression(tau~"(PAR sensors) (-)"),
-                  ylab=expression(tau~"(LAI-2200) (-)"),
-                  pch=19,cex=1.3,
-                  ylim=c(0.15,0.3),
-                  xlim=c(0.15,0.3)))
-  
-  with(df, plot11(Gapfraction.PAR.mean, Gapfraction.mean,
-                  xlab=expression(tau~"(PAR sensors) (-)"),
-                  ylab=expression(tau~"(Zenith photos) (-)"),
-                  pch=19,cex=1.3,
-                  xlim=c(0.15,0.3),
-                  ylim=c(0.4,0.6)))
-  
-  with(df, plot11(DIFN, Gapfraction.mean,
-                  pch=19,cex=1.3,
-                  ylab=expression(tau~"(Zenith photos) (-)"),
-                  xlab=expression(tau~"(LAI-2200) (-)"),
-                  xlim=c(0.15,0.3),
-                  ylim=c(0.4,0.6)))
-  
-  
-}
-
-
-
-
-
-figure_LAI_11 <- function(df=flatcan_byring, 
-                          makepdf=TRUE,
-                          filename="output/figures/LAI_PARFlatcan_11.pdf"
-){
-  
-  
-  if(makepdf){
-    pdf(filename, width=6, height=6)
-    on.exit(dev.off())
-  }
-  
-  palette(brewer.pal(6, "Set2"))
-  
-  par(xaxs="i", yaxs="i", las=2, cex.lab=1.2, cex.axis=0.9,
-      mar=c(5,5,2,2))
-  with(df, plot(LAI, LAI.PAR.mean,
-                xlab=expression(Total~area~index~(Photos)~(m^2~m^-2)),
-                ylab=expression(Total~area~index~(Diffuse~transmittance)~(m^2~m^-2)),
-                xlim=c(0.75,2.75),ylim=c(0.75,2.75),
-                axes=FALSE,
-                pch=19, col=Ring))
-  
-  a <- seq(0.75,2.75,by=0.25)
-  axis(1,at=a)
-  axis(2, at=a)
-  abline(0,1)
-  box()
-  with(df, ablineclip(lm(LAI.PAR.mean ~ LAI), lty=5,
-                      x1=min(LAI), x2=max(LAI)))        
-  
-  legend("bottomright", as.character(1:6), title="Ring", col=palette(), pch=19, 
-         cex=0.9, pt.cex=1)
-  
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
