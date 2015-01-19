@@ -244,6 +244,11 @@ make_dLAI_litter <- function(dat, kgam=15){
     }))
   }
   
+  soilsp <- splitbydate(facesoilwater, litterDates) 
+  meansw <- data.frame(Date=litterDates[1:(length(litterDates)-1)], 
+                       VWC=sapply(soilsp, function(x)mean(x$VWC, na.rm=TRUE)))
+  
+  
   # r will be a dataframe with litterfall and change in LAI
   r <- list()
   for(i in 1:6){
@@ -256,6 +261,7 @@ make_dLAI_litter <- function(dat, kgam=15){
   r$absdLAI <- with(r, -dnegLAI + dposLAI)
   r$LAIchange <- as.factor(r$dLAI > 0)
   levels(r$LAIchange) <- c("decreasing","increasing")
+  r <- merge(r, meansw)
   return(r)
 }
 
