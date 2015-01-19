@@ -222,9 +222,25 @@ figure6 <- function(df){
 }
 
 
-
-
-
+figureSI1 <- function(df1, df2){
+  
+  Cols <- c("grey49","black")
+  
+  dfa1 <- summaryBy(Gapfraction.mean ~ Date, data=df1, FUN=mean, keep.names=TRUE)
+  dfa2 <- summaryBy(Gapfraction.mean ~ Date, data=df2, FUN=mean, keep.names=TRUE)
+  
+  par(mar=c(3,5,2,2))
+  smoothplot(Date, Gapfraction.mean, data=df2, kgam=18, pointcols=alpha(Cols[1],0.5), linecols=Cols[1],
+             ylim=c(0,0.4), axes=FALSE,
+             xlab="", ylab=expression(tau[PAR]~~("-")))
+  smoothplot(Date, Gapfraction.mean, data=df1, kgam=18, add=TRUE, pointcols=alpha(Cols[2],0.5),
+             linecols=Cols[2])
+  timeseries_axis(TRUE)
+  axis(2)
+  box()
+  legend("bottomleft", c("Diffuse","Direct + Diffuse"), pch=19, col=rev(Cols), bty='n')
+  
+}
 
 
 
