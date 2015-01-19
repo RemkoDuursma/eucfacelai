@@ -166,7 +166,7 @@ figure6 <- function(df){
   par(mar=c(1.5,5,1.5,2))
   smoothlai <- makesmoothLAI(dat, kgam=15, how="byring")
   with(smoothlai[[1]], plot(Date, dLAI/ndays, type='n', 
-                            ylab=expression(frac(dLAI,dt)~(m^2~m^-2~d^-1)),
+                            ylab=expression(dLAI/dt~(m^2~m^-2~d^-1)),
                             ylim=c(-0.02,0.02),
                             
                             xlim=xl))  
