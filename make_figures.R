@@ -17,7 +17,7 @@ to.pdf(figure3(flatcan_byring),
        filename="output/figures/Figure3.pdf",
        width=5, height=5)
 
-to.pdf(figure4(facegap_cloudy_byCO2),
+to.pdf(figure4(facegap_cloudy_byCO2,flatcan_byCO2),
        filename="output/figures/Figure4.pdf",
        width=8, height=4)
 

@@ -65,11 +65,11 @@ figure3 <- function(df){
 
 
 
-figure4 <- function(df,
+figure4 <- function(df,flatcan_byCO2,
                     xlim=NULL, ylim=NULL,
                     legend=TRUE,
                     ylab=expression(Total~area~index~~(m^2~m^-2)),
-                    cex.lab=1.1, cex.axis=0.9, cex.legend=0.8,
+                    cex.lab=1.1, cex.axis=0.9, cex.legend=0.7,
                     legendwhere="topleft",
                     setpar=TRUE,axisline=3,
                     horlines=TRUE,
@@ -114,13 +114,20 @@ figure4 <- function(df,
     with(df, points(Date, LAI.mean, pch=19, cex=0.05, col="white"))
   }
   
+  with(flatcan_byCO2, points(Date, LAI.mean, pch=21, bg=treatment, col="black"))
+  
+  
   timeseries_axis()  
   
   axis(2)
   box()
   
   l <- legend("topleft", c("Ambient","Elevated"), title=expression(italic(C)[a]~treatment), 
-              col=my_co2cols(), bty="n", lty=1, lwd=2, cex=cex.legend)
+              fill=my_co2cols(), bty="n", cex=cex.legend)
+  legend(l$rect$left + l$rect$w, l$rect$top, c(expression(tau[PAR]),"Photos"), pch=c(19,21),
+         lty=c(1,-1), pt.bg=c("white","grey"), cex=cex.legend, bty='n', pt.cex=c(0.05,1),
+         title="Method")
+  
   
   par(new=TRUE)
   with(faceraindaily, plot(Date, Rain.ROS, type='h', ylim=c(0,200),
