@@ -10,6 +10,13 @@ my_ringcols <- function(){
   c(reds[1],blues[1:2],reds[2:3],blues[3])
 }
 
+timeseries_axis <- function(labels=TRUE){
+  xAT <- seq.Date(as.Date("2012-7-1"), by="2 months", length=50)
+  xATminor <- seq.Date(as.Date("2012-7-1"), by="1 month", length=100)
+  axis.Date(1, at=xAT, format="%b-'%y", labels=labels )
+  axis.Date(1, at=xATminor, labels=FALSE, tcl=-0.25)
+}
+
 
 
 # Smoothed gap fraction raw data
@@ -148,56 +155,65 @@ figure5 <- function(df){
 
 figure6 <- function(df){
   
+#   df <- subset(df, Rain_mm_Tot.mean < 0.01)
+  
   dfa <- summaryBy(LAI ~ Date, data=df, FUN=mean, keep.names=TRUE)
   
-  xl <- range(dfa$Date)
+  xl <- range(facesoilwater$Date)
   
-  par(mfrow=c(4,1), mar=c(0,5,5,2), cex.lab=1.2)
+  par(mfrow=c(4,1), mar=c(0,7,5,2), cex.lab=1.3, las=1, mgp=c(4,1,0))
   
   # panel a
-  smoothplot(Date, LAI, data=dfa, kgam=18, pointcols="dimgrey", linecols="black", xlim=xl,
-             ylab=expression(Total~area~index~~(m^2~m^-2)),
-             ylim=c(1,2), axes=FALSE)
+  smoothplot(Date, LAI, data=dfa, kgam=18, pointcols="dimgrey", linecols="black", 
+             xlim=xl,
+             ylab=expression(LAI~~(m^2~m^-2)),
+             ylim=c(0.8,2), axes=FALSE)
   timeseries_axis(FALSE)
   axis(2)
   box()
   
   # panel b
-  par(mar=c(1.5,5,1.5,2))
-  smoothlai <- makesmoothLAI(dat, kgam=15, how="byring")
-  with(smoothlai[[1]], plot(Date, dLAI/ndays, type='n', 
-                            ylab=expression(dLAI/dt~(m^2~m^-2~d^-1)),
-                            ylim=c(-0.02,0.02),
-                            
-                            xlim=xl))  
-  abline(h=0, lty=5)
-  if(how == "byring"){
-    for(i in 1:6)with(smoothlai[[i]], lines(Date, dLAI/ndays, 
-                                            col=c("red","blue","blue","red","red","blue")[i]))
-  }
-  if(how == "mean"){
-    with(smoothlai[[1]], lines(Date, dLAI/ndays, col="black", lwd=2))
-    
-  }
+  par(mar=c(0,7,1.5,2))
+  
+  # http://www.fromthebottomoftheheap.net/2011/06/12/additive-modelling-and-the-hadcrut3v-global-mean-temperature-series/
+  df$Time <- as.numeric(df$Date - min(df$Date))
+  g <- gamm(LAI ~ s(Time, k=18), random = list(Ring=~1), data=df)$gam  
+  dates <- seq(min(dfa$Date), max(dfa$Date), by="1 day")
+  d <- Deriv(g, n=length(dates))
+  dlaidt <- d$Time$deriv[,1]
+  ci <- confint(d)
+  
+  plot(dates, dlaidt, type='l',axes=FALSE,xlab="",xlim=xl,
+       ylim=c(-0.012, 0.012),
+       ylab=expression(dLAI/dt~(m^2~m^-2~d^-1)),
+       panel.first=addpoly(x=dates, y1=ci$Time$lower, y2=ci$Time$upper))
+  abline(h=0)
+  
+  x <- signifD(dlaidt,dlaidt,ci$Time$upper,ci$Time$lower,0)
+  lines(dates, x[["incr"]], col="forestgreen", lwd=2)
+  lines(dates, x[["decr"]], col="red", lwd=2)
+  
   timeseries_axis(FALSE)
   axis(2)
   box()
   
-  par(mar=c(1.5,5,1.5,2))
+  par(mar=c(1.5,7,1.5,2))
   with(subset(facesoilwater, Date > xl[1]), 
        plot(Date, VWC, type='l', lwd=2, xlim=xl, ylim=c(0,0.4), axes=FALSE,
-            panel.first=abline(h=seq(0,0.4,by=0.05), col="grey", lty=5),
+            #panel.first=abline(h=seq(0,0.4,by=0.05), col="grey", lty=5),
+            panel.first=abline(h=0.16, col="blue", lwd=2),
             ylab=expression(SWC~~(m^3~m^-3))))
   
   timeseries_axis(FALSE)
   axis(2)
   box()
   
-  par(mar=c(5,5,0,2))
+  par(mar=c(5,7,0,2))
   smoothplot(Date, Tair, data=subset(airt, Date > xl[1]), 
              kgam=25, pointcols=alpha("grey",0.8), linecols="black",axes=FALSE,
-             panel.first=abline(h=seq(0,30,by=2), col="grey", lty=5),
-             ylab=expression(T[air]~~(degree*C)),
+#              panel.first=abline(h=seq(0,30,by=2), col="grey", lty=5),
+             ylab=expression(T[air]~~(degree*C)), 
+             xlab="",
              ylim=c(0,30), xlim=xl)
   timeseries_axis(TRUE)
   axis(2)
@@ -207,41 +223,11 @@ figure6 <- function(df){
 
 
 
-figure7 <- function(dat,
-                    how=c("byring", "mean"), 
-                                 setpar=TRUE, axislabels=TRUE, 
-                                 kgam=15){
 
-  how <- match.arg(how)
-  
-  smoothlai <- makesmoothLAI(dat, kgam=kgam, how=how)
-  
-  if(how == "mean")smoothlai <- list(smoothlai)
-  
-  xl <- c(as.Date("2012-10-1"),max(smoothlai[[1]]$Date))
-  
-  if(setpar)par(mar=c(5,7,2,2), cex.lab=1.2,  cex.axis=0.8)
-  with(smoothlai[[1]], plot(Date, dLAI/ndays, type='n', ylim=c(-0.02,0.02),
-                            axes=FALSE,ann=FALSE,
-                            xlim=xl))  
-  abline(h=0, lty=5)
-  if(how == "byring"){
-    for(i in 1:6)with(smoothlai[[i]], lines(Date, dLAI/ndays, 
-                                            col=c("red","blue","blue","red","red","blue")[i]))
-  }
-  if(how == "mean"){
-    with(smoothlai[[1]], lines(Date, dLAI/ndays, col="black", lwd=2))
-    
-  }
-  timeseries_axis(FALSE)
-  axis(2)
-  box()
-  
-  mtext(side=2, text=expression(frac(dLAI,dt)~(m^2~m^-2~d^-1)), 
-        at=0, line=3, outer=FALSE, cex=1.2)
-  
-  timeseries_axis(TRUE)
-  
-  return(invisible(xl))
-}
+
+
+
+
+
+
 
