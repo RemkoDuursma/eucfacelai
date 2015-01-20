@@ -124,6 +124,9 @@ figure4 <- function(df,flatcan_byCO2,
          title="Method")
   
   
+  axis(2)
+  box()
+  
   par(new=TRUE)
   with(faceraindaily, plot(Date, Rain.ROS, type='h', ylim=c(0,200),col="dimgrey",
                            axes=FALSE, xlim=xlim, ann=FALSE))
@@ -131,9 +134,6 @@ figure4 <- function(df,flatcan_byCO2,
   mtext(side=4, cex=cex.lab, line=axisline, text="Daily rain (mm)", las=0)
   
   timeseries_axis()  
-  
-  axis(2)
-  box()
   
   
   return(invisible(xlim))
