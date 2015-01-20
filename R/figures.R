@@ -31,7 +31,7 @@ figure1 <- function(df){
   timeseries_axis()
   axis(2)
   box()
-  legend("bottomleft", as.character(1:6), lty=1, 
+  legend("bottomleft", as.character(1:6), lty=1, bty='n',
          col=my_ringcols(), title="Ring", cex=0.8, lwd=2)
 }
 
@@ -68,7 +68,7 @@ figure3 <- function(df){
 figure4 <- function(df,flatcan_byCO2,
                     xlim=NULL, ylim=NULL,
                     legend=TRUE,
-                    ylab=expression(Total~area~index~~(m^2~m^-2)),
+                    ylab=expression(LAI~~(m^2~m^-2)),
                     cex.lab=1.1, cex.axis=0.9, cex.legend=0.7,
                     legendwhere="topleft",
                     setpar=TRUE,axisline=3,
@@ -77,7 +77,7 @@ figure4 <- function(df,flatcan_byCO2,
                     addpoints=TRUE){
 
   
-  if(setpar)par(cex.axis=cex.axis, mar=c(3,5,2,5), las=1, cex.lab=1.2)
+  if(setpar)par(cex.axis=cex.axis, mar=c(3,5,2,5), las=1, cex.lab=1.2, yaxs="i")
   par(cex.lab=cex.lab)
   palette(my_co2cols())
   
@@ -116,12 +116,7 @@ figure4 <- function(df,flatcan_byCO2,
   
   with(flatcan_byCO2, points(Date, LAI.mean, pch=21, bg=treatment, col="black"))
   
-  
-  timeseries_axis()  
-  
-  axis(2)
-  box()
-  
+
   l <- legend("topleft", c("Ambient","Elevated"), title=expression(italic(C)[a]~treatment), 
               fill=my_co2cols(), bty="n", cex=cex.legend)
   legend(l$rect$left + l$rect$w, l$rect$top, c(expression(tau[PAR]),"Photos"), pch=c(19,21),
@@ -130,10 +125,16 @@ figure4 <- function(df,flatcan_byCO2,
   
   
   par(new=TRUE)
-  with(faceraindaily, plot(Date, Rain.ROS, type='h', ylim=c(0,200),
+  with(faceraindaily, plot(Date, Rain.ROS, type='h', ylim=c(0,200),col="dimgrey",
                            axes=FALSE, xlim=xlim, ann=FALSE))
   axis(4, at=c(0,25,50,75,100))
   mtext(side=4, cex=cex.lab, line=axisline, text="Daily rain (mm)", las=0)
+  
+  timeseries_axis()  
+  
+  axis(2)
+  box()
+  
   
   return(invisible(xlim))
 }
@@ -164,6 +165,8 @@ figure6 <- function(df){
   
 #   df <- subset(df, Rain_mm_Tot.mean < 0.01)
   
+  xin <- 0.02 # for panel label x inset
+  
   dfa <- summaryBy(LAI ~ Date, data=df, FUN=mean, keep.names=TRUE)
   
   xl <- range(facesoilwater$Date)
@@ -178,6 +181,7 @@ figure6 <- function(df){
   timeseries_axis(FALSE)
   axis(2)
   box()
+  plotlabel("(a)","topleft", inset.x=xin)
   
   # panel b
   par(mar=c(0,7,1.5,2))
@@ -203,7 +207,9 @@ figure6 <- function(df){
   timeseries_axis(FALSE)
   axis(2)
   box()
+  plotlabel("(b)","topleft", inset.x=xin)
   
+  # panel c
   par(mar=c(1.5,7,1.5,2))
   with(subset(facesoilwater, Date > xl[1]), 
        plot(Date, VWC, type='l', lwd=2, xlim=xl, ylim=c(0,0.4), axes=FALSE,
@@ -214,7 +220,9 @@ figure6 <- function(df){
   timeseries_axis(FALSE)
   axis(2)
   box()
+  plotlabel("(c)","topleft", inset.x=xin)
   
+  # panel d
   par(mar=c(5,7,0,2))
   smoothplot(Date, Tair, data=subset(airt, Date > xl[1]), 
              kgam=25, pointcols=alpha("grey",0.8), linecols="black",axes=FALSE,
@@ -225,6 +233,7 @@ figure6 <- function(df){
   timeseries_axis(TRUE)
   axis(2)
   box()
+  plotlabel("(d)","topleft", inset.x=xin)
   
 }
 
@@ -245,7 +254,7 @@ figureSI1 <- function(df1, df2){
   timeseries_axis(TRUE)
   axis(2)
   box()
-  legend("bottomleft", c("Diffuse","Direct + Diffuse"), pch=19, col=rev(Cols), bty='n')
+  legend("bottomleft", c("Diffuse only","All data"), pch=19, col=rev(Cols), bty='n')
   
 }
 
