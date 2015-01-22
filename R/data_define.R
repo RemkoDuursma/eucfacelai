@@ -29,3 +29,26 @@ badPARdata <- function(){
                        strip.white=TRUE)
 }
 
+
+flushingdates <- function(){
+  
+  # David Ellsworth : "
+#   -  R6 16th Dec. 2014; other rings 5th Jan. 2015 (no observations between 16th and 30th, 
+#                                                    but just starting around the 30th)
+#   
+#   - R3 & R5 4th Dec. 2013; R6 & R4 16th Dec. 2013; R1 & R2 24th Dec. 2013
+#   
+#   - R1 16th Oct. 2012 (R2 not observed L)
+#   
+#  - All rings but not all trees 22nd January 2013 (this is the minor leaf flushing event you refer to below
+#   - R3-R6 8th Oct. 2012
+#   
+#   - All rings but not all trees 17th Feb. 2012"
+  
+  # Averages of dates.
+  dates <- as.Date(c("2015-1-5", "2013-12-15", "2012-10-12","2012-2-17","2013-1-22"))
+  
+  
+return(dates)
+}
+
