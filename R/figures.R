@@ -195,7 +195,7 @@ figure6 <- function(df){
   ci <- confint(d)
   
   plot(dates, dlaidt, type='l',axes=FALSE,xlab="",xlim=xl,
-       ylim=c(-0.012, 0.012),
+       ylim=c(-0.012, 0.015),
        ylab=expression(dLAI/dt~(m^2~m^-2~d^-1)),
        panel.first=addpoly(x=dates, y1=ci$Time$lower, y2=ci$Time$upper))
   abline(h=0)
@@ -208,6 +208,9 @@ figure6 <- function(df){
   axis(2)
   box()
   plotlabel("(b)","topleft", inset.x=xin)
+  
+  arrows(x0=flushingdates(), x1=flushingdates(), y0=0.015, y1=0.01,
+         length=0.05)
   
   # panel c
   par(mar=c(1.5,7,1.5,2))
@@ -260,6 +263,32 @@ figureSI1 <- function(df1, df2){
 
 
 
-
-
+figure_breakpoint <- function(df){
+  dfa <- summaryBy(LAI + Rain_mm_Tot.mean ~ Date, data=df, FUN=mean, keep.names=TRUE)
+  dfa$numDate <- as.numeric(dfa$Date - min(dfa$Date))
+  
+  breakguess <- as.numeric(as.Date(c("2012-12-02","2013-1-23",
+                          "2013-2-27","2013-7-14",
+                          "2013-10-22","2014-2-1","2014-12-1")) - min(dfa$Date))
+  
+  lin <- lm(LAI ~ numDate, data=dfa)
+  library(segmented)
+  seg <- segmented(lin, seg.Z=~numDate, 
+                   control=seg.control(n.boot=100, it.max=20),
+                   psi=list(numDate=breakguess))
+  
+  p <- predict(seg,dfa,se.fit=TRUE)
+  dfa$LAIpred <- p$fit
+  dfa$LAIpred_SE <- p$se.fit
+  
+  with(dfa, {
+    
+    plot(Date, LAI, pch=19, ylim=c(0.8,2))
+    addpoly(Date, LAIpred+2*LAIpred_SE,LAIpred - 2*LAIpred_SE)
+    lines(Date, LAIpred)
+    
+  })
+  
+  arrows(x0=flushingdates(), x1=flushingdates(), y0=2, y1=1.9, length=0.05)
+}
 

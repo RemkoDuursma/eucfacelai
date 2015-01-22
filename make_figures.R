@@ -11,8 +11,6 @@ to.pdf(figure1(facegap_cloudy_byring),
 to.pdf(figure2(face_dLAIdrought2013),
        filename="output/figures/Figure2.pdf",
        width=5, height=5)
-
-
 to.pdf(figure3(flatcan_byring),
        filename="output/figures/Figure3.pdf",
        width=5, height=5)
