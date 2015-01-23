@@ -19,14 +19,28 @@ timeseries_axis <- function(labels=TRUE){
 
 
 
+
+
+
+
 # Smoothed gap fraction raw data
-figure1 <- function(df){
+figure1 <- function(df, ramp){
   
-  par(mar=c(3,5,2,2), cex.axis=0.9, cex.lab=1.1)
+  l <- layout(matrix(c(1,2), ncol=1), heights=c(0.8,2))
+  
+  par(mar=c(0.5,5,1,2), cex.axis=0.9, cex.lab=1.1, las=1)
+  with(ramp, plot(Date, CO2target, type='l', col="dimgrey", lwd=2, axes=FALSE, ylim=c(0,160),
+                  xlab="", ylab=expression(Target~Delta*C[a]~(ppm))))
+  timeseries_axis(FALSE)
+  axis(2, at=seq(0,150,by=30))
+  box()
+  
+  par(mar=c(3,5,0.5,2), cex.axis=0.9, cex.lab=1.1, yaxs="i")
+  
   smoothplot(Date, Gapfraction.mean, g=Ring, data=df, k=18,axes=FALSE,
              ylim=c(0,0.4),
              xlab="",
-             ylab=expression(tau[PAR]~~("-")),
+             ylab=expression(tau[d]~~("-")),
              pointcols=rep("grey",8), linecols=my_ringcols())
   timeseries_axis()
   axis(2)
@@ -42,7 +56,7 @@ figure2 <- function(df){
   palette(my_co2cols())
   with(df, plot(dLAI_litter, dLAI_PAR, pch=19, col=treatment,
                 xlab=expression(Delta*LAI~from~litter~fall~~(m^2~m^-2)),
-                ylab=expression(Delta*LAI~from~tau[PAR]~~(m^2~m^-2)),
+                ylab=expression(Delta*LAI~from~tau[d]~~(m^2~m^-2)),
                 xlim=c(0,0.6), ylim=c(0,0.6)))
   abline(0,1)
   predline(lm(dLAI_PAR ~ dLAI_litter, data=df), lty=5)
@@ -54,7 +68,7 @@ figure3 <- function(df){
   par(mar=c(5,5,2,2), cex.axis=0.9)
   
   with(df, plot(LAI, LAI.PAR.mean, 
-                ylab=expression(LAI~from~tau[PAR]~~(m^2~m^-2)),
+                ylab=expression(LAI~from~tau[d]~~(m^2~m^-2)),
                 xlab=expression(LAI~from~canopy~photos~~(m^2~m^-2)),
                 pch=19, col=my_co2cols()[treatment],
                 xlim=c(0.8,2), ylim=c(0.8,2)))
@@ -119,7 +133,7 @@ figure4 <- function(df,flatcan_byCO2,
 
   l <- legend("topleft", c("Ambient","Elevated"), title=expression(italic(C)[a]~treatment), 
               fill=my_co2cols(), bty="n", cex=cex.legend)
-  legend(l$rect$left + l$rect$w, l$rect$top, c(expression(tau[PAR]),"Photos"), pch=c(19,21),
+  legend(l$rect$left + l$rect$w, l$rect$top, c(expression(tau[d]),"Photos"), pch=c(19,21),
          lty=c(1,-1), pt.bg=c("white","grey"), cex=cex.legend, bty='n', pt.cex=c(0.05,1),
          title="Method")
   
@@ -149,7 +163,7 @@ figure5 <- function(df){
                xlab=expression(Leaf~litter~production~~(m^2~m^-2~mon^-1)),
                xlim=c(0,0.6),
                ylim=c(-0.3,0.5),
-               ylab=expression(Delta*LAI~from~tau[PAR]~(m^2~m^-2~mon^-1))))
+               ylab=expression(Delta*LAI~from~tau[d]~(m^2~m^-2~mon^-1))))
   abline(h=0, lty=5)
   abline(0,1)
   abline(0,-1)
@@ -251,13 +265,13 @@ figureSI1 <- function(df1, df2){
   par(mar=c(3,5,2,2))
   smoothplot(Date, Gapfraction.mean, data=df2, kgam=18, pointcols=alpha(Cols[1],0.5), linecols=Cols[1],
              ylim=c(0,0.4), axes=FALSE,
-             xlab="", ylab=expression(tau[PAR]~~("-")))
+             xlab="", ylab=expression(tau~~("-")))
   smoothplot(Date, Gapfraction.mean, data=df1, kgam=18, add=TRUE, pointcols=alpha(Cols[2],0.5),
              linecols=Cols[2])
   timeseries_axis(TRUE)
   axis(2)
   box()
-  legend("bottomleft", c("Diffuse only","All data"), pch=19, col=rev(Cols), bty='n')
+  legend("bottomleft", c(expression("Diffuse only"~(tau[d])),"All data"), pch=19, col=rev(Cols), bty='n')
   
 }
 

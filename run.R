@@ -76,6 +76,9 @@ dLAIlitter <- make_dLAI_litter(facegap_cloudy_byring, kgam=20)
 # Air temperature from ROS
 airt <- get_rosTair()
 
+# ramp-up CO2 concentration
+ramp <- get_ramp()
+
 # Figures
 source("make_figures.R")
 

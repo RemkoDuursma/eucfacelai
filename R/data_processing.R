@@ -1,4 +1,13 @@
 
+get_ramp <- function(){
+  ramp <- read.csv("data/ramp_co2-data.csv", stringsAsFactors = FALSE)
+  ramp$DateTime <- as.POSIXct(ramp$Date.time, format="%d/%m/%Y %H:%M", tz="UTC")
+  ramp$CO2target <- as.numeric(str_extract(ramp$CO2.target, "[0-9]{2,3}"))
+  ramp$Date <- as.Date(ramp$DateTime)
+  ramp <- summaryBy(. ~ Date, FUN=mean, na.rm=TRUE, keep.names=TRUE, data=ramp)
+return(ramp)
+}
+
 get_solvars <- function(){
   
   downloadCSV(c("P0037","SOLVARS"))
