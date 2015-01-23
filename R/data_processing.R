@@ -186,9 +186,9 @@ return(df2[,c("Ring","Date","treatment","dLAI_litter","dLAI_PAR")])
 
 calibrateToDrought <- function(df){
   
-  o <- function(clump){
-    r <- make_dLAI_drought2013(df,clump)
-    sum((r$dLAI_litter - r$dLAI_PAR)^2)
+  o <- function(calib){
+    r <- make_dLAI_drought2013(df)
+    sum((r$dLAI_litter - calib*r$dLAI_PAR)^2)
   }
   opt <- optimize(o,c(0.5,3))
   

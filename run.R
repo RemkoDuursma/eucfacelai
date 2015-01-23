@@ -19,7 +19,7 @@ facepar_cloudy <- makeCloudy(facepar,
                               Fdiff_cutoff= 0.98,
                               PARabovecutoff = 250,
                               PARbelowcutoff = 1300,
-                              minSolarElevation =10)
+                              minSolarElevation = 10)
 
 # All data, including sunny.
 facepar_all <- makeCloudy(facepar,
