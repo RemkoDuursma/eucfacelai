@@ -48,8 +48,8 @@ litter_byCO2 <- agglitter(litter)
 calib <- calibrateToDrought(facegap_cloudy_byring)
 
 # Calculate LAI
-facegap_cloudy_byring <- calculate_LAI(facegap_cloudy_byring, clump=calib)
-facegap_all_byring <- calculate_LAI(facegap_all_byring, clump=calib)
+facegap_cloudy_byring <- calculate_LAI(facegap_cloudy_byring, calib=calib)
+facegap_all_byring <- calculate_LAI(facegap_all_byring, calib=calib)
 
 
 # Aggregate by CO2 treatment
@@ -58,7 +58,7 @@ facegap_all_byCO2 <- aggfacegapbyCO2(facegap_all_byring)
 
 
 # Dataset with dLAI from litter and PAR during 2013 drought (used in above calibration).
-face_dLAIdrought2013 <- make_dLAI_drought2013(facegap_cloudy_byring,clump=calib)
+face_dLAIdrought2013 <- make_dLAI_drought2013(facegap_cloudy_byring,calib=calib)
 
 # Soil water
 facesoilwater <- get_soilwater()

@@ -12,7 +12,7 @@ Kell <- function(z, x=1){
 }
 
 # Transmittance for direct beam
-Tdir <- function(z,LAI,clump,...){
+Tdir <- function(z,LAI,clump=1,...){
   exp(-Kell(z,...)*clump*LAI)
 }
 

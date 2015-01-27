@@ -146,12 +146,12 @@ aggFACEPARbysensor <- function(df, minnrHH=4){
 
 
 
-make_dLAI_drought2013 <- function(df, clump=1){
+make_dLAI_drought2013 <- function(df, calib=1){
   
   
   # Calculate LAI.
   df <- df[!is.na(df$Gapfraction.mean),]
-  df$LAI <- with(df, mapply(LAI_Tdiff, Td=Gapfraction.mean, clump=clump))
+  df$LAI <- calib * with(df, mapply(LAI_Tdiff, Td=Gapfraction.mean))
   
   # diffuse transmittance after mid-July (data two weeks before stable and a bit noisy)
   df1 <- subset(df, Date > as.Date("2013-7-14") & Date < as.Date("2013-11-12"))
@@ -207,10 +207,10 @@ return(opt$minimum)
 
 
 
-calculate_LAI <- function(df,x=1, clump=1){
+calculate_LAI <- function(df,x=1, calib=1){
   
   # Add LAI estimate
-  df$LAI <- with(df, mapply(LAI_Tdiff, Td=Gapfraction.mean, x=x, clump=clump))
+  df$LAI <- calib * with(df, mapply(LAI_Tdiff, Td=Gapfraction.mean, x=x))
   
   return(df)
 }
