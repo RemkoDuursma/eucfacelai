@@ -27,26 +27,38 @@ timeseries_axis <- function(labels=TRUE){
 figure1 <- function(df, ramp){
   
   l <- layout(matrix(c(1,2), ncol=1), heights=c(0.8,2))
+  xl <- c(min(ramp$Date), max(df$Date))
   
-  par(mar=c(0.5,5,1,2), cex.axis=0.9, cex.lab=1.1, las=1)
+  par(mar=c(0.5,5,1,2), cex.axis=0.9, cex.lab=1.1, las=1, yaxs="i")
   with(ramp, plot(Date, CO2target, type='l', col="dimgrey", lwd=2, axes=FALSE, ylim=c(0,160),
+                  xlim=xl,
                   xlab="", ylab=expression(Target~Delta*C[a]~(ppm))))
   timeseries_axis(FALSE)
+  segments(x0=max(ramp$Date), x1=xl[2], y0=150, y1=150, col="dimgrey", lwd=2)
   axis(2, at=seq(0,150,by=30))
   box()
+  plotlabel("(a)", "topleft", inset.x=0.04)
   
   par(mar=c(3,5,0.5,2), cex.axis=0.9, cex.lab=1.1, yaxs="i")
   
   smoothplot(Date, Gapfraction.mean, g=Ring, data=df, k=18,axes=FALSE,
              ylim=c(0,0.4),
-             xlab="",
+             xlab="",xlim=xl,
              ylab=expression(tau[d]~~("-")),
              pointcols=rep("grey",8), linecols=my_ringcols())
   timeseries_axis()
   axis(2)
   box()
+  
+  d1 <- as.Date("2013-7-14")
+  d2 <- as.Date("2013-11-12")
+  Y <- 0.38
+  arrows(x0=d1, x1=d2, y0=Y, y1=Y, code=3, length=0.06)
+  text(y=Y, x=d2 + 10, "Calibration", pos=4, cex=0.8)
+  
   legend("bottomleft", as.character(1:6), lty=1, bty='n',
          col=my_ringcols(), title="Ring", cex=0.8, lwd=2)
+  plotlabel("(b)", "topleft", inset.x=0.04)
 }
 
 
@@ -55,7 +67,7 @@ figure2 <- function(df){
   par(mar=c(5,5,2,2), cex.axis=0.9)
   palette(my_co2cols())
   with(df, plot(dLAI_litter, dLAI_PAR, pch=19, col=treatment,
-                xlab=expression(Delta*LAI~from~litter~fall~~(m^2~m^-2)),
+                xlab=expression(Cumulative~Delta*LAI~from~litter~fall~~(m^2~m^-2)),
                 ylab=expression(Delta*LAI~from~tau[d]~~(m^2~m^-2)),
                 xlim=c(0,0.6), ylim=c(0,0.6)))
   abline(0,1)
