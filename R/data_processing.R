@@ -724,7 +724,14 @@ makesmoothLAI <- function(dat, timestep="3 days", kgam=15, how=c("byring","mean"
 
 
 
-
+get_hawkrain <- function(){
+  
+  rain <- read.csv("data/IDCJAC0009_067021_1800_Data.csv")[,3:6]
+  rain$Date <- as.Date(with(rain, ISOdate(Year,Month,Day)))
+  
+  names(rain)[4] <- "Rain"
+return(rain)
+}
 
 
 
