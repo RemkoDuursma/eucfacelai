@@ -19,10 +19,6 @@ timeseries_axis <- function(labels=TRUE){
 
 
 
-
-
-
-
 # Smoothed gap fraction raw data
 figure1 <- function(df, ramp){
   
@@ -98,10 +94,12 @@ figure4 <- function(df,flatcan_byCO2,
                     cex.lab=1.1, cex.axis=0.9, cex.legend=0.7,
                     legendwhere="topleft",
                     setpar=TRUE,axisline=3,
+                    adddata=c("rain","litter"),
                     horlines=TRUE,
                     greyrect=FALSE,
                     addpoints=TRUE){
 
+  adddata <- match.arg(adddata)
   
   if(setpar)par(cex.axis=cex.axis, mar=c(3,5,2,5), las=1, cex.lab=1.2, yaxs="i")
   par(cex.lab=cex.lab)
@@ -154,11 +152,30 @@ figure4 <- function(df,flatcan_byCO2,
   box()
   
   par(new=TRUE)
-  with(faceraindaily, plot(Date, Rain.ROS, type='h', ylim=c(0,200),col="dimgrey",
-                           axes=FALSE, xlim=xlim, ann=FALSE))
-  axis(4, at=c(0,25,50,75,100))
-  mtext(side=4, cex=cex.lab, line=axisline, text="Daily rain (mm)", las=0)
-  
+  if(adddata == "rain"){
+    with(faceraindaily, plot(Date, Rain.ROS, type='h', ylim=c(0,200),col="dimgrey",
+                             axes=FALSE, xlim=xlim, ann=FALSE))
+    axis(4, at=c(0,25,50,75,100))
+    mtext(side=4, cex=cex.lab, line=axisline, text="Daily rain (mm)", las=0)
+  }
+  if(adddata == "litter"){
+    
+    with(subset(litter_byCO2, treatment == "ambient"), plot(Date, dLAI.mean, pch=15, col=my_co2cols()[1],
+                                                            ann=FALSE, axes=FALSE, xlim=xlim,cex=0.8,
+                                                            panel.last=adderrorbars(Date,dLAI.mean,dLAI.se,"updown",
+                                                                                    col=my_co2cols()[1],barlen=0.01),
+                                                            ylim=c(0,1.5)))
+    with(subset(litter_byCO2, treatment == "elevated"), points(Date+10, dLAI.mean, pch=15, cex=0.8,
+                                                               panel.last=adderrorbars(Date+10,dLAI.mean,dLAI.se,"updown",
+                                                                                       col=my_co2cols()[2],barlen=0.01),
+                                                               col=my_co2cols()[2]))
+    
+    axis(4, at=c(0,0.1,0.2,0.3,0.4,0.5))
+    mtext(side=4, cex=cex.lab, line=axisline, text=expression(Litter~production~(m^2~m^-2)), las=0)
+  }
+
+    
+
   timeseries_axis()  
   
   
@@ -169,9 +186,11 @@ figure4 <- function(df,flatcan_byCO2,
 
 figure5 <- function(df){
 
+  Cols <- c("darkorange","forestgreen")
+  
   par(mar=c(5,5,2,2), cex.lab=1.1, cex.axis=0.9, las=1, xaxs="i", yaxs="i")
-  with(df, plot(dLAI.mean * 30.5/ndays, dLAI * 30.5/ndays, pch=19, 
-               col=c("darkorange","forestgreen")[LAIchange],
+  with(df, plot(dLAI.mean * 30.5/ndays, dLAI * 30.5/ndays, pch=c(19,21)[treatment],
+               col=Cols[LAIchange],
                xlab=expression(Leaf~litter~production~~(m^2~m^-2~mon^-1)),
                xlim=c(0,0.6),
                ylim=c(-0.3,0.5),
@@ -179,18 +198,17 @@ figure5 <- function(df){
   abline(h=0, lty=5)
   abline(0,1)
   abline(0,-1)
-  predline(lm(dLAI ~ dLAI.mean, data=df, subset=dLAI>0), col="forestgreen")
-  predline(lm(dLAI ~ dLAI.mean, data=df, subset=dLAI<0), col="darkorange")
-
+  predline(lm(dLAI ~ dLAI.mean, data=df, subset=dLAI>0), col=Cols[2])
+  predline(lm(dLAI ~ dLAI.mean, data=df, subset=dLAI<0), col=Cols[1])
+  l <- legend("topleft", c(expression(Delta*LAI < 0),expression(Delta*LAI > 0)), fill=Cols, bty='n', cex=0.8)
+  
+  legend(l$rect$left + l$rect$w, l$rect$top, 
+         c(expression(a*italic(C)[a]),expression(e*italic(C)[a])), pch=c(19,21), bty='n', cex=0.8, pt.cex=1)
+  
 }
 
-
-
-
 figure6 <- function(df){
-  
-#   df <- subset(df, Rain_mm_Tot.mean < 0.01)
-  
+    
   xin <- 0.02 # for panel label x inset
   
   dfa <- summaryBy(LAI ~ Date, data=df, FUN=mean, keep.names=TRUE)

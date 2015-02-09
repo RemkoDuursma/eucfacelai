@@ -540,8 +540,9 @@ make_litter <- function(filename="output/data/FACE_leaflitter_all.csv",
 agglitter <- function(dfr){
   
   names(dfr) <- gsub(".mean","",names(dfr))
+  se <- function(x)sd(x, na.rm=TRUE)/sqrt(length(x[!is.na(x)]))
   
-  dfra <- summaryBy(Leaf + dLAI ~ treatment + Date, FUN=c(mean,sd), data=dfr)
+  dfra <- summaryBy(Leaf + dLAI ~ treatment + Date, FUN=c(mean,se), data=dfr)
   
   return(dfra)
 }
