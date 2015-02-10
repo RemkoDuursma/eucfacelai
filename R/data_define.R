@@ -29,6 +29,18 @@ badPARdata <- function(){
                        strip.white=TRUE)
 }
 
+eucfaceBA <- function(){
+  read.table(text="
+  Ring  nstems	BA
+  R1	30	25.2
+  R2	41	24.3
+  R3	39	25.9
+  R4	55	20.9
+  R5	54	38
+  R6	44	29", header=TRUE)
+  
+}
+
 
 flushingdates <- function(){
   

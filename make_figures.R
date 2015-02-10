@@ -30,3 +30,10 @@ to.pdf(figure6(facegap_cloudy_byring),
 to.pdf(figureSI1(facegap_cloudy_byring, facegap_all_byring),
        filename="output/figures/FigureSI1.pdf",
        width=8, height=4)
+
+
+to.pdf(figure7(facegap_cloudy_byring),
+       filename="output/figures/Figure7.pdf",
+       width=5, height=5)
+
+

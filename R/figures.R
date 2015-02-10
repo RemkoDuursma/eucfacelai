@@ -306,6 +306,22 @@ figureSI1 <- function(df1, df2){
 }
 
 
+figure7 <- function(df){
+  
+  lai <- summaryBy(LAI ~ Ring, data=facegap_cloudy_byring, FUN=mean, na.rm=T)
+  ba <- eucfaceBA()
+  ba <- merge(ba,lai)
+  ba <- merge(ba, eucface())
+
+  par(mar=c(5,5,2,2), cex.lab=1.2)
+  with(ba, plot(BA, LAI.mean, pch=19, cex=1.2, col=my_co2cols()[treatment],
+                xlab=expression(Basal~area~~(m^2~ha^-1)),
+                ylab=expression(bar(LAI)~~(m^2~m^-2)),
+                panel.first=predline(lm(LAI.mean ~ BA, data=ba)),
+                ylim=c(1.3,1.7), xlim=c(18,40)))
+  
+
+}
 
 figure_breakpoint <- function(df){
   dfa <- summaryBy(LAI + Rain_mm_Tot.mean ~ Date, data=df, FUN=mean, keep.names=TRUE)
