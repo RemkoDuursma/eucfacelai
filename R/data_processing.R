@@ -84,7 +84,11 @@ aggfacegapbyCO2 <- function(df){
   SE <- function(x)sd(x)/sqrt(length(x))
   names(df)[names(df) == "Gapfraction.mean"] <- "Gapfraction"
   
-  dfa <- summaryBy(Gapfraction + LAI  + LAIanomaly ~ Date + treatment, FUN=c(mean,SE), data=df)
+  if("LAIanomaly" %in% names(df)){
+    dfa <- summaryBy(Gapfraction + LAI  + LAIanomaly ~ Date + treatment, FUN=c(mean,SE), data=df)
+  } else {
+    dfa <- summaryBy(Gapfraction + LAI ~ Date + treatment, FUN=c(mean,SE), data=df)
+  }
   return(dfa)
 }
 
