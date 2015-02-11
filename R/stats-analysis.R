@@ -28,6 +28,14 @@ mean(p$se.fit)*2
 p <- predict(fit$elevated, data.frame(X=as.numeric(facegap_cloudy_byring$Date)), se.fit=TRUE)
 mean(p$se.fit)*2
 
+# Average CI width in Fig 4.
+fit <- smoothplot(Date, LAIanomaly, g=treatment, R="Ring", 
+                  data=facegap_cloudy_byring, plot=FALSE)
+p <- predict(fit$ambient, data.frame(X=as.numeric(facegap_cloudy_byring$Date)), se.fit=TRUE)
+mean(p$se.fit)*2
+p <- predict(fit$elevated, data.frame(X=as.numeric(facegap_cloudy_byring$Date)), se.fit=TRUE)
+mean(p$se.fit)*2
+
 
 
 # rainfall stats

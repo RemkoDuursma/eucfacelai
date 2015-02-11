@@ -84,7 +84,7 @@ aggfacegapbyCO2 <- function(df){
   SE <- function(x)sd(x)/sqrt(length(x))
   names(df)[names(df) == "Gapfraction.mean"] <- "Gapfraction"
   
-  dfa <- summaryBy(Gapfraction + LAI ~ Date + treatment, FUN=c(mean,SE), data=df)
+  dfa <- summaryBy(Gapfraction + LAI  + LAIanomaly ~ Date + treatment, FUN=c(mean,SE), data=df)
   return(dfa)
 }
 
@@ -161,7 +161,7 @@ make_dLAI_drought2013 <- function(df, calib=1){
   df2$dLAI.mean[df2$Date == min(df2$Date)] <- 0
   
   # cumulative litterfall
-  df2$dLAI_litter <- do.call(c,with(df2, tapply(dLAI.mean,Ring,cumsum)))
+  df2$dLAI_litter <- do.call(c,with(df2, tapply(dLAIlitter.mean,Ring,cumsum)))
   
   # change in LAI for diffuse transmittance data.
   l <-  sapply(split(df1, df1$Ring),function(x)x$LAI[x$Date==min(x$Date)])
@@ -231,7 +231,7 @@ splitbydate <- function(dfr, datevec){
 }
 
 
-make_dLAI_litter <- function(dat, kgam=15){
+make_dLAI_litter <- function(dat, litter, kgam=15){
   
   # LAI by ring with smoother
   dat <- makesmoothLAI(dat, kgam=kgam, timestep="1 day")
@@ -248,8 +248,7 @@ make_dLAI_litter <- function(dat, kgam=15){
       d <- diff(z$LAIsm)
       dnegLAI <- sum(d[d < 0])
       dposLAI <- sum(d[d > 0])
-      ndays <- as.numeric(max(z$Date - min(z$Date)))
-      return(data.frame(dLAI=dLAI, dnegLAI=dnegLAI, dposLAI=dposLAI, ndays=ndays))
+      return(data.frame(dLAI=dLAI, dnegLAI=dnegLAI, dposLAI=dposLAI))
     }))
   }
   
@@ -262,7 +261,7 @@ make_dLAI_litter <- function(dat, kgam=15){
   r <- list()
   for(i in 1:6){
     r[[i]] <- cbind(data.frame(Date=litterDates[2:length(litterDates)]), getdlai(dat[[i]]))
-    r[[i]] <- merge(r[[i]], subset(litter, Ring == paste0("R",i)))
+    r[[i]] <- merge(r[[i]], subset(litter, Ring == paste0("R",i)), by=c("Date"))
   }
   r <- do.call(rbind,r)
   
@@ -523,16 +522,19 @@ make_litter <- function(filename="output/data/FACE_leaflitter_all.csv",
   dfr$Date <- as.Date(dfr$Date)
   dfr <- merge(dfr, eucface())
   
-  dfr$dLAI <- with(dfr, (Leaf / trapArea) * SLA * 10^-4)
+  dfr$dLAIlitter <- with(dfr, (Leaf / trapArea) * SLA * 10^-4)
   
   # Average
   n <- function(x,...)length(x[!is.na(x)])
-  litagg <- summaryBy(Leaf + dLAI ~ Ring + Date, FUN=c(mean,sd,n),na.rm=TRUE, 
+  litagg <- summaryBy(Leaf + dLAIlitter ~ Ring + Date, FUN=c(mean,sd,n),na.rm=TRUE, 
                       data=dfr, id=~treatment)
   
   litagg$n <- litagg$LEAF.n
-  litagg$LEAF.n <- litagg$dLAI.n <- NULL
+  litagg$LEAF.n <- litagg$dLAIlitter.n <- NULL
   
+  dats <- sort(unique(litagg$Date))
+  datdf <- data.frame(Date=dats, ndays=c(NA,diff(dats)))
+  litagg <- merge(litagg, datdf)
   
   return(litagg)
 }
@@ -542,7 +544,7 @@ agglitter <- function(dfr){
   names(dfr) <- gsub(".mean","",names(dfr))
   se <- function(x)sd(x, na.rm=TRUE)/sqrt(length(x[!is.na(x)]))
   
-  dfra <- summaryBy(Leaf + dLAI ~ treatment + Date, FUN=c(mean,se), data=dfr)
+  dfra <- summaryBy(Leaf + dLAIlitter ~ treatment + Date, FUN=c(mean,se), data=dfr)
   
   return(dfra)
 }

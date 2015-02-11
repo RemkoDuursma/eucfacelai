@@ -33,6 +33,7 @@ facepar_all <- makeCloudy(facepar,
 facegap_cloudy_byring <- aggFACEPARbyring(facepar_cloudy)
 facegap_all_byring <- aggFACEPARbyring(facepar_all)
 
+
 # Further trimming:
 # 1. Minimum nr of timesteps per day 
 # 2. Discard days where >1 ring has within-day SD above maxSD
@@ -50,6 +51,17 @@ calib <- calibrateToDrought(facegap_cloudy_byring)
 # Calculate LAI
 facegap_cloudy_byring <- calculate_LAI(facegap_cloudy_byring, calib=calib)
 facegap_all_byring <- calculate_LAI(facegap_all_byring, calib=calib)
+
+
+lai <- summaryBy(LAI ~ Ring, data=facegap_cloudy_byring, FUN=mean, na.rm=T)
+ba <- eucfaceBA()
+ba <- merge(ba,lai)
+ba <- merge(ba, eucface())
+lmBALAI <- lm(LAI.mean ~ BA, data=ba)
+ba$LAIfromBA <- predict(lmBALAI, ba)
+
+facegap_cloudy_byring <- merge(facegap_cloudy_byring, ba[,c("Ring","LAIfromBA")])
+facegap_cloudy_byring$LAIanomaly <- with(facegap_cloudy_byring, LAI - LAIfromBA)
 
 
 # Aggregate by CO2 treatment
@@ -71,7 +83,7 @@ flatcan_byring <- add_PARLAI_to_flatcan(facegap_cloudy_byring,flatcan_byring)
 flatcan_byCO2 <- agg_flatcan(flatcan, by="CO2")
 
 # Dataset with litter fall comparison to changes in LAI during same period.
-dLAIlitter <- make_dLAI_litter(facegap_cloudy_byring, kgam=20)
+dLAIlitter <- make_dLAI_litter(facegap_cloudy_byring, litter, kgam=20)
 
 # Air temperature from ROS
 airt <- get_rosTair()
