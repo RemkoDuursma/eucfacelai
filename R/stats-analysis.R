@@ -1,22 +1,32 @@
 
+library(lme4)
+library(lmerTest)
+library(car)
+
 # Non-significance of Ca on LAI, litter
 df <- litter
 df$Time <- as.factor(df$Date - min(df$Date))
 m1 <- lmer(Leaf.mean ~ treatment*Time + (1|Ring), data=df)
 Anova(m1)
 
-
+# LAI
 df <- facegap_cloudy_byring
 df$Time <- as.factor(df$Date - min(df$Date))
 m2 <- lmer(LAI ~ treatment*Time + (1|Ring), data=df)
 Anova(m2)
 
+# LAI anomaly
+df <- facegap_cloudy_byring
+df$Time <- as.factor(df$Date - min(df$Date))
+m3 <- lmer(LAIanomaly ~ treatment*Time + (1|Ring), data=df)
+Anova(m3)
 
+# LAI production
 df <- dLAIlitter
 df$Time <- as.factor(df$Date - min(df$Date))
 df$leafprod <- with(df, dLAI + dLAI.mean)
-m3 <- lmer(leafprod ~ treatment*Time + (1|Ring), data=df)
-Anova(m3)
+m4 <- lmer(leafprod ~ treatment*Time + (1|Ring), data=df)
+Anova(m4)
 
 
 
@@ -59,6 +69,12 @@ head(sort(map$Rain.sum))
 
 mean(map$Rain.sum, na.rm=T)
 range(map$Rain.sum, na.rm=T)
+
+
+
+
+
+
 
 
 

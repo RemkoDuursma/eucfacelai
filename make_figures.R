@@ -19,6 +19,11 @@ to.pdf(figure4(facegap_cloudy_byCO2,flatcan_byCO2, adddata="litter"),
        filename="output/figures/Figure4.pdf",
        width=8, height=4)
 
+to.pdf(figure4_anomaly(facegap_cloudy_byring),
+       filename="output/figures/Figure4_anomaly.pdf",
+       width=8, height=4)
+
+
 to.pdf(figure5(dLAIlitter),
        filename="output/figures/Figure5.pdf",
        width=6, height=4)
