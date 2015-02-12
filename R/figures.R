@@ -58,18 +58,6 @@ figure1 <- function(df, ramp){
 }
 
 
-figure2 <- function(df){
-  
-  par(mar=c(5,5,2,2), cex.axis=0.9)
-  palette(my_co2cols())
-  with(df, plot(dLAI_litter, dLAI_PAR, pch=19, col=treatment,
-                xlab=expression(Cumulative~Delta*LAI~from~litter~fall~~(m^2~m^-2)),
-                ylab=expression(Delta*LAI~from~tau[d]~~(m^2~m^-2)),
-                xlim=c(0,0.6), ylim=c(0,0.6)))
-  abline(0,1)
-  predline(lm(dLAI_PAR ~ dLAI_litter, data=df), lty=5)
-}
-
 
 figure3 <- function(df){
   
@@ -339,20 +327,23 @@ figureSI1 <- function(df1, df2){
 
 
 figure7 <- function(df){
-  
-  lai <- summaryBy(LAI ~ Ring, data=facegap_cloudy_byring, FUN=mean, na.rm=T)
-  ba <- eucfaceBA()
-  ba <- merge(ba,lai)
-  ba <- merge(ba, eucface())
 
-  par(mar=c(5,5,2,2), cex.lab=1.2)
-  with(ba, plot(BA, LAI.mean, pch=19, cex=1.2, col=my_ringcols(),
+  par(mar=c(5,5,2,2), cex.lab=1.2, mfrow=c(1,2), xaxs="i", yaxs="i")
+  with(df, plot(BA, LAI.mean, pch=19, cex=1.2, col=my_ringcols(),
                 xlab=expression(Basal~area~~(m^2~ha^-1)),
                 ylab=expression(bar(LAI)~~(m^2~m^-2)),
                 panel.first=predline(lm(LAI.mean ~ BA, data=ba)),
-                ylim=c(1.3,1.7), xlim=c(18,40)))
+                ylim=c(1,2), xlim=c(18,40)))
   legend("topleft", as.character(1:6), pch=19, bty='n',
          col=my_ringcols(), title="Ring", cex=0.6, pt.cex=1)
+  
+  with(df, plot(LAI.mean, LAIlitter_annual, pch=19, cex=1.2, col=my_ringcols(),
+                ylab=expression(Litter~production~~(m^2~m^-2~yr^-1)),
+                xlab=expression(bar(LAI)~~(m^2~m^-2)),
+                panel.first=predline(lm(LAI.mean ~ BA, data=ba)),
+                xlim=c(1,2), ylim=c(1,2)))
+  for(b in c(0.9,1,1.1,1.2))abline(0,b, col="grey")
+  box()
 
 }
 

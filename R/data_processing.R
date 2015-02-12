@@ -150,8 +150,20 @@ aggFACEPARbysensor <- function(df, minnrHH=4){
 
 
 
-make_dLAI_drought2013 <- function(df, calib=1){
+calibrateToDrought <- function(df){
   
+  r <- make_dLAI_drought2013(df)
+  o <- function(calib){
+    sum((r$dLAI_litter - calib*r$dLAI_PAR)^2)
+  }
+  opt <- optimize(o,c(0.5,3))
+  
+  return(opt$minimum)
+}
+
+
+
+make_dLAI_drought2013 <- function(df, calib=1){
   
   # Calculate LAI.
   df <- df[!is.na(df$Gapfraction.mean),]
@@ -162,52 +174,19 @@ make_dLAI_drought2013 <- function(df, calib=1){
   
   # litter fall since early july
   df2 <- subset(litter, Date >= as.Date("2013-7-8") & Date < as.Date("2013-11-12"))
-  df2$dLAI.mean[df2$Date == min(df2$Date)] <- 0
+
+  fits <- smoothplot(Date, LAI, Ring, data=df1, plotit=FALSE)
   
-  # cumulative litterfall
-  df2$dLAI_litter <- do.call(c,with(df2, tapply(dLAIlitter.mean,Ring,cumsum)))
-  
-  # change in LAI for diffuse transmittance data.
-  l <-  sapply(split(df1, df1$Ring),function(x)x$LAI[x$Date==min(x$Date)])
-  lai0 <- data.frame(Ring=names(l), LAI0=as.vector(l))
-  df1 <- merge(df1, lai0)
-  df1$dLAI <- with(df1, LAI0 - LAI)
-  
-  # Interpolate.
-  df1 <- split(df1, df1$Ring)
-  df2 <- split(df2, df2$Ring)
-  
+  dats <- range(df1$Date)
+  dLAIsm <- c()
   for(i in 1:6){
-    
-    ap <- Hmisc::approxExtrap(x=as.numeric(df1[[i]]$Date),
-                              y=df1[[i]]$Gapfraction.mean,
-                              xout=as.numeric(df2[[i]]$Date))
-    df2[[i]]$Gapfraction.mean <- ap$y
-    
-    ap <- Hmisc::approxExtrap(x=as.numeric(df1[[i]]$Date),
-                              y=df1[[i]]$dLAI,
-                              xout=as.numeric(df2[[i]]$Date))
-    df2[[i]]$dLAI_PAR <- ap$y
+    dLAIsm[i] <- abs(diff(predict(fits[[i]], data.frame(X=as.numeric(dats), R=paste0("R",i)))))
   }
-  df2 <- do.call(rbind, df2)
-  df2$Ring <- as.factor(df2$Ring)
   
-return(df2[,c("Ring","Date","treatment","dLAI_litter","dLAI_PAR")])
+  lit <- subset(df2, Date  > min(Date))
+  dLAIlit <- with(lit, tapply(dLAIlitter.mean, Ring, sum))
+  return(data.frame(Ring=names(dLAIlit), dLAI_litter=dLAIlit, dLAI_PAR=dLAIsm))
 }
-
-
-
-calibrateToDrought <- function(df){
-  
-  o <- function(calib){
-    r <- make_dLAI_drought2013(df)
-    sum((r$dLAI_litter - calib*r$dLAI_PAR)^2)
-  }
-  opt <- optimize(o,c(0.5,3))
-  
-return(opt$minimum)
-}
-
 
 
 

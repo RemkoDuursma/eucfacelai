@@ -53,10 +53,22 @@ facegap_cloudy_byring <- calculate_LAI(facegap_cloudy_byring, calib=calib)
 facegap_all_byring <- calculate_LAI(facegap_all_byring, calib=calib)
 
 
+# TEMPORARY - WILL BE MOVED TO FUNCTION!
 lai <- summaryBy(LAI ~ Ring, data=facegap_cloudy_byring, FUN=mean, na.rm=T)
 ba <- eucfaceBA()
 ba <- merge(ba,lai)
 ba <- merge(ba, eucface())
+
+# Litter
+lit <- subset(litter, !is.na(ndays))
+lagg <- summaryBy(Leaf.mean + dLAIlitter.mean + ndays ~ Ring, FUN=sum, keep.names=TRUE,
+                  data=lit)
+trapArea <- 0.1979
+# g m-2 year-1
+lagg$Litter_annual <- (lagg$Leaf.mean / trapArea) * 365.25 / lagg$ndays
+lagg$LAIlitter_annual <- lagg$dLAIlitter.mean * 365.25 / lagg$ndays 
+ba <- merge(ba, lagg[,c("Ring","LAIlitter_annual")])
+
 lmBALAI <- lm(LAI.mean ~ BA, data=ba)
 ba$LAIfromBA <- predict(lmBALAI, ba)
 

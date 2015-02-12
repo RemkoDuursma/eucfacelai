@@ -7,9 +7,6 @@ to.pdf(figure1(facegap_cloudy_byring, ramp),
        filename="output/figures/Figure1.pdf",
        width=8, height=6)
 
-to.pdf(figure2(face_dLAIdrought2013),
-       filename="output/figures/Figure2.pdf",
-       width=5, height=5)
 
 to.pdf(figure3(flatcan_byring),
        filename="output/figures/Figure3.pdf",
@@ -37,8 +34,8 @@ to.pdf(figureSI1(facegap_cloudy_byring, facegap_all_byring),
        width=8, height=4)
 
 
-to.pdf(figure7(facegap_cloudy_byring),
-       filename="output/figures/Figure7.pdf",
-       width=5, height=5)
 
+to.pdf(figure7(ba), 
+       filename="output/figures/Figure7.pdf",
+       width=8, height=4)
 

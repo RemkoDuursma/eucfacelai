@@ -75,9 +75,3 @@ range(map$Rain.sum, na.rm=T)
 
 
 
-
-
-
-
-
-
