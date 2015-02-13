@@ -59,23 +59,8 @@ figure1 <- function(df, ramp){
 
 
 
-figure3 <- function(df){
-  
-  par(mar=c(5,5,2,2), cex.axis=0.9)
-  
-  with(df, plot(LAI, LAI.PAR.mean, 
-                ylab=expression(LAI~from~tau[d]~~(m^2~m^-2)),
-                xlab=expression(LAI~from~canopy~photos~~(m^2~m^-2)),
-                pch=19, col=my_co2cols()[treatment],
-                xlim=c(0.8,2), ylim=c(0.8,2)))
-  abline(0,1)
-  predline(lm(LAI.PAR.mean ~ LAI, data=df), lty=5)
-  
-}
 
-
-
-figure4 <- function(df,flatcan_byCO2,
+figure2 <- function(df,flatcan_byCO2,
                     xlim=NULL, ylim=NULL,
                     legend=TRUE,
                     ylab=expression(LAI~~(m^2~m^-2)),
@@ -86,7 +71,7 @@ figure4 <- function(df,flatcan_byCO2,
                     horlines=TRUE,
                     greyrect=FALSE,
                     addpoints=TRUE){
-
+  
   adddata <- match.arg(adddata)
   
   if(setpar)par(cex.axis=cex.axis, mar=c(3,5,2,5), las=1, cex.lab=1.2, yaxs="i")
@@ -128,7 +113,7 @@ figure4 <- function(df,flatcan_byCO2,
   
   with(flatcan_byCO2, points(Date, LAI.mean, pch=21, bg=treatment, col="black"))
   
-
+  
   l <- legend("topleft", c("Ambient","Elevated"), title=expression(italic(C)[a]~treatment), 
               fill=my_co2cols(), bty="n", cex=cex.legend)
   legend(l$rect$left + l$rect$w, l$rect$top, c(expression(tau[d]),"Photos"), pch=c(19,21),
@@ -163,22 +148,59 @@ figure4 <- function(df,flatcan_byCO2,
     axis(4, at=c(0,0.1,0.2,0.3,0.4,0.5))
     mtext(side=4, cex=cex.lab, line=axisline, text=expression(Litter~production~(m^2~m^-2)), las=0)
   }
-
-    
-
-  timeseries_axis()  
   
+  
+  timeseries_axis()  
   
   return(invisible(xlim))
 }
 
 
+figure3 <- function(df){
+  
+  par(mar=c(5,5,2,2), cex.axis=0.9)
+  
+  with(df, plot(LAI, LAI.PAR.mean, 
+                ylab=expression(LAI~from~tau[d]~~(m^2~m^-2)),
+                xlab=expression(LAI~from~canopy~photos~~(m^2~m^-2)),
+                pch=19, col=my_co2cols()[treatment],
+                xlim=c(0.8,2), ylim=c(0.8,2)))
+  abline(0,1)
+  predline(lm(LAI.PAR.mean ~ LAI, data=df), lty=5)
+  
+}
 
-figure4_anomaly <- function(df,
+
+
+
+figure4 <- function(df){
+  
+  par(mar=c(5,5,2,2), cex.lab=1.2, mfrow=c(1,2), xaxs="i", yaxs="i")
+  with(df, plot(BA, LAI.mean, pch=19, cex=1.2, col=my_ringcols(),
+                xlab=expression(Basal~area~~(m^2~ha^-1)),
+                ylab=expression(bar(LAI)~~(m^2~m^-2)),
+                panel.first=predline(lm(LAI.mean ~ BA, data=ba)),
+                ylim=c(1,2), xlim=c(18,40)))
+  legend("bottomright", as.character(1:6), pch=19, bty='n',
+         col=my_ringcols(), title="Ring", cex=0.6, pt.cex=1)
+  plotlabel("(a)", "topleft")
+  
+  with(df, plot(LAI.mean, LAIlitter_annual, pch=19, cex=1.2, col=my_ringcols(),
+                ylab=expression(Litter~production~~(m^2~m^-2~yr^-1)),
+                xlab=expression(bar(LAI)~~(m^2~m^-2)),
+                panel.first=predline(lm(LAI.mean ~ BA, data=ba)),
+                xlim=c(1,2), ylim=c(1,2)))
+  plotlabel("(b)", "topleft")
+  box()
+  
+}
+
+
+figure5 <- function(df,
                     xlim=NULL, ylim=NULL,
                     legend=TRUE,
                     ylab=expression(LAI~anomaly~(m^2~m^-2)),
-                    cex.lab=1.1, cex.axis=0.9, cex.legend=0.7,
+                    cex.lab=1.1, cex.axis=0.8, cex.legend=0.7,
                     legendwhere="topleft",
                     setpar=TRUE,axisline=3,
                     horlines=TRUE,
@@ -190,21 +212,21 @@ figure4_anomaly <- function(df,
   palette(my_co2cols())
   
   if(is.null(xlim))xlim <- with(df, c(min(Date)-15, max(Date)+15))
-  if(is.null(ylim))ylim <- c(-0.6,0.6)
+  if(is.null(ylim))ylim <- c(-0.8,0.8)
   
   smoothplot(Date, LAIanomaly, g=treatment, R="Ring", ylim=ylim, xlim=xlim, ylab=ylab, xlab="",
              data=df, kgam=18, axes=FALSE)
   
   l <- legend("topleft", c("Ambient","Elevated"), title=expression(italic(C)[a]~treatment), 
               fill=my_co2cols(), bty="n", cex=cex.legend)
-  axis(2)
+  axis(2, at=seq(-0.75,0.75,by=0.25))
   box()
   
   timeseries_axis()  
 }
 
 
-figure5 <- function(df){
+figure6 <- function(df){
 
   Cols <- c("darkorange","forestgreen")
   
@@ -227,7 +249,7 @@ figure5 <- function(df){
   
 }
 
-figure6 <- function(df){
+figure7 <- function(df){
     
   xin <- 0.02 # for panel label x inset
   
@@ -235,7 +257,7 @@ figure6 <- function(df){
   
   xl <- range(facesoilwater$Date)
   
-  par(mfrow=c(4,1), mar=c(0,7,5,2), cex.lab=1.3, las=1, mgp=c(4,1,0))
+  par(mfrow=c(4,1), mar=c(0,7,5,2), cex.lab=1.3, las=1, mgp=c(4,1,0),yaxs="i")
   
   # panel a
   smoothplot(Date, LAI, data=dfa, kgam=18, pointcols="dimgrey", linecols="black", 
@@ -259,7 +281,7 @@ figure6 <- function(df){
   ci <- confint(d)
   
   plot(dates, dlaidt, type='l',axes=FALSE,xlab="",xlim=xl,
-       ylim=c(-0.012, 0.015),
+       ylim=c(-0.016, 0.016),
        ylab=expression(dLAI/dt~(m^2~m^-2~d^-1)),
        panel.first=addpoly(x=dates, y1=ci$Time$lower, y2=ci$Time$upper))
   abline(h=0)
@@ -281,7 +303,7 @@ figure6 <- function(df){
   with(subset(facesoilwater, Date > xl[1]), 
        plot(Date, VWC, type='l', lwd=2, xlim=xl, ylim=c(0,0.4), axes=FALSE,
             #panel.first=abline(h=seq(0,0.4,by=0.05), col="grey", lty=5),
-            panel.first=abline(h=0.16, col="blue", lwd=2),
+            #panel.first=abline(h=0.16, col="blue", lwd=2),
             ylab=expression(SWC~~(m^3~m^-3))))
   
   timeseries_axis(FALSE)
@@ -325,27 +347,6 @@ figureSI1 <- function(df1, df2){
   
 }
 
-
-figure7 <- function(df){
-
-  par(mar=c(5,5,2,2), cex.lab=1.2, mfrow=c(1,2), xaxs="i", yaxs="i")
-  with(df, plot(BA, LAI.mean, pch=19, cex=1.2, col=my_ringcols(),
-                xlab=expression(Basal~area~~(m^2~ha^-1)),
-                ylab=expression(bar(LAI)~~(m^2~m^-2)),
-                panel.first=predline(lm(LAI.mean ~ BA, data=ba)),
-                ylim=c(1,2), xlim=c(18,40)))
-  legend("topleft", as.character(1:6), pch=19, bty='n',
-         col=my_ringcols(), title="Ring", cex=0.6, pt.cex=1)
-  
-  with(df, plot(LAI.mean, LAIlitter_annual, pch=19, cex=1.2, col=my_ringcols(),
-                ylab=expression(Litter~production~~(m^2~m^-2~yr^-1)),
-                xlab=expression(bar(LAI)~~(m^2~m^-2)),
-                panel.first=predline(lm(LAI.mean ~ BA, data=ba)),
-                xlim=c(1,2), ylim=c(1,2)))
-  for(b in c(0.9,1,1.1,1.2))abline(0,b, col="grey")
-  box()
-
-}
 
 figure_breakpoint <- function(df){
   dfa <- summaryBy(LAI + Rain_mm_Tot.mean ~ Date, data=df, FUN=mean, keep.names=TRUE)
