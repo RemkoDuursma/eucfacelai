@@ -245,7 +245,6 @@ figure5 <- function(df){
                ylim=c(-0.3,0.5),
                ylab=expression(Delta*LAI~from~tau[d]~(m^2~m^-2~mon^-1))))
   abline(h=0, lty=5)
-  abline(0,1)
   abline(0,-1)
   predline(lm(dLAI ~ dLAIlitter.mean, data=df, subset=dLAI>0), col=Cols[2])
   predline(lm(dLAI ~ dLAIlitter.mean, data=df, subset=dLAI<0), col=Cols[1])
