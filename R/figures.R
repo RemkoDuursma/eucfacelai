@@ -67,7 +67,7 @@ figure1 <- function(df, ramp){
 
 
 
-figure2 <- function(df,flatcan_byCO2,
+figure_timeseries <- function(df,flatcan_byCO2,
                     xlim=NULL, ylim=NULL,
                     legend=TRUE,
                     ylab=expression(LAI~~(m^2~m^-2)),
@@ -163,7 +163,7 @@ figure2 <- function(df,flatcan_byCO2,
 }
 
 
-figure3 <- function(df){
+figure2 <- function(df){
   
   par(mar=c(5,5,2,2), cex.axis=0.9)
   
@@ -180,7 +180,7 @@ figure3 <- function(df){
 
 
 
-figure4 <- function(df){
+figure3 <- function(df){
   
   par(mar=c(5,5,2,2), cex.lab=1.2, mfrow=c(1,2), xaxs="i", yaxs="i")
   with(df, plot(BA, LAI.mean, pch=19, cex=1.2, col=my_ringcols(),
@@ -203,7 +203,7 @@ figure4 <- function(df){
 }
 
 
-figure5 <- function(df,
+figure4 <- function(df,
                     xlim=NULL, ylim=NULL,
                     legend=TRUE,
                     ylab=expression(LAI~anomaly~(m^2~m^-2)),
@@ -233,7 +233,7 @@ figure5 <- function(df,
 }
 
 
-figure6 <- function(df){
+figure5 <- function(df){
 
   Cols <- c("darkorange","forestgreen")
   
@@ -256,7 +256,7 @@ figure6 <- function(df){
   
 }
 
-figure7 <- function(df){
+figure6 <- function(df){
     
   xin <- 0.02 # for panel label x inset
   
