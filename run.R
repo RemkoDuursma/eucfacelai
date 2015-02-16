@@ -46,7 +46,7 @@ litter <- make_litter(SLA=43)
 litter_byCO2 <- agglitter(litter)
 
 # Find calibration constant, from 2013 drought.
-calib <- calibrateToDrought(facegap_cloudy_byring)
+calib <- calibrateToDrought(facegap_cloudy_byring)$calib
 
 # Calculate LAI
 facegap_cloudy_byring <- calculate_LAI(facegap_cloudy_byring, calib=calib)

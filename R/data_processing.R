@@ -153,12 +153,11 @@ aggFACEPARbysensor <- function(df, minnrHH=4){
 calibrateToDrought <- function(df){
   
   r <- make_dLAI_drought2013(df)
-  o <- function(calib){
-    sum((r$dLAI_litter - calib*r$dLAI_PAR)^2)
-  }
-  opt <- optimize(o,c(0.5,3))
   
-  return(opt$minimum)
+  lmfit <- lm(dLAI_litter ~ dLAI_PAR-1, data=r)
+  
+  return(list(calib=coef(lmfit)[[1]], lmfit=lmfit))
+  
 }
 
 
