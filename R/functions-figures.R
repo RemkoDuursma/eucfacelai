@@ -276,7 +276,9 @@ predline <- function(fit, from=NULL, to=NULL, ...){
   if(is.null(to))to <- max(fit$model[,2], na.rm=TRUE)
   
   newdat <- data.frame(X = seq(from,to, length=101))
-  names(newdat)[1] <- names(coef(fit))[2]
+  
+  nm <- names(coef(fit))
+  names(newdat)[1] <- nm[length(nm)]
   
   pred <- as.data.frame(predict(fit, newdat, se.fit=TRUE, interval="confidence")$fit)
   

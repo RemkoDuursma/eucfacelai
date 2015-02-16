@@ -195,7 +195,7 @@ figure3 <- function(df){
   with(df, plot(LAI.mean, LAIlitter_annual, pch=19, cex=1.2, col=my_ringcols(),
                 ylab=expression(Litter~production~~(m^2~m^-2~yr^-1)),
                 xlab=expression(bar(LAI)~~(m^2~m^-2)),
-                panel.first=predline(lm(LAI.mean ~ BA, data=ba)),
+                panel.first=predline(lm(LAIlitter_annual ~ LAI.mean-1, data=ba)),
                 xlim=c(1,2), ylim=c(1,2)))
   plotlabel("(b)", "topleft")
   box()

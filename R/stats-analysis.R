@@ -72,6 +72,11 @@ range(map$Rain.sum, na.rm=T)
 
 
 
+# regression LAI - BA
+balm <- lm(LAI.mean ~ BA, data=ba)
+
+# litter - LA
+litlm <- lm(LAIlitter_annual ~ LAI.mean-1, data=ba)
 
 
 
