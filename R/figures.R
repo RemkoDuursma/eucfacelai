@@ -18,6 +18,13 @@ timeseries_axis <- function(labels=TRUE){
 }
 
 
+converttoJPEGs <- function(){
+  pdfs <- dir("output/figures", pattern="[.]pdf",full.names=TRUE)
+  for(i in 1:length(pdfs)){
+    fn <- gsub("[.]pdf",".jpg",pdfs[i])
+    shell(paste("convert -density 600",pdfs[i],fn))
+  }
+}
 
 # Smoothed gap fraction raw data
 figure1 <- function(df, ramp){
