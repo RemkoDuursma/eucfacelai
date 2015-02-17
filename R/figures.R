@@ -182,7 +182,7 @@ figure2 <- function(df){
 
 figure3 <- function(df){
   
-  par(mar=c(5,5,2,2), cex.lab=1.2, mfrow=c(1,2), xaxs="i", yaxs="i")
+  par(mar=c(5,5,2,2), cex.lab=1.2,xaxs="i", yaxs="i")
   with(df, plot(BA, LAI.mean, pch=19, cex=1.2, col=my_ringcols(),
                 xlab=expression(Basal~area~~(m^2~ha^-1)),
                 ylab=expression(bar(LAI)~~(m^2~m^-2)),
@@ -190,16 +190,7 @@ figure3 <- function(df){
                 ylim=c(1,2), xlim=c(18,40)))
   legend("bottomright", as.character(1:6), pch=19, bty='n',
          col=my_ringcols(), title="Ring", cex=0.6, pt.cex=1)
-  plotlabel("(a)", "topleft")
-  
-  with(df, plot(LAI.mean, LAIlitter_annual, pch=19, cex=1.2, col=my_ringcols(),
-                ylab=expression(Litter~production~~(m^2~m^-2~yr^-1)),
-                xlab=expression(bar(LAI)~~(m^2~m^-2)),
-                panel.first=predline(lm(LAIlitter_annual ~ LAI.mean-1, data=ba)),
-                xlim=c(1,2), ylim=c(1,2)))
-  plotlabel("(b)", "topleft")
-  box()
-  
+
 }
 
 
@@ -255,7 +246,32 @@ figure5 <- function(df){
   
 }
 
-figure6 <- function(df){
+
+figure6 <-  function(df){
+
+  par(mar=c(5,5,2,2), cex.lab=1.2,xaxs="i", yaxs="i", mfrow=c(1,2))
+  
+  with(df, plot(LAI.mean, LAIlitter_annual, pch=19, cex=1.2, col=my_ringcols(),
+                ylab=expression(Litter~production~~(m^2~m^-2~yr^-1)),
+                xlab=expression(bar(LAI)~~(m^2~m^-2)),
+                panel.first={
+                  predline(lm(LAIlitter_annual ~ LAI.mean, data=df))
+                },
+                xlim=c(1,2), ylim=c(1,2)))
+  plotlabel("(a)", "topleft")
+  box()
+  
+  par(xaxs="r")
+  lmci <- lm(LL ~ treatment-1, data=ba)
+  CI <- confint(lmci)
+  barplot2(coef(lmci), names.arg=levels(ba$treatment), col=my_co2cols(),
+                plot.ci=TRUE, ci.l=CI[,1], ci.u=CI[,2], ci.width=0.08,
+                ylab="Leaf lifespan (yr)")
+  plotlabel("(b)", "topleft")
+}
+
+
+figure7 <- function(df){
     
   xin <- 0.02 # for panel label x inset
   
@@ -263,7 +279,7 @@ figure6 <- function(df){
   
   xl <- range(facesoilwater$Date)
   
-  par(mfrow=c(4,1), mar=c(0,7,5,2), cex.lab=1.3, las=1, mgp=c(4,1,0),yaxs="i")
+  par(mfrow=c(4,1), mar=c(0,7,5,6), cex.lab=1.3, las=1, mgp=c(4,1,0),yaxs="i")
   
   # panel a
   smoothplot(Date, LAI, data=dfa, kgam=18, pointcols="dimgrey", linecols="black", 
@@ -276,7 +292,7 @@ figure6 <- function(df){
   plotlabel("(a)","topleft", inset.x=xin)
   
   # panel b
-  par(mar=c(0,7,1.5,2))
+  par(mar=c(0,7,1.5,6))
   
  
   df$Time <- as.numeric(df$Date - min(df$Date))
@@ -296,20 +312,26 @@ figure6 <- function(df){
          length=0.05)
   
   # panel c
-  par(mar=c(1.5,7,1.5,2))
+  par(mar=c(1.5,7,1.5,6))
   with(subset(facesoilwater, Date > xl[1]), 
        plot(Date, VWC, type='l', lwd=2, xlim=xl, ylim=c(0,0.4), axes=FALSE,
+            col="cornflowerblue",
             #panel.first=abline(h=seq(0,0.4,by=0.05), col="grey", lty=5),
             #panel.first=abline(h=0.16, col="blue", lwd=2),
             ylab=expression(SWC~~(m^3~m^-3))))
-  
+
   timeseries_axis(FALSE)
   axis(2)
   box()
+  par(new=TRUE)
+  with(faceraindaily, plot(Date, Rain.ROS, type='h', ylim=c(0,120), xlim=xl,
+                           axes=FALSE, ann=FALSE))
+  axis(4)
+  mtext(expression(Rain~(mm~day^-1)), line=3, side=4, las=0, cex=0.9)
   plotlabel("(c)","topleft", inset.x=xin)
   
   # panel d
-  par(mar=c(5,7,0,2))
+  par(mar=c(5,7,0,6))
   smoothplot(Date, Tair, data=subset(airt, Date > xl[1]), 
              kgam=25, pointcols=alpha("grey",0.8), linecols="black",axes=FALSE,
 #              panel.first=abline(h=seq(0,30,by=2), col="grey", lty=5),
