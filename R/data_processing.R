@@ -719,6 +719,25 @@ return(rain)
 }
 
 
+read_pook1984 <- function(){
+  
+  dat <- read.csv("data/pook1984_figure5.csv")
+  
+  loss <- dat[seq(1,(nrow(dat)-1),by=2),]
+  prod <- dat[seq(2,nrow(dat),by=2),]
+  names(loss)[3] <- "loss"
+  dat <- cbind(loss, prod[,3])
+  names(dat)[4] <- "prod"
+  
+  # calibration to paper
+  cal <- 0.3 / 91
+  dat$prod <- cal * dat$prod
+  dat$loss <- cal * dat$loss
+  
+  dat$dLAI <- with(dat, prod - loss)
+  
+return(dat)
+}
 
 
 
