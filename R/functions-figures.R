@@ -288,3 +288,31 @@ predline <- function(fit, from=NULL, to=NULL, ...){
 }
 
 
+
+
+# not very generic! Uses functions in derivSimulCI.R courtesy of Gavin Simpson.
+plotCIdate <- function(g, df, add=FALSE, linecols=c("black","red","forestgreen"), ...){  
+  
+  dates <- seq(min(df$Date), max(df$Date), by="1 day")
+  
+  fd <- derivSimulCI(g, samples = 10000, n=length(dates))
+  
+  dydt <- fd[[1]]$deriv[,1]
+  CI <- apply(fd[[1]]$simulations, 1, quantile,probs = c(0.025, 0.975))
+  
+  if(!add){
+    plot(dates, dydt, type='l', col=linecols[1], ... ,
+         panel.first=addpoly(x=dates, y1=CI[2,], y2=CI[1,]))
+  } else {
+    addpoly(x=dates, y1=CI[2,], y2=CI[1,])
+    lines(dates, dydt, col=linecols[1])
+  }
+  abline(h=0)
+  
+  x <- signifD(dydt,dydt,CI[2,],CI[1,],0)
+  lines(dates, x[["incr"]], col=linecols[3], lwd=2)
+  lines(dates, x[["decr"]], col=linecols[2], lwd=2)
+}
+
+
+

@@ -278,23 +278,14 @@ figure6 <- function(df){
   # panel b
   par(mar=c(0,7,1.5,2))
   
-  # http://www.fromthebottomoftheheap.net/2011/06/12/additive-modelling-and-the-hadcrut3v-global-mean-temperature-series/
+ 
   df$Time <- as.numeric(df$Date - min(df$Date))
-  g <- gamm(LAI ~ s(Time, k=18), random = list(Ring=~1), data=df)$gam  
-  dates <- seq(min(dfa$Date), max(dfa$Date), by="1 day")
-  d <- Deriv(g, n=length(dates))
-  dlaidt <- d$Time$deriv[,1]
-  ci <- confint(d)
+  g <- gamm(LAI ~ s(Time, k=18), random = list(Ring=~1), data=df)
   
-  plot(dates, dlaidt, type='l',axes=FALSE,xlab="",xlim=xl,
+  plotCIdate(g, df, axes=FALSE,xlab="",xlim=xl,
        ylim=c(-0.016, 0.016),
-       ylab=expression(dLAI/dt~(m^2~m^-2~d^-1)),
-       panel.first=addpoly(x=dates, y1=ci$Time$lower, y2=ci$Time$upper))
+       ylab=expression(dLAI/dt~(m^2~m^-2~d^-1)))
   abline(h=0)
-  
-  x <- signifD(dlaidt,dlaidt,ci$Time$upper,ci$Time$lower,0)
-  lines(dates, x[["incr"]], col="forestgreen", lwd=2)
-  lines(dates, x[["decr"]], col="red", lwd=2)
   
   timeseries_axis(FALSE)
   axis(2)

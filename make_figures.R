@@ -1,7 +1,7 @@
 
 source("R/functions-figures.R")
 source("R/figures.R")
-source("R/derivFun.R")
+source("R/derivSimulCI.R")
 
 to.pdf(figure1(facegap_cloudy_byring, ramp),
        filename="output/figures/Figure1.pdf",
