@@ -32,7 +32,8 @@ figure1 <- function(df, ramp){
   l <- layout(matrix(c(1,2), ncol=1), heights=c(0.8,2))
   xl <- c(min(ramp$Date), max(df$Date))
   
-  par(mar=c(0.5,5,1,2), cex.axis=0.9, cex.lab=1.1, las=1, yaxs="i")
+  par(mar=c(0.5,5,1,2), cex.axis=0.9, cex.lab=1.1, las=1, yaxs="i", tcl=0.2,
+      mgp=c(3,0,0))
   with(ramp, plot(Date, CO2target, type='l', col="dimgrey", lwd=2, axes=FALSE, ylim=c(0,160),
                   xlim=xl,
                   xlab="", ylab=expression(Target~Delta*C[a]~(ppm))))
@@ -49,7 +50,18 @@ figure1 <- function(df, ramp){
              xlab="",xlim=xl,
              ylab=expression(tau[d]~~("-")),
              pointcols=rep("grey",8), linecols=my_ringcols())
-  timeseries_axis()
+  
+  
+  xAT <- seq.Date(as.Date("2012-7-1"), by="1 month", length=100)
+  labs <- substr(format(mAT, "%b"),1,1)
+  axis.Date(1, at=xAT, labels=labs, cex.axis=0.6)
+  maj <- seq.Date(as.Date("2012-1-1"),by="1 year", length=10)
+  axis.Date(1, at=maj, labels=FALSE, tcl=-0.3)
+  axis.Date(1, at=maj, labels=FALSE, tcl=0.4)
+  yrlab <- seq.Date(as.Date("2012-6-15"), by='1 year', length=10)
+  axis.Date(1, at=yrlab, labels=as.character(seq(2012,length=length(yrlab))), tcl=0,
+            mgp=c(3,1,0))
+  
   axis(2)
   box()
   
