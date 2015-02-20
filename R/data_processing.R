@@ -491,9 +491,17 @@ make_litter <- function(filename="output/data/FACE_leaflitter_all.csv",
   
   # Part 1
   dfr1 <- downloadCSV("FACE_P0017_RA_Litter_20121001-20131231-R.csv")[,1:9]
+  dfr1$Date <- as.character(dfr1$Date)
+  dfr1$Date <- as.Date(dfr1$Date)
   
   # Part 2 - not on HIEv just yet.
-  dfr2 <- read.csv("data/FACE_P0017_RA_Litter_20140101-20140228-R.csv")[,1:9]
+  # dfr2 <- read.csv("data/FACE_P0017_RA_Litter_20140101-20140228-R.csv")[,1:9]
+  dfr2 <- read.csv("data/FACE_P0017_RA_Litter_20140101-20140703-R.csv", 
+                   stringsAsFactors=FALSE)[,1:9]
+  dfr2$Leaf[which(dfr2$Leaf == "82,784")] <- "82.784"
+  dfr2$Leaf <- as.numeric(as.character(dfr2$Leaf))
+  dfr2$Date <- as.Date(dfr2$Date, format = "%d/%m/%Y")
+  
   
   names(dfr1) <- names(dfr2)
   dfr <- rbind(dfr1,dfr2)

@@ -53,7 +53,7 @@ figure1 <- function(df, ramp){
   
   
   xAT <- seq.Date(as.Date("2012-7-1"), by="1 month", length=100)
-  labs <- substr(format(mAT, "%b"),1,1)
+  labs <- substr(format(xAT, "%b"),1,1)
   axis.Date(1, at=xAT, labels=labs, cex.axis=0.6)
   maj <- seq.Date(as.Date("2012-1-1"),by="1 year", length=10)
   axis.Date(1, at=maj, labels=FALSE, tcl=-0.3)
@@ -240,8 +240,11 @@ figure5 <- function(df){
 
   Cols <- c("darkorange","forestgreen")
   
+  df$Y <- with(df, dLAI * 30.5/ndays)
+  df$X <- with(df, dLAIlitter.mean * 30.5/ndays)
+  
   par(mar=c(5,5,2,2), cex.lab=1.1, cex.axis=0.9, las=1, xaxs="i", yaxs="i")
-  with(df, plot(dLAIlitter.mean * 30.5/ndays, dLAI * 30.5/ndays, pch=c(19,21)[treatment],
+  with(df, plot(X, Y, pch=c(19,21)[treatment],
                col=Cols[LAIchange],
                xlab=expression(Leaf~litter~production~~(m^2~m^-2~mon^-1)),
                xlim=c(0,0.6),
@@ -249,8 +252,8 @@ figure5 <- function(df){
                ylab=expression(Delta*LAI~from~tau[d]~(m^2~m^-2~mon^-1))))
   abline(h=0, lty=5)
   abline(0,-1)
-  predline(lm(dLAI ~ dLAIlitter.mean, data=df, subset=dLAI>0), col=Cols[2])
-  predline(lm(dLAI ~ dLAIlitter.mean, data=df, subset=dLAI<0), col=Cols[1])
+  predline(lm(Y ~ X, data=df, subset=dLAI>0), col=Cols[2])
+  predline(lm(Y ~ X, data=df, subset=dLAI<0), col=Cols[1])
   l <- legend("topleft", c(expression(Delta*LAI < 0),expression(Delta*LAI > 0)), fill=Cols, bty='n', cex=0.8)
   
   legend(l$rect$left + l$rect$w, l$rect$top, 
