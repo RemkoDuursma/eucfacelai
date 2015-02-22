@@ -11,10 +11,26 @@ my_ringcols <- function(){
 }
 
 timeseries_axis <- function(labels=TRUE){
-  xAT <- seq.Date(as.Date("2012-7-1"), by="2 months", length=50)
-  xATminor <- seq.Date(as.Date("2012-7-1"), by="1 month", length=100)
-  axis.Date(1, at=xAT, format="%b-'%y", labels=labels )
-  axis.Date(1, at=xATminor, labels=FALSE, tcl=-0.25)
+  
+  XLIM <- par()$usr[1:2]
+  
+  xAT <- seq.Date(as.Date("2012-7-1"), by="1 month", length=100)
+  xAT <- xAT[xAT > XLIM[1] & xAT < XLIM[2]]
+  labs <- substr(format(xAT, "%b"),1,1)
+  
+  axis.Date(1, at=xAT, labels=FALSE, cex.axis=0.6)
+  if(labels)mtext(labs, side=1, line=0, at=xAT, cex=0.7)
+  
+  maj <- seq.Date(as.Date("2012-1-1"),by="1 year", length=10)
+  maj <- maj[maj > XLIM[1] & maj < XLIM[2]]
+  
+  axis.Date(1, at=maj, labels=FALSE, tcl=-0.3)
+  axis.Date(1, at=maj, labels=FALSE, tcl=0.4)
+  yrlab <- seq.Date(as.Date("2012-6-15"), by='1 year', length=10)
+  yrlab <- yrlab[yrlab > XLIM[1] & yrlab < XLIM[2]]
+  labs <- as.character(seq(2012,length=length(yrlab)))
+  if(labels)mtext(labs, side=1, line=1, at=yrlab)
+
 }
 
 
@@ -33,7 +49,7 @@ figure1 <- function(df, ramp){
   xl <- c(min(ramp$Date), max(df$Date))
   
   par(mar=c(0.5,5,1,2), cex.axis=0.9, cex.lab=1.1, las=1, yaxs="i", tcl=0.2,
-      mgp=c(3,0,0))
+      mgp=c(3,1,0))
   with(ramp, plot(Date, CO2target, type='l', col="dimgrey", lwd=2, axes=FALSE, ylim=c(0,160),
                   xlim=xl,
                   xlab="", ylab=expression(Target~Delta*C[a]~(ppm))))
@@ -52,15 +68,7 @@ figure1 <- function(df, ramp){
              pointcols=rep("grey",8), linecols=my_ringcols())
   
   
-  xAT <- seq.Date(as.Date("2012-7-1"), by="1 month", length=100)
-  labs <- substr(format(mAT, "%b"),1,1)
-  axis.Date(1, at=xAT, labels=labs, cex.axis=0.6)
-  maj <- seq.Date(as.Date("2012-1-1"),by="1 year", length=10)
-  axis.Date(1, at=maj, labels=FALSE, tcl=-0.3)
-  axis.Date(1, at=maj, labels=FALSE, tcl=0.4)
-  yrlab <- seq.Date(as.Date("2012-6-15"), by='1 year', length=10)
-  axis.Date(1, at=yrlab, labels=as.character(seq(2012,length=length(yrlab))), tcl=0,
-            mgp=c(3,1,0))
+  timeseries_axis()
   
   axis(2)
   box()
@@ -217,7 +225,7 @@ figure4 <- function(df,
                     greyrect=FALSE,
                     addpoints=TRUE){
     
-  if(setpar)par(cex.axis=cex.axis, mar=c(3,5,2,5), las=1, cex.lab=1.2, yaxs="i")
+  if(setpar)par(cex.axis=cex.axis, mar=c(3,5,2,5), las=1, cex.lab=1.2, yaxs="i", tcl=0.2)
   par(cex.lab=cex.lab)
   palette(my_co2cols())
   
@@ -291,7 +299,7 @@ figure7 <- function(df){
   
   xl <- range(facesoilwater$Date)
   
-  par(mfrow=c(4,1), mar=c(0,7,5,6), cex.lab=1.3, las=1, mgp=c(4,1,0),yaxs="i")
+  par(mfrow=c(4,1), mar=c(0,7,5,6), cex.lab=1.3, las=1, mgp=c(4,1,0),yaxs="i",tcl=0.2)
   
   # panel a
   smoothplot(Date, LAI, data=dfa, kgam=18, pointcols="dimgrey", linecols="black", 
@@ -365,7 +373,7 @@ figureSI1 <- function(df1, df2){
   dfa1 <- summaryBy(Gapfraction.mean ~ Date, data=df1, FUN=mean, keep.names=TRUE)
   dfa2 <- summaryBy(Gapfraction.mean ~ Date, data=df2, FUN=mean, keep.names=TRUE)
   
-  par(mar=c(3,5,2,2))
+  par(mar=c(3,5,2,2), tcl=0.2, cex.lab=1.1, mar=c(3,5,2,2))
   smoothplot(Date, Gapfraction.mean, data=df2, kgam=18, pointcols=alpha(Cols[1],0.5), linecols=Cols[1],
              ylim=c(0,0.4), axes=FALSE,
              xlab="", ylab=expression(tau~~("-")))

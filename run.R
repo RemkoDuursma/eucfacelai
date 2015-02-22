@@ -112,6 +112,7 @@ source("make_figures.R")
 
 # save cache.
 save.image(file="cache/lai_workspace.RData")
+# load("cache/lai_workspace.RData")
 
 # Messages.
 m1 <- paste0("Most recent day with usable cloudy data: ",max(facegap_cloudy_byring$Date))
