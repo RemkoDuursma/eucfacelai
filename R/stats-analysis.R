@@ -28,6 +28,14 @@ df$leafprod <- with(df, dLAI + dLAI.mean)
 m4 <- lmer(leafprod ~ treatment*Time + (1|Ring), data=df)
 Anova(m4)
 
+# photos vs. PARLAI
+lmphoto <- lm(LAI.PAR.mean ~ LAI, data=flatcan_byring)
+summary(lmphoto)
+
+
+# litter production and LAI
+lmlit <- lm(LAIlitter_annual ~ LAI.mean-1, data=ba)
+
 
 
 # Average CI width in Fig 4.
