@@ -14,7 +14,7 @@ timeseries_axis <- function(labels=TRUE){
   
   XLIM <- par()$usr[1:2]
   
-  xAT <- seq.Date(as.Date("2012-7-1"), by="1 month", length=100)
+  xAT <- seq.Date(as.Date("2012-1-1"), by="1 month", length=100)
   xAT <- xAT[xAT > XLIM[1] & xAT < XLIM[2]]
   labs <- substr(format(xAT, "%b"),1,1)
   
@@ -24,11 +24,14 @@ timeseries_axis <- function(labels=TRUE){
   maj <- seq.Date(as.Date("2012-1-1"),by="1 year", length=10)
   maj <- maj[maj > XLIM[1] & maj < XLIM[2]]
   
-  axis.Date(1, at=maj, labels=FALSE, tcl=-0.3)
-  axis.Date(1, at=maj, labels=FALSE, tcl=0.4)
+  axis.Date(1, at=maj, labels=FALSE, tcl=-0.2, lwd.ticks=2)
+  axis.Date(1, at=maj, labels=FALSE, tcl=0.4, lwd.ticks=2)
   yrlab <- seq.Date(as.Date("2012-6-15"), by='1 year', length=10)
-  yrlab <- yrlab[yrlab > XLIM[1] & yrlab < XLIM[2]]
   labs <- as.character(seq(2012,length=length(yrlab)))
+  ii <- yrlab > XLIM[1] & yrlab < XLIM[2]
+  yrlab <- yrlab[ii]
+  labs <- labs[ii]
+  
   if(labels)mtext(labs, side=1, line=1, at=yrlab)
 
 }
@@ -274,13 +277,14 @@ figure6 <-  function(df){
 
   par(mar=c(5,5,2,2), cex.lab=1.2,xaxs="i", yaxs="i", mfrow=c(1,2))
   
-  with(df, plot(LAI.mean, LAIlitter_annual, pch=19, cex=1.2, col=my_ringcols(),
+  with(df, plot(LAI.mean.litterperiod, LAIlitter_annual, pch=19, cex=1.2, col=my_ringcols(),
                 ylab=expression(Litter~production~~(m^2~m^-2~yr^-1)),
                 xlab=expression(bar(LAI)~~(m^2~m^-2)),
                 panel.first={
-                  predline(lm(LAIlitter_annual ~ LAI.mean, data=df))
+                  predline(lm(LAIlitter_annual ~ LAI.mean, data=subset(df, treatment == "ambient")),lty=5)
+                  predline(lm(LAIlitter_annual ~ LAI.mean, data=subset(df, treatment == "elevated")), lty=5)
                 },
-                xlim=c(1,2), ylim=c(1,2)))
+                xlim=c(1.2,1.8), ylim=c(1,2)))
   plotlabel("(a)", "topleft")
   box()
   
@@ -418,4 +422,35 @@ figure_breakpoint <- function(df){
   
   arrows(x0=flushingdates(), x1=flushingdates(), y0=2, y1=1.9, length=0.05)
 }
+
+
+
+figure_laprodlitter_timeseries <- function(dLAIlitter){
+  da <- summaryBy(. ~ Date + treatment, FUN=mean, data=dLAIlitter, keep.names=TRUE)
+  
+  da$laprod <- with(da, 30.5 * (dLAI+dLAIlitter.mean)/ndays)
+  da$lit <- with(da, 30.5 * dLAIlitter.mean/ndays)
+  
+  par(mar=c(3,5,2,2), cex.lab=1.1,tcl=0.2,las=1)
+  with(subset(da, treatment == "ambient"), plot(Date, laprod, type='l', col="blue",
+                                                axes=FALSE,xlab="",
+                                                ylab=expression("Leaf or litter production"~(m^2~m^-2~mon^-1)),
+                                                ylim=c(-0.05,0.8)))
+  with(subset(da, treatment == "elevated"), lines(Date, laprod, col="red"))
+  
+  with(subset(da, treatment == "ambient"), lines(Date, lit, col="blue", lty=5))
+  with(subset(da, treatment == "elevated"), lines(Date, lit, col="red", lty=5))
+  abline(h=0, col="darkgrey")
+  axis(2)
+  box()
+  timeseries_axis()
+  l <- legend("topleft", c("Leaf production","Litter production"), lty=c(1,5), bty='n')
+  legend(l$rect$left + l$rect$w, l$rect$top, 
+         c(expression(a*italic(C)[a]),expression(e*italic(C)[a])),
+         col=my_co2cols(), lty=1, bty='n')
+
+}
+
+
+
 

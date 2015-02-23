@@ -59,6 +59,10 @@ ba <- eucfaceBA()
 ba <- merge(ba,lai)
 ba <- merge(ba, eucface())
 
+# mean LAI for comparison to litter (same Date range)
+lai2 <- summaryBy(LAI ~ Ring, data=subset(facegap_cloudy_byring, Date < max(litter$Date)), na.rm=TRUE, FUN=mean)
+names(lai2)[2] <- "LAI.mean.litterperiod"
+ba <- merge(ba, lai2)
 
 # Litter
 lit <- subset(litter, !is.na(ndays))
@@ -74,7 +78,7 @@ lmBALAI <- lm(LAI.mean ~ BA, data=ba)
 ba$LAIfromBA <- predict(lmBALAI, ba)
 
 # Leaf lifespan
-ba$LL <- with(ba, LAI.mean / LAIlitter_annual)
+ba$LL <- with(ba, LAI.mean.litterperiod / LAIlitter_annual)
 
 facegap_cloudy_byring <- merge(facegap_cloudy_byring, ba[,c("Ring","LAIfromBA")])
 facegap_cloudy_byring$LAIanomaly <- with(facegap_cloudy_byring, LAI - LAIfromBA)

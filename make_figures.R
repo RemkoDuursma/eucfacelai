@@ -36,5 +36,7 @@ to.pdf(figureSI1(facegap_cloudy_byring, facegap_all_byring),
        width=8, height=4)
 
 
-
-
+# not in ms (yet)
+to.pdf(figure_laprodlitter_timeseries(dLAIlitter),
+       filename="output/figures/FigureS2.pdf",
+       width=8, height=4)
