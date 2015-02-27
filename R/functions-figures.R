@@ -162,6 +162,8 @@ smoothplot <- function(x,y,g=NULL,data,
   data <- droplevels(data)
   
   data <- data[!is.na(data$X) & !is.na(data$Y) & !is.na(data$G),]
+  nlev <- length(unique(data$G))
+  if(length(polycolor) == 1)polycolor <- rep(polycolor,nlev)
   
   if(class(data$X) == "Date"){
     xDate <- TRUE
@@ -248,7 +250,7 @@ smoothplot <- function(x,y,g=NULL,data,
         nd <- data.frame(X=seq(hran[[i]][1], hran[[i]][2], length=101))
         if(!inherits(fits[[i]], "try-error")){
           p <- predict(fits[[i]],nd,se.fit=TRUE)
-          addpoly(nd$X, p$fit-2*p$se.fit, p$fit+2*p$se.fit, col=polycolor)
+          addpoly(nd$X, p$fit-2*p$se.fit, p$fit+2*p$se.fit, col=polycolor[i])
           lines(nd$X, p$fit, col=linecols[i], lwd=2)
         }
       }

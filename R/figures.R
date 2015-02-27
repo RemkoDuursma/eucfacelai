@@ -236,7 +236,8 @@ figure4 <- function(df,
   if(is.null(ylim))ylim <- c(-0.8,0.8)
   
   smoothplot(Date, LAIanomaly, g=treatment, R="Ring", ylim=ylim, xlim=xlim, ylab=ylab, xlab="",
-             data=df, kgam=18, axes=FALSE)
+             data=df, kgam=18, axes=FALSE,
+             polycolor=c(alpha("royalblue",0.7),alpha("pink",0.7)))
   
   l <- legend("topleft", c("Ambient","Elevated"), title=expression(italic(C)[a]~treatment), 
               fill=my_co2cols(), bty="n", cex=cex.legend)
