@@ -3,6 +3,10 @@ library(lme4)
 library(lmerTest)
 library(car)
 
+# leaf lifespan Ca effect
+with(ba, t.test(LL ~ treatment, var.equal=TRUE))
+
+
 # Non-significance of Ca on LAI, litter
 df <- litter
 df$Time <- as.factor(df$Date - min(df$Date))

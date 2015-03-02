@@ -42,7 +42,7 @@ facegap_cloudy_byring <- subsetFACEPARbyring(facegap_cloudy_byring,
                                       maxSD=0.03)
 
 # Litter fall.
-litter <- make_litter(SLA=43)
+litter <- make_litter(SLA=52.6)
 litter_byCO2 <- agglitter(litter)
 
 # Find calibration constant, from 2013 drought.
@@ -53,33 +53,10 @@ facegap_cloudy_byring <- calculate_LAI(facegap_cloudy_byring, calib=calib)
 facegap_all_byring <- calculate_LAI(facegap_all_byring, calib=calib)
 
 
-# TEMPORARY - WILL BE MOVED TO FUNCTION!
-lai <- summaryBy(LAI ~ Ring, data=facegap_cloudy_byring, FUN=mean, na.rm=T)
-ba <- eucfaceBA()
-ba <- merge(ba,lai)
-ba <- merge(ba, eucface())
+# Averages across rings (LAI, LL, litter, BA)
+ba <- make_ba(facegap_cloudy_byring, litter)
 
-# mean LAI for comparison to litter (same Date range)
-lai2 <- summaryBy(LAI ~ Ring, data=subset(facegap_cloudy_byring, Date < max(litter$Date)), na.rm=TRUE, FUN=mean)
-names(lai2)[2] <- "LAI.mean.litterperiod"
-ba <- merge(ba, lai2)
-
-# Litter
-lit <- subset(litter, !is.na(ndays))
-lagg <- summaryBy(Leaf.mean + dLAIlitter.mean + ndays ~ Ring, FUN=sum, keep.names=TRUE,
-                  data=lit)
-trapArea <- 0.1979
-# g m-2 year-1
-lagg$Litter_annual <- (lagg$Leaf.mean / trapArea) * 365.25 / lagg$ndays
-lagg$LAIlitter_annual <- lagg$dLAIlitter.mean * 365.25 / lagg$ndays 
-ba <- merge(ba, lagg[,c("Ring","LAIlitter_annual")])
-
-lmBALAI <- lm(LAI.mean ~ BA, data=ba)
-ba$LAIfromBA <- predict(lmBALAI, ba)
-
-# Leaf lifespan
-ba$LL <- with(ba, LAI.mean.litterperiod / LAIlitter_annual)
-
+# LAI anomaly - difference between LAI and prediction from BA.
 facegap_cloudy_byring <- merge(facegap_cloudy_byring, ba[,c("Ring","LAIfromBA")])
 facegap_cloudy_byring$LAIanomaly <- with(facegap_cloudy_byring, LAI - LAIfromBA)
 

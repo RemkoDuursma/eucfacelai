@@ -131,6 +131,36 @@ subsetFACEPARbyring <- function(df, minnrHH=4, maxSD=0.05){
   return(df)
 }
 
+make_ba <- function(gapdf, litdf){
+  
+  lai <- summaryBy(LAI ~ Ring, data=gapdf, FUN=mean, na.rm=T)
+  ba <- eucfaceBA()
+  ba <- merge(ba,lai)
+  ba <- merge(ba, eucface())
+  
+  # mean LAI for comparison to litter (same Date range)
+  lai2 <- summaryBy(LAI ~ Ring, data=subset(gapdf, Date < max(litdf$Date)), na.rm=TRUE, FUN=mean)
+  names(lai2)[2] <- "LAI.mean.litterperiod"
+  ba <- merge(ba, lai2)
+  
+  # Litter
+  lit <- subset(litdf, !is.na(ndays))
+  lagg <- summaryBy(Leaf.mean + dLAIlitter.mean + ndays ~ Ring, FUN=sum, keep.names=TRUE,
+                    data=lit)
+  trapArea <- 0.1979
+  # g m-2 year-1
+  lagg$Litter_annual <- (lagg$Leaf.mean / trapArea) * 365.25 / lagg$ndays
+  lagg$LAIlitter_annual <- lagg$dLAIlitter.mean * 365.25 / lagg$ndays 
+  ba <- merge(ba, lagg[,c("Ring","LAIlitter_annual")])
+  
+  lmBALAI <- lm(LAI.mean ~ BA, data=ba)
+  ba$LAIfromBA <- predict(lmBALAI, ba)
+  
+  # Leaf lifespan
+  ba$LL <- with(ba, LAI.mean.litterperiod / LAIlitter_annual)
+  
+  return(ba)
+}
 
 
 aggFACEPARbysensor <- function(df, minnrHH=4){
@@ -496,8 +526,10 @@ make_litter <- function(filename="output/data/FACE_leaflitter_all.csv",
   
   # Part 2 - not on HIEv just yet.
   # dfr2 <- read.csv("data/FACE_P0017_RA_Litter_20140101-20140228-R.csv")[,1:9]
-  dfr2 <- read.csv("data/FACE_P0017_RA_Litter_20140101-20140703-R.csv", 
+  dfr2 <- read.csv("data/FACE_P0017_RA_Litter_20140101-20140814-R.csv", 
                    stringsAsFactors=FALSE)[,1:9]
+  names(dfr2) <- gsub("..g.","",names(dfr2))
+  
   dfr2$Leaf[which(dfr2$Leaf == "82,784")] <- "82.784"
   dfr2$Leaf <- as.numeric(as.character(dfr2$Leaf))
   dfr2$Date <- as.Date(dfr2$Date, format = "%d/%m/%Y")
