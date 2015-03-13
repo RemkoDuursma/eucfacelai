@@ -1,6 +1,6 @@
 
 # Plot raw data (not for manuscript)
-plotone <- function(date, ring, df=FACE_PAR_cloudy, xlim=c(4,20), addlegend=TRUE){
+plotone <- function(date, ring, df=facepar_cloudy, xlim=c(4,20), addlegend=TRUE){
   
   date <- as.Date(date)
   palette(c("blue","red", "forestgreen", "black", "darkgrey","darkorchid3"))
@@ -43,8 +43,8 @@ plotsix <- function(date,...){
 }
 
 
-figure_FACEPAR_allcloudydata <- function(minnrHH, dfr=FACE_PAR_cloudy,
-                                         filename="output/figures/FACE_PAR_allcloudydata.pdf"){
+figure_FACEPAR_allcloudydata <- function(minnrHH, dfr=facepar_cloudy,
+                                         filename="output/figures/facepar_allcloudydata.pdf"){
   hhtable <- table(dfr$Date)
   Dates <- as.Date(names(hhtable))[hhtable > 6*minnrHH]
   on.exit(dev.off())
@@ -55,7 +55,7 @@ figure_FACEPAR_allcloudydata <- function(minnrHH, dfr=FACE_PAR_cloudy,
 
 
 # Plot raw PAR data - not for manuscript.
-plotFACEPAR <- function(Ring, Date, df=FACE_PAR, setmargins=TRUE){
+plotFACEPAR <- function(Ring, Date, df=facepar, setmargins=TRUE){
   
   if(setmargins)par(mar=c(5,5,2,5))
   
