@@ -44,7 +44,7 @@ plotsix <- function(date,...){
 
 
 figure_FACEPAR_allcloudydata <- function(minnrHH, dfr=facepar_cloudy,
-                                         filename="output/figures/facepar_allcloudydata.pdf"){
+                                         filename="output/figures_other/facepar_allcloudydata.pdf"){
   hhtable <- table(dfr$Date)
   Dates <- as.Date(names(hhtable))[hhtable > 6*minnrHH]
   on.exit(dev.off())

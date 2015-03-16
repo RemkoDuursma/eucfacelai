@@ -92,3 +92,31 @@ litlm <- lm(LAIlitter_annual ~ LAI.mean-1, data=ba)
 
 
 
+
+#--------------------------------
+
+df <- facegap_cloudy_byring
+df$Time <- as.numeric(df$Date - min(df$Date))
+
+d <- split(df, df$Ring)
+
+fits <- lapply(d, function(x)gam(LAI ~ s(Time, k=21), data=x))
+
+for(i in 1:6){
+  d[[i]]$LAIpred <- predict(fits[[i]], d[[i]])
+}
+dat <- do.call(rbind,d)
+
+with(dat, plot(LAI, LAIpred))
+abline(0,1)
+
+
+
+
+               
+               
+               
+
+
+
+
