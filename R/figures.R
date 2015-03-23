@@ -192,24 +192,27 @@ figure6 <-  function(df){
   with(df, plot(LAI.mean.litterperiod, LAIlitter_annual, pch=19, cex=1.2, col=my_ringcols(),
                 ylab=expression(Litter~production~~(m^2~m^-2~yr^-1)),
                 xlab=expression(bar(LAI)~~(m^2~m^-2)),
-#                 panel.first={
-#                   predline(lm(LAIlitter_annual ~ LAI.mean, data=subset(df, treatment == "ambient")),lty=5)
-#                   predline(lm(LAIlitter_annual ~ LAI.mean, data=subset(df, treatment == "elevated")), lty=5)
-#                 },
                 panel.first={
                   for(z in seq(0.5,2,by=0.1))abline(0,z,col="grey", lty=5)
                 },
                 xlim=c(1.2,2.2), ylim=c(1.2,2.2)))
-  plotlabel("(a)", "topleft")
+  plotlabel("(a)", "topright")
   box()
   
-  par(xaxs="r")
-  lmci <- lm(LL ~ treatment-1, data=ba)
-  CI <- confint(lmci)
-  barplot2(coef(lmci), names.arg=levels(ba$treatment), col=my_co2cols(),
-                plot.ci=TRUE, ci.l=CI[,1], ci.u=CI[,2], ci.width=0.08,
-                ylab="Leaf lifespan (yr)")
-  plotlabel("(b)", "topleft")
+  with(df, plot(as.numeric(treatment), LL, axes=FALSE, xlim=c(0,3), ylim=c(0.5,1.5),
+                pch=19, col=my_ringcols(), xlab="",cex=1.2,
+                ylab="Leaf lifespan (yr)"))
+  box()
+  axis(2)
+  axis(1, at=1:2, labels=c(expression(a*C[a]), expression(e*C[a])))
+  
+  tt <- t.test(LL ~ treatment, data=ba)
+  pval <- format.pval(tt$p.value)
+  legend("topleft", legend=bquote(italic(p) == .(pval)),
+         bty="n")
+  
+  
+  plotlabel("(b)", "topright")
 }
 
 
