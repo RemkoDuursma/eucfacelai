@@ -26,7 +26,7 @@ facepar_all <- makeCloudy(facepar,
                            Fdiff_cutoff= 0.0,
                            PARabovecutoff = 250,
                            PARbelowcutoff = 3000,
-                           minSolarElevation =10)
+                           minSolarElevation = 10)
 
 
 # Aggregate into daily gapfraction

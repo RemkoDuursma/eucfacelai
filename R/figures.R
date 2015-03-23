@@ -89,103 +89,6 @@ figure1 <- function(df, ramp){
 
 
 
-
-figure_timeseries <- function(df,flatcan_byCO2,
-                    xlim=NULL, ylim=NULL,
-                    legend=TRUE,
-                    ylab=expression(LAI~~(m^2~m^-2)),
-                    cex.lab=1.1, cex.axis=0.9, cex.legend=0.7,
-                    legendwhere="topleft",
-                    setpar=TRUE,axisline=3,
-                    adddata=c("rain","litter"),
-                    horlines=TRUE,
-                    greyrect=FALSE,
-                    addpoints=TRUE){
-  
-  adddata <- match.arg(adddata)
-  
-  if(setpar)par(cex.axis=cex.axis, mar=c(3,5,2,5), las=1, cex.lab=1.2, yaxs="i")
-  par(cex.lab=cex.lab)
-  palette(my_co2cols())
-  
-  if(is.null(xlim))xlim <- with(df, c(min(Date)-15, max(Date)+15))
-  if(is.null(ylim))ylim <- with(df, c(0, 1.08*max(LAI.mean)))
-  
-  with(subset(df, treatment == "ambient"),
-       plot(Date, LAI.mean, col=palette()[1], type='l', lwd=2, 
-            xlab="",
-            ylab=ylab,
-            axes=FALSE,
-            ylim=ylim,
-            xlim=xlim,
-            panel.first={
-              smoothplot(Date, LAI, g=treatment, R="Ring", 
-                         data=facegap_cloudy_byring, kgam=18, pointcols="white", 
-                         linecols=alpha("lightgrey",0.7), add=TRUE)              
-            }
-       ))
-  
-  with(subset(df, treatment == "elevated"),
-       points(Date, LAI.mean, col=palette()[2], type='l', lwd=2)
-  )
-  
-  with(subset(df, treatment == "elevated"),
-       points(Date, LAI.mean, col="white", cex=0.05, pch=19)
-  )
-  with(subset(df, treatment == "ambient"),
-       points(Date, LAI.mean, col="white", cex=0.05, pch=19)
-  )
-  
-  
-  if(addpoints){
-    with(df, points(Date, LAI.mean, pch=19, cex=0.05, col="white"))
-  }
-  
-  with(flatcan_byCO2, points(Date, LAI.mean, pch=21, bg=treatment, col="black"))
-  
-  
-  l <- legend("topleft", c("Ambient","Elevated"), title=expression(italic(C)[a]~treatment), 
-              fill=my_co2cols(), bty="n", cex=cex.legend)
-  legend(l$rect$left + l$rect$w, l$rect$top, c(expression(tau[d]),"Photos"), pch=c(19,21),
-         lty=c(1,-1), pt.bg=c("white","grey"), cex=cex.legend, bty='n', pt.cex=c(0.05,1),
-         title="Method")
-  
-  
-  axis(2)
-  box()
-  
-  par(new=TRUE)
-  if(adddata == "rain"){
-    with(faceraindaily, plot(Date, Rain.ROS, type='h', ylim=c(0,200),col="dimgrey",
-                             axes=FALSE, xlim=xlim, ann=FALSE))
-    axis(4, at=c(0,25,50,75,100))
-    mtext(side=4, cex=cex.lab, line=axisline, text="Daily rain (mm)", las=0)
-  }
-  if(adddata == "litter"){
-    
-    with(subset(litter_byCO2, treatment == "ambient"), plot(Date, dLAIlitter.mean, pch=15, col=my_co2cols()[1],
-                                                            ann=FALSE, axes=FALSE, xlim=xlim,cex=0.8,
-                                                            panel.last=adderrorbars(Date,dLAIlitter.mean,
-                                                                                    dLAIlitter.se,"updown",
-                                                                                    col=my_co2cols()[1],barlen=0.01),
-                                                            ylim=c(0,1.5)))
-    with(subset(litter_byCO2, treatment == "elevated"), points(Date+10, dLAIlitter.mean, pch=15, cex=0.8,
-                                                               panel.last=adderrorbars(Date+10,dLAIlitter.mean,
-                                                                                       dLAIlitter.se,"updown",
-                                                                                       col=my_co2cols()[2],barlen=0.01),
-                                                               col=my_co2cols()[2]))
-    
-    axis(4, at=c(0,0.1,0.2,0.3,0.4,0.5))
-    mtext(side=4, cex=cex.lab, line=axisline, text=expression(Litter~production~(m^2~m^-2)), las=0)
-  }
-  
-  
-  timeseries_axis()  
-  
-  return(invisible(xlim))
-}
-
-
 figure2 <- function(df){
   
   par(mar=c(5,5,2,2), cex.axis=0.9)
@@ -255,20 +158,28 @@ figure5 <- function(df){
   df$Y <- with(df, dLAI * 30.5/ndays)
   df$X <- with(df, dLAIlitter.mean * 30.5/ndays)
   
+  dfup <- df[df$LAIchange == "increasing",]
+  dfdown <- df[df$LAIchange == "decreasing",]
+  
   par(mar=c(5,5,2,2), cex.lab=1.1, cex.axis=0.9, las=1, xaxs="i", yaxs="i")
-  with(df, plot(X, Y, pch=c(19,21)[treatment],
+  with(dfup, plot(X, Y, pch=c(19,21)[treatment],
                col=Cols[LAIchange],
                xlab=expression(Leaf~litter~production~~(m^2~m^-2~mon^-1)),
                xlim=c(0,0.6),
                ylim=c(-0.3,0.5),
                ylab=expression(Delta*LAI~from~tau[d]~(m^2~m^-2~mon^-1))))
+  with(dfdown, points(X, Y, pch=c(17,24)[treatment],
+                  col=Cols[LAIchange]))
+  
   abline(h=0, lty=5)
   abline(0,-1)
   predline(lm(Y ~ X, data=df, subset=dLAI>0), col=Cols[2])
   predline(lm(Y ~ X, data=df, subset=dLAI<0), col=Cols[1])
-  l <- legend("topleft", c(expression(Delta*LAI < 0),expression(Delta*LAI > 0)), fill=Cols, bty='n', cex=0.8)
   
-  legend(l$rect$left + l$rect$w, l$rect$top, 
+  l <- legend("bottomright", c(expression(Delta*LAI < 0),expression(Delta*LAI > 0)), 
+              pt.bg=Cols, bty='n', cex=0.8, pch=c(24,21))
+  
+  legend(l$rect$left - l$rect$w, l$rect$top, 
          c(expression(a*italic(C)[a]),expression(e*italic(C)[a])), pch=c(19,21), bty='n', cex=0.8, pt.cex=1)
   
 }
