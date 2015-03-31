@@ -2,7 +2,7 @@ export_CSV <- function(){
   
   if(!file.exists("output/data"))dir.create("output/data", recursive=TRUE)
   
-  dfr <- facegap_byring
+  dfr <- facegap_cloudy_byring
   dfr$maxSDring <- NULL
   
   d1 <- format(min(dfr$Date), "%Y%m%d")
@@ -10,7 +10,7 @@ export_CSV <- function(){
   filename <- paste0("FACE_P0037_RA_GAPFRACLAI_",d1,"-",d2,"_L2.csv")
   filename <- file.path("output/data",filename)
   
-  write.csv(facegap_byring, filename, row.names=FALSE)
+  write.csv(dfr, filename, row.names=FALSE)
   meta <- 
   "Estimates of canopy gap fraction and leaf area index for the EucFACE based on
 diffuse transmittance data.
@@ -34,6 +34,11 @@ Variables:
    attenuation of diffuse radiation in a homogenous canopy."
   
   writeLines(meta, "output/data/FACE_P0037_RA_GAPFRACLAI_meta.txt")
-  
-  
+
+#   HIEv:::uploadToHIEv(filename,
+#                       experiment_id=15,
+#                       type='PROCESSED',
+#                       description=meta)
+#   
 }
+
