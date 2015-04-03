@@ -89,24 +89,8 @@ figure1 <- function(df, ramp){
 
 
 
+
 figure2 <- function(df){
-  
-  par(mar=c(5,5,2,2), cex.axis=0.9)
-  
-  with(df, plot(LAI, LAI.PAR.mean, 
-                ylab=expression(LAI~from~tau[d]~~(m^2~m^-2)),
-                xlab=expression(LAI~from~canopy~photos~~(m^2~m^-2)),
-                pch=19, col=my_co2cols()[treatment],
-                xlim=c(0.8,2), ylim=c(0.8,2)))
-  abline(0,1)
-  predline(lm(LAI.PAR.mean ~ LAI, data=df), lty=5)
-  
-}
-
-
-
-
-figure3 <- function(df){
   
   par(mar=c(5,5,2,2), cex.lab=1.2,xaxs="i", yaxs="i")
   with(df, plot(BA, LAI.mean, pch=19, cex=1.2, col=my_ringcols(),
@@ -120,7 +104,7 @@ figure3 <- function(df){
 }
 
 
-figure4 <- function(df,
+figure3 <- function(df,
                     xlim=NULL, ylim=NULL,
                     legend=TRUE,
                     ylab=expression(LAI~anomaly~(m^2~m^-2)),
@@ -151,7 +135,7 @@ figure4 <- function(df,
 }
 
 
-figure5 <- function(df){
+figure4 <- function(df){
 
   Cols <- c("darkorange","forestgreen")
   
@@ -175,12 +159,39 @@ figure5 <- function(df){
   abline(0,-1)
   predline(lm(Y ~ X, data=df, subset=dLAI>0), col=Cols[2])
   predline(lm(Y ~ X, data=df, subset=dLAI<0), col=Cols[1])
+  box()
   
   l <- legend("bottomright", c(expression(Delta*LAI < 0),expression(Delta*LAI > 0)), 
               pt.bg=Cols, bty='n', cex=0.8, pch=c(24,21))
   
   legend(l$rect$left - l$rect$w, l$rect$top, 
          c(expression(a*italic(C)[a]),expression(e*italic(C)[a])), pch=c(19,21), bty='n', cex=0.8, pt.cex=1)
+  
+}
+
+figure5 <- function(dLAIlitter){
+  da <- summaryBy(. ~ Date + treatment, FUN=mean, data=dLAIlitter, keep.names=TRUE)
+  
+  da$laprod <- with(da, 30.5 * (dLAI+dLAIlitter.mean)/ndays)
+  da$lit <- with(da, 30.5 * dLAIlitter.mean/ndays)
+  
+  par(mar=c(3,5,2,2), cex.lab=1.1,tcl=0.2,las=1)
+  with(subset(da, treatment == "ambient"), plot(Date, laprod, type='l', col="blue",
+                                                axes=FALSE,xlab="",
+                                                ylab=expression("Leaf or litter production"~(m^2~m^-2~mon^-1)),
+                                                ylim=c(-0.05,0.8)))
+  with(subset(da, treatment == "elevated"), lines(Date, laprod, col="red"))
+  
+  with(subset(da, treatment == "ambient"), lines(Date, lit, col="blue", lty=5))
+  with(subset(da, treatment == "elevated"), lines(Date, lit, col="red", lty=5))
+  abline(h=0, col="darkgrey")
+  axis(2)
+  box()
+  timeseries_axis()
+  l <- legend("topleft", c("Leaf production","Litter production"), lty=c(1,5), bty='n')
+  legend(l$rect$left + l$rect$w, l$rect$top, 
+         c(expression(a*italic(C)[a]),expression(e*italic(C)[a])),
+         col=my_co2cols(), lty=1, bty='n')
   
 }
 
@@ -291,7 +302,22 @@ figure7 <- function(df){
 }
 
 
-figureSI1 <- function(df1, df2){
+figureSI1 <- function(df){
+  
+  par(mar=c(5,5,2,2), cex.axis=0.9)
+  
+  with(df, plot(LAI, LAI.PAR.mean, 
+                ylab=expression(LAI~from~tau[d]~~(m^2~m^-2)),
+                xlab=expression(LAI~from~canopy~photos~~(m^2~m^-2)),
+                pch=19, col=my_co2cols()[treatment],
+                xlim=c(0.8,2), ylim=c(0.8,2)))
+  abline(0,1)
+  predline(lm(LAI.PAR.mean ~ LAI, data=df), lty=5)
+  
+}
+
+
+figureSI2 <- function(df1, df2){
   
   Cols <- c("grey49","black")
   
@@ -310,6 +336,85 @@ figureSI1 <- function(df1, df2){
   legend("bottomleft", c(expression("Diffuse only"~(tau[d])),"All data"), pch=19, col=rev(Cols), bty='n')
   
 }
+
+
+
+figureSI2 <- function(litring, df){
+  
+  # Litter fall per ring during 2013 drought with SE
+  df2 <- subset(litring, Date >= as.Date("2013-7-8") & Date < as.Date("2013-11-12"))  
+  dfa <- summaryBy(dLAIlitter ~ Ring + Trap, FUN=sum, na.rm=TRUE, data=df2)
+  se <- function(x)sd(x)/sqrt(length(x))
+  dft <- summaryBy(dLAIlitter.sum ~ Ring, FUN=c(mean,se), data=dfa)
+  
+  # anova(lm(dLAIlitter.sum ~ Ring, data=dfa))
+  
+  # Change in gap fraction per ring
+  df <- facegap_cloudy_byring
+  df1 <- subset(df, Date > as.Date("2013-7-14") & Date < as.Date("2013-11-12"))
+  
+  df1$numDate <- with(df1, as.numeric(Date - min(Date)))
+  df1$taud_0 <- with(df1, ave(Gapfraction.mean, Ring, FUN=function(x)x[which.min(Date)]))
+  df1$deltagapfrac <- with(df1, Gapfraction.mean - taud_0)
+  
+  # with(df1, plot(Date, Gapfraction.mean, pch=19, col=my_ringcols()))
+  # 
+  # 
+  # library(plotBy)
+  # plotBy(Gapfraction.mean ~ as.numeric(Date-min(Date))|Ring, 
+  #        enhance="lm", data=df1)
+  
+  #   lm0 <- lm(deltagapfrac ~ Ring + numDate, data=df1)
+  #   lmtaud <- lm(deltagapfrac ~ Ring + Ring:numDate,
+  #                data=df1)
+  
+  # Get CI on increase in gap fraction from linear regression
+  lms <- lapply(split(df1, df1$Ring),
+                function(x)lm(Gapfraction.mean ~ as.numeric(Date-min(Date)),
+                              data=x))
+  
+  delta_gapfr_mu <- ndays * sapply(lms, coef)[2,]
+  
+  ndays <- as.numeric(max(df1$Date) - min(df1$Date))
+  cis <- sapply(lms, confint, 2)
+  delta_gapfr_ci <- cis*ndays
+  
+  
+  # sort, ambient left, elevated right
+  ind <- c(2,3,6,1,4,5)
+  
+  # plot
+  par(mfrow=c(2,1), mar=c(0,0,0,0),
+      oma=c(5,5,1,1), cex.lab=1.2)
+  suppressWarnings(plotCI(1:6, delta_gapfr_mu[ind], 
+         ui=delta_gapfr_ci[2,][ind],
+         li=delta_gapfr_ci[1,][ind],
+         col=my_ringcols()[ind], pch=15,
+         ylim=c(0,0.2), 
+         axes=FALSE))
+  abline(h=mean(delta_gapfr_mu), lty=5)
+  axis(1, labels=FALSE)
+  axis(2)
+  box()
+  
+  suppressWarnings(plotCI(1:6, dft$dLAIlitter.sum.mean[ind], 
+         uiw=2*dft$dLAIlitter.sum.se[ind],
+         col=my_ringcols()[ind], pch=15,
+         axes=FALSE,
+         ylim=c(0,1.1)))
+  abline(h=mean(dft$dLAIlitter.sum.mean), lty=5)
+  axis(1, at=1:6, labels=as.character(ind))
+  axis(2)
+  box()
+  mtext(side=2, at=0.75, text=expression(Delta*tau[d]), line=3, outer=TRUE,
+        cex=1.2)
+  mtext(side=2, at=0.25, text=expression(Litter~production~(m^2~m^-2)),
+        line=3, outer=TRUE, cex=1.2)
+  mtext(side=1, at=0.5, text="Ring", outer=TRUE, line=3, cex=1.2)
+  
+}  
+
+
 
 
 figure_breakpoint <- function(df){
@@ -343,31 +448,8 @@ figure_breakpoint <- function(df){
 
 
 
-figure_laprodlitter_timeseries <- function(dLAIlitter){
-  da <- summaryBy(. ~ Date + treatment, FUN=mean, data=dLAIlitter, keep.names=TRUE)
-  
-  da$laprod <- with(da, 30.5 * (dLAI+dLAIlitter.mean)/ndays)
-  da$lit <- with(da, 30.5 * dLAIlitter.mean/ndays)
-  
-  par(mar=c(3,5,2,2), cex.lab=1.1,tcl=0.2,las=1)
-  with(subset(da, treatment == "ambient"), plot(Date, laprod, type='l', col="blue",
-                                                axes=FALSE,xlab="",
-                                                ylab=expression("Leaf or litter production"~(m^2~m^-2~mon^-1)),
-                                                ylim=c(-0.05,0.8)))
-  with(subset(da, treatment == "elevated"), lines(Date, laprod, col="red"))
-  
-  with(subset(da, treatment == "ambient"), lines(Date, lit, col="blue", lty=5))
-  with(subset(da, treatment == "elevated"), lines(Date, lit, col="red", lty=5))
-  abline(h=0, col="darkgrey")
-  axis(2)
-  box()
-  timeseries_axis()
-  l <- legend("topleft", c("Leaf production","Litter production"), lty=c(1,5), bty='n')
-  legend(l$rect$left + l$rect$w, l$rect$top, 
-         c(expression(a*italic(C)[a]),expression(e*italic(C)[a])),
-         col=my_co2cols(), lty=1, bty='n')
 
-}
+
 # 
 # 
 # figure_litter <- function(lidLAIlitter){

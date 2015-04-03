@@ -7,21 +7,21 @@ to.pdf(figure1(facegap_cloudy_byring, ramp),
        filename="output/figures/Figure1.pdf",
        width=8, height=6)
 
-to.pdf(figure2(flatcan_byring),
+to.pdf(figure2(ba), 
        filename="output/figures/Figure2.pdf",
-       width=5, height=5)
-
-to.pdf(figure3(ba), 
-       filename="output/figures/Figure3.pdf",
        width=4, height=4)
 
-to.pdf(figure4(facegap_cloudy_byring),
-       filename="output/figures/Figure4.pdf",
+to.pdf(figure3(facegap_cloudy_byring),
+       filename="output/figures/Figure3.pdf",
        width=8, height=4)
+
+to.pdf(figure4(dLAIlitter),
+       filename="output/figures/Figure4.pdf",
+       width=6, height=4)
 
 to.pdf(figure5(dLAIlitter),
        filename="output/figures/Figure5.pdf",
-       width=6, height=4)
+       width=8, height=4)
 
 to.pdf(figure6(ba), 
        filename="output/figures/Figure6.pdf",
@@ -31,12 +31,11 @@ to.pdf(figure7(facegap_cloudy_byring),
        filename="output/figures/Figure7.pdf",
        width=10, height=8)
 
-to.pdf(figureSI1(facegap_cloudy_byring, facegap_all_byring),
+to.pdf(figureSI1(flatcan_byring),
        filename="output/figures/FigureSI1.pdf",
-       width=8, height=4)
+       width=5, height=5)
 
+to.pdf(figureSI2(litring, facegap_cloudy_byring),
+       filename="output/figures/FigureSI2.pdf",
+       width=5, height=8)
 
-# not in ms (yet)
-to.pdf(figure_laprodlitter_timeseries(dLAIlitter),
-       filename="output/figures/FigureS2.pdf",
-       width=8, height=4)

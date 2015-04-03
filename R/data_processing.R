@@ -513,8 +513,7 @@ makeCloudy <- function(df,
 }
 
 
-make_litter <- function(filename="output/data/FACE_leaflitter_all.csv",
-                       trapArea=0.1979,  # m2
+make_litter <- function(trapArea=0.1979,  # m2
                        SLA=43,    # cm2 g-1
                        what=c("agg","byring")
                        
@@ -523,7 +522,10 @@ make_litter <- function(filename="output/data/FACE_leaflitter_all.csv",
   what <- match.arg(what)
   
   # Part 1
-  dfr1 <- downloadCSV("FACE_P0017_RA_Litter_20121001-20131231-R.csv")[,1:9]
+  # WARNING - CHANGED TO OFFLINE!!!!!!
+  # dfr1 <- downloadCSV("FACE_P0017_RA_Litter_20121001-20131231-R.csv")[,1:9]
+  
+  dfr1 <- read.csv("cache/FACE_P0017_RA_Litter_20121001-20131231-R.csv")[,1:9]
   dfr1$Date <- as.character(dfr1$Date)
   dfr1$Date <- as.Date(dfr1$Date)
   
@@ -550,7 +552,9 @@ make_litter <- function(filename="output/data/FACE_leaflitter_all.csv",
   dfr$dLAIlitter <- with(dfr, (Leaf / trapArea) * SLA * 10^-4)
   
   if(what == "byring"){
+    
     return(dfr)
+    
   } else {
     
     # Average
