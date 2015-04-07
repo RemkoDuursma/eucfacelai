@@ -31,11 +31,16 @@ to.pdf(figure7(facegap_cloudy_byring),
        filename="output/figures/Figure7.pdf",
        width=10, height=8)
 
-to.pdf(figureSI1(flatcan_byring),
+to.pdf(figureSI3(litring, facegap_cloudy_byring),
        filename="output/figures/FigureSI1.pdf",
+       width=5, height=8)
+
+to.pdf(figureSI1(flatcan_byring),
+       filename="output/figures/FigureSI2.pdf",
        width=5, height=5)
 
-to.pdf(figureSI2(litring, facegap_cloudy_byring),
-       filename="output/figures/FigureSI2.pdf",
-       width=5, height=8)
+to.pdf(figureSI2(facegap_cloudy_byring, facegap_all_byring),
+       filename="output/figures/FigureSI3.pdf",
+       width=8, height=5)
+
 

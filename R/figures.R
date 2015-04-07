@@ -339,7 +339,7 @@ figureSI2 <- function(df1, df2){
 
 
 
-figureSI2 <- function(litring, df){
+figureSI3 <- function(litring, df){
   
   # Litter fall per ring during 2013 drought with SE
   df2 <- subset(litring, Date >= as.Date("2013-7-8") & Date < as.Date("2013-11-12"))  
@@ -396,6 +396,7 @@ figureSI2 <- function(litring, df){
   axis(1, labels=FALSE)
   axis(2)
   box()
+  plotlabel("(a)", "topleft", inset.x=0.04)
   
   suppressWarnings(plotCI(1:6, dft$dLAIlitter.sum.mean[ind], 
          uiw=2*dft$dLAIlitter.sum.se[ind],
@@ -405,6 +406,7 @@ figureSI2 <- function(litring, df){
   abline(h=mean(dft$dLAIlitter.sum.mean), lty=5)
   axis(1, at=1:6, labels=as.character(ind))
   axis(2)
+  plotlabel("(b)", "topleft", inset.x=0.04)
   box()
   mtext(side=2, at=0.75, text=expression(Delta*tau[d]), line=3, outer=TRUE,
         cex=1.2)
