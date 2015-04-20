@@ -373,9 +373,9 @@ figureSI3 <- function(litring, df){
                 function(x)lm(Gapfraction.mean ~ as.numeric(Date-min(Date)),
                               data=x))
   
-  delta_gapfr_mu <- ndays * sapply(lms, coef)[2,]
-  
   ndays <- as.numeric(max(df1$Date) - min(df1$Date))
+  
+  delta_gapfr_mu <- ndays * sapply(lms, coef)[2,]
   cis <- sapply(lms, confint, 2)
   delta_gapfr_ci <- cis*ndays
   
