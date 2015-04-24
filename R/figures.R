@@ -304,44 +304,8 @@ figure7 <- function(df, facesoilwater, faceraindaily, airt){
 }
 
 
-figureSI1 <- function(df){
-  
-  par(mar=c(5,5,2,2), cex.axis=0.9)
-  
-  with(df, plot(LAI, LAI.PAR.mean, 
-                ylab=expression(LAI~from~tau[d]~~(m^2~m^-2)),
-                xlab=expression(LAI~from~canopy~photos~~(m^2~m^-2)),
-                pch=19, col=my_co2cols()[treatment],
-                xlim=c(0.8,2), ylim=c(0.8,2)))
-  abline(0,1)
-  predline(lm(LAI.PAR.mean ~ LAI, data=df), lty=5)
-  
-}
 
-
-figureSI2 <- function(df1, df2){
-  
-  Cols <- c("grey49","black")
-  
-  dfa1 <- summaryBy(Gapfraction.mean ~ Date, data=df1, FUN=mean, keep.names=TRUE)
-  dfa2 <- summaryBy(Gapfraction.mean ~ Date, data=df2, FUN=mean, keep.names=TRUE)
-  
-  par(mar=c(3,5,2,2), tcl=0.2, cex.lab=1.1, mar=c(3,5,2,2))
-  smoothplot(Date, Gapfraction.mean, data=df2, kgam=18, pointcols=alpha(Cols[1],0.5), linecols=Cols[1],
-             ylim=c(0,0.4), axes=FALSE,
-             xlab="", ylab=expression(tau~~("-")))
-  smoothplot(Date, Gapfraction.mean, data=df1, kgam=18, add=TRUE, pointcols=alpha(Cols[2],0.5),
-             linecols=Cols[2])
-  timeseries_axis(TRUE)
-  axis(2)
-  box()
-  legend("bottomleft", c(expression("Diffuse only"~(tau[d])),"All data"), pch=19, col=rev(Cols), bty='n')
-  
-}
-
-
-
-figureSI3 <- function(litring, df){
+figureSI1 <- function(litring, df){
   
   # Litter fall per ring during 2013 drought with SE
   df2 <- subset(litring, Date >= as.Date("2013-7-8") & Date < as.Date("2013-11-12"))  
@@ -389,11 +353,11 @@ figureSI3 <- function(litring, df){
   par(mfrow=c(2,1), mar=c(0,0,0,0),
       oma=c(5,5,1,1), cex.lab=1.2)
   suppressWarnings(plotCI(1:6, delta_gapfr_mu[ind], 
-         ui=delta_gapfr_ci[2,][ind],
-         li=delta_gapfr_ci[1,][ind],
-         col=my_ringcols()[ind], pch=15,
-         ylim=c(0,0.2), 
-         axes=FALSE))
+                          ui=delta_gapfr_ci[2,][ind],
+                          li=delta_gapfr_ci[1,][ind],
+                          col=my_ringcols()[ind], pch=15,
+                          ylim=c(0,0.2), 
+                          axes=FALSE))
   abline(h=mean(delta_gapfr_mu), lty=5)
   axis(1, labels=FALSE)
   axis(2)
@@ -401,10 +365,10 @@ figureSI3 <- function(litring, df){
   plotlabel("(a)", "topleft", inset.x=0.04)
   
   suppressWarnings(plotCI(1:6, dft$dLAIlitter.sum.mean[ind], 
-         uiw=2*dft$dLAIlitter.sum.se[ind],
-         col=my_ringcols()[ind], pch=15,
-         axes=FALSE,
-         ylim=c(0,1.1)))
+                          uiw=2*dft$dLAIlitter.sum.se[ind],
+                          col=my_ringcols()[ind], pch=15,
+                          axes=FALSE,
+                          ylim=c(0,1.1)))
   abline(h=mean(dft$dLAIlitter.sum.mean), lty=5)
   axis(1, at=1:6, labels=as.character(ind))
   axis(2)
@@ -418,69 +382,43 @@ figureSI3 <- function(litring, df){
   
 }  
 
+figureSI2 <- function(df){
+  
+  par(mar=c(5,5,2,2), cex.axis=0.9)
+  
+  with(df, plot(LAI, LAI.PAR.mean, 
+                ylab=expression(LAI~from~tau[d]~~(m^2~m^-2)),
+                xlab=expression(LAI~from~canopy~photos~~(m^2~m^-2)),
+                pch=19, col=my_co2cols()[treatment],
+                xlim=c(0.8,2), ylim=c(0.8,2)))
+  abline(0,1)
+  predline(lm(LAI.PAR.mean ~ LAI, data=df), lty=5)
+  
+}
 
 
-
-figure_breakpoint <- function(df){
-  dfa <- summaryBy(LAI + Rain_mm_Tot.mean ~ Date, data=df, FUN=mean, keep.names=TRUE)
-  dfa$numDate <- as.numeric(dfa$Date - min(dfa$Date))
+figureSI3 <- function(df1, df2){
   
-  breakguess <- as.numeric(as.Date(c("2012-12-02","2013-1-23",
-                          "2013-2-27","2013-7-14",
-                          "2013-10-22","2014-2-1","2014-12-1")) - min(dfa$Date))
+  Cols <- c("grey49","black")
   
-  lin <- lm(LAI ~ numDate, data=dfa)
-  library(segmented)
-  seg <- segmented(lin, seg.Z=~numDate, 
-                   control=seg.control(n.boot=100, it.max=20),
-                   psi=list(numDate=breakguess))
+  dfa1 <- summaryBy(Gapfraction.mean ~ Date, data=df1, FUN=mean, keep.names=TRUE)
+  dfa2 <- summaryBy(Gapfraction.mean ~ Date, data=df2, FUN=mean, keep.names=TRUE)
   
-  p <- predict(seg,dfa,se.fit=TRUE)
-  dfa$LAIpred <- p$fit
-  dfa$LAIpred_SE <- p$se.fit
+  par(mar=c(3,5,2,2), tcl=0.2, cex.lab=1.1, mar=c(3,5,2,2))
+  smoothplot(Date, Gapfraction.mean, data=df2, kgam=18, pointcols=alpha(Cols[1],0.5), linecols=Cols[1],
+             ylim=c(0,0.4), axes=FALSE,
+             xlab="", ylab=expression(tau~~("-")))
+  smoothplot(Date, Gapfraction.mean, data=df1, kgam=18, add=TRUE, pointcols=alpha(Cols[2],0.5),
+             linecols=Cols[2])
+  timeseries_axis(TRUE)
+  axis(2)
+  box()
+  legend("bottomleft", c(expression("Diffuse only"~(tau[d])),"All data"), pch=19, col=rev(Cols), bty='n')
   
-  with(dfa, {
-    
-    plot(Date, LAI, pch=19, ylim=c(0.8,2))
-    addpoly(Date, LAIpred+2*LAIpred_SE,LAIpred - 2*LAIpred_SE)
-    lines(Date, LAIpred)
-    
-  })
-  
-  arrows(x0=flushingdates(), x1=flushingdates(), y0=2, y1=1.9, length=0.05)
 }
 
 
 
-
-
-# 
-# 
-# figure_litter <- function(lidLAIlitter){
-#   da <- summaryBy(. ~ Date + treatment, FUN=mean, data=dLAIlitter, keep.names=TRUE)
-#   
-#   da$laprod <- with(da, 30.5 * (dLAI+dLAIlitter.mean)/ndays)
-#   da$lit <- with(da, 30.5 * dLAIlitter.mean/ndays)
-#   
-#   par(mar=c(3,5,2,2), cex.lab=1.1,tcl=0.2,las=1)
-#   with(subset(da, treatment == "ambient"), plot(Date, laprod, type='l', col="blue",
-#                                                 axes=FALSE,xlab="",
-#                                                 ylab=expression("Leaf or litter production"~(m^2~m^-2~mon^-1)),
-#                                                 ylim=c(-0.05,0.8)))
-#   with(subset(da, treatment == "elevated"), lines(Date, laprod, col="red"))
-#   
-#   with(subset(da, treatment == "ambient"), lines(Date, lit, col="blue", lty=5))
-#   with(subset(da, treatment == "elevated"), lines(Date, lit, col="red", lty=5))
-#   abline(h=0, col="darkgrey")
-#   axis(2)
-#   box()
-#   timeseries_axis()
-#   l <- legend("topleft", c("Leaf production","Litter production"), lty=c(1,5), bty='n')
-#   legend(l$rect$left + l$rect$w, l$rect$top, 
-#          c(expression(a*italic(C)[a]),expression(e*italic(C)[a])),
-#          col=my_co2cols(), lty=1, bty='n')
-#   
-# }
 
 
 

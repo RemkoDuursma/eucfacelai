@@ -37,15 +37,15 @@ to.pdf(figure7(subset(facegap_cloudy_byring, Date < maxdate),
        filename="output/figures/Figure7.pdf",
        width=10, height=8)
 
-to.pdf(figureSI3(litring, subset(facegap_cloudy_byring, Date < maxdate)),
+to.pdf(figureSI1(litring, subset(facegap_cloudy_byring, Date < maxdate)),
        filename="output/figures/FigureSI1.pdf",
        width=5, height=8)
 
-to.pdf(figureSI1(flatcan_byring),
+to.pdf(figureSI2(flatcan_byring),
        filename="output/figures/FigureSI2.pdf",
        width=5, height=5)
 
-to.pdf(figureSI2(subset(facegap_cloudy_byring, Date < maxdate), subset(facegap_all_byring, Date < maxdate)),
+to.pdf(figureSI3(subset(facegap_cloudy_byring, Date < maxdate), subset(facegap_all_byring, Date < maxdate)),
        filename="output/figures/FigureSI3.pdf",
        width=8, height=5)
 
