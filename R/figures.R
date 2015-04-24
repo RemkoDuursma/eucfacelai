@@ -393,6 +393,7 @@ figureSI2 <- function(df){
                 xlim=c(0.8,2), ylim=c(0.8,2)))
   abline(0,1)
   predline(lm(LAI.PAR.mean ~ LAI, data=df), lty=5)
+  box()
   
 }
 
