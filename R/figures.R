@@ -227,7 +227,7 @@ figure6 <-  function(df){
 }
 
 
-figure7 <- function(df){
+figure7 <- function(df, facesoilwater, faceraindaily, airt){
     
   xin <- 0.02 # for panel label x inset
   
