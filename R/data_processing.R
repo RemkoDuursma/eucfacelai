@@ -1,4 +1,7 @@
 
+# pers. comm. David Ellsworth.
+get_sla <- function()52.6
+
 get_ramp <- function(){
   ramp <- read.csv("data/ramp_co2-data.csv", stringsAsFactors = FALSE)
   ramp$DateTime <- as.POSIXct(ramp$Date.time, format="%d/%m/%Y %H:%M", tz="UTC")

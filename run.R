@@ -42,9 +42,9 @@ facegap_cloudy_byring <- subsetFACEPARbyring(facegap_cloudy_byring,
                                       maxSD=0.03)
 
 # Litter fall.
-litter <- make_litter(SLA=52.6)
+litter <- make_litter(SLA=get_sla())
 litter_byCO2 <- agglitter(litter)
-litring <- make_litter(SLA=52.6,what="byring")
+litring <- make_litter(SLA=get_sla(),what="byring")
 
 # Find calibration constant, from 2013 drought.
 calib <- calibrateToDrought(facegap_cloudy_byring)$calib
