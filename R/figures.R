@@ -264,8 +264,10 @@ figure7 <- function(df, facesoilwater, faceraindaily, airt){
   box()
   plotlabel("(b)","topleft", inset.x=xin)
   
-  arrows(x0=flushingdates(), x1=flushingdates(), y0=0.015, y1=0.01,
-         length=0.05)
+#   arrows(x0=flushingdates(), x1=flushingdates(), y0=0.015, y1=0.01,
+#          length=0.05)
+  segments(x0=flushingdates()-10, x1=flushingdates()+7,
+           y0=0.014, y1=0.014, lwd=2) 
   
   # panel c
   par(mar=c(1.5,7,1.5,6))
