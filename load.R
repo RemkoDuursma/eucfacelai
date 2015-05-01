@@ -14,6 +14,7 @@ library(gplots)
 library(mgcv)
 library(stringr)
 
+
 if(packageVersion('HIEv') < '0.6.4')
   stop("Please update the HIEv package!")
 

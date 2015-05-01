@@ -20,15 +20,11 @@ m2 <- lmer(LAI ~ treatment*Time + (1|Ring), data=df)
 Anova(m2)
 
 # LAI anomaly
-df <- facegap_cloudy_byring
-df$Time <- as.factor(df$Date - min(df$Date))
-m3 <- lmer(LAIanomaly ~ treatment*Time + (1|Ring), data=df)
-Anova(m3)
 
 # LAI production
 df <- dLAIlitter
 df$Time <- as.factor(df$Date - min(df$Date))
-df$leafprod <- with(df, dLAI + dLAI.mean)
+df$leafprod <- with(df, dLAI + dLAIlitter.mean)
 m4 <- lmer(leafprod ~ treatment*Time + (1|Ring), data=df)
 Anova(m4)
 

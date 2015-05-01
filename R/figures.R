@@ -157,8 +157,8 @@ figure4 <- function(df){
   
   abline(h=0, lty=5)
   abline(0,-1)
-  predline(lm(Y ~ X, data=df, subset=dLAI>0), col=Cols[2])
-  predline(lm(Y ~ X, data=df, subset=dLAI<0), col=Cols[1])
+  predline(lm(Y ~ X, data=dfup), col=Cols[2])
+  predline(lm(Y ~ X, data=dfdown), col=Cols[1])
   box()
   
   l <- legend("bottomright", c(expression(Delta*LAI < 0),expression(Delta*LAI > 0)), 
