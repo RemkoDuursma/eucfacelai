@@ -2,8 +2,6 @@
 library(plyr)
 library(dplyr)
 library(HIEv)
-library(doBy)
-library(plantecophys)
 library(canopyphoto)
 library(plotrix)
 library(RColorBrewer)
@@ -13,6 +11,8 @@ library(Hmisc)
 library(gplots)
 library(mgcv)
 library(stringr)
+
+library(rmarkdown)
 
 
 if(packageVersion('HIEv') < '0.6.4')
