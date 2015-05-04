@@ -5,6 +5,7 @@ source("R/derivSimulCI.R")
 
 
 maxdate <- as.Date("2015-3-1")
+# maxdate <- as.Date(today())
 
 to.pdf(figure1(subset(facegap_cloudy_byring,Date < maxdate), ramp),
        filename="output/figures/Figure1.pdf",
@@ -43,7 +44,7 @@ to.pdf(figureSI1(litring, subset(facegap_cloudy_byring, Date < maxdate)),
 
 to.pdf(figureSI2(flatcan_byring),
        filename="output/figures/FigureSI2.pdf",
-       width=5, height=5)
+       width=8, height=4)
 
 to.pdf(figureSI3(subset(facegap_cloudy_byring, Date < maxdate), subset(facegap_all_byring, Date < maxdate)),
        filename="output/figures/FigureSI3.pdf",

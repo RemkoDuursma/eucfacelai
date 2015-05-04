@@ -80,6 +80,14 @@ flatcan_byring <- add_PARLAI_to_flatcan(facegap_cloudy_byring,flatcan_byring)
 
 flatcan_byCO2 <- agg_flatcan(flatcan, by="CO2")
 
+# find optimal k for flat canopy photos
+Ok <- function(k){
+  flatcan_byring <- agg_flatcan(flatcan, by="Ring", k)
+  flatcan_byring <- add_PARLAI_to_flatcan(facegap_cloudy_byring,flatcan_byring)
+  with(flatcan_byring, sum((LAI - LAI.PAR.mean)^2))
+}
+kopt <- optimize(Ok, c(0.2, 0.8))$minimum
+
 # Dataset with litter fall comparison to changes in LAI during same period.
 dLAIlitter <- make_dLAI_litter(facegap_cloudy_byring, litter, kgam=20)
 
@@ -101,8 +109,11 @@ m1 <- paste0("Most recent day with usable cloudy data: ",max(facegap_cloudy_byri
 message(m1)
 
 
+# Make manuscript
+render("manuscript.Rmd", "word_document", "manuscript.docx")
 
-
+# Make md like this:
+# render("manuscript.Rmd", md_document())
 
 
 

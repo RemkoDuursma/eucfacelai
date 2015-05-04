@@ -382,18 +382,37 @@ figureSI1 <- function(litring, df){
   
 }  
 
+
 figureSI2 <- function(df){
   
-  par(mar=c(5,5,2,2), cex.axis=0.9)
+  par(mfrow=c(1,2), mar=c(5,5,2,2), cex.axis=0.9)
+  plotit <- function(df){
+    with(df, plot(LAI, LAI.PAR.mean, 
+                  ylab=expression(LAI~from~tau[d]~~(m^2~m^-2)),
+                  xlab=expression(LAI~from~canopy~photos~~(m^2~m^-2)),
+                  pch=19, col=my_ringcols()[Ring],
+                  panel.first=predline(lm(LAI.PAR.mean ~ LAI, data=df), lty=5),
+                  xlim=c(0.8,2.2), ylim=c(0.8,2.2)))
+    abline(0,1)
+    
+    ds <- split(df, df$Ring)
+    for(i in 1:6)predline(lm(LAI.PAR.mean ~ LAI, data=ds[[i]]), col=my_ringcols()[i], poly=FALSE)
+
+    box()
+  }
   
-  with(df, plot(LAI, LAI.PAR.mean, 
-                ylab=expression(LAI~from~tau[d]~~(m^2~m^-2)),
-                xlab=expression(LAI~from~canopy~photos~~(m^2~m^-2)),
-                pch=19, col=my_co2cols()[treatment],
-                xlim=c(0.8,2), ylim=c(0.8,2)))
-  abline(0,1)
-  predline(lm(LAI.PAR.mean ~ LAI, data=df), lty=5)
-  box()
+  plotit(df)
+  plotlabel("(a)", "topleft")
+  
+  legend("bottomright", as.character(1:6), lty=1, bty='n', pch=19,
+         col=my_ringcols(), title="Ring", cex=0.8, lwd=1)
+  
+  # Panel b : optimized
+  df <- agg_flatcan(flatcan, by="Ring", k=kopt)
+  df <- add_PARLAI_to_flatcan(facegap_cloudy_byring,df)
+  
+  plotit(df)
+  plotlabel("(b)", "topleft")
   
 }
 
