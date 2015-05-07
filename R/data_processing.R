@@ -76,7 +76,7 @@ add_PARLAI_to_flatcan <- function(df1, df2){
     x2[[i]]$LAI.PAR.mean <- ap$y
   }
   
-  df2 <- rbind.fill(x2)
+  df2 <- bind_rows(x2)
 return(df2)
 }
 
