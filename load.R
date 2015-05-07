@@ -1,20 +1,13 @@
 
-# library(plyr)
-library(dplyr)
-library(HIEv)
-library(canopyphoto)
-library(plotrix)
-library(RColorBrewer)
-library(doBy)
-library(plantecophys)
-library(plotBy)
-library(scales)
-library(Hmisc)
-library(gplots)
-library(mgcv)
-library(stringr)
 
-library(rmarkdown)
+library(dplyr)    # summarize, group_by
+library(HIEv)
+library(doBy)     # summaryBy
+library(gplots)   # plotCI
+library(mgcv)     # gam
+library(stringr)  # str_trim
+
+library(rmarkdown) # render
 
 
 if(packageVersion('HIEv') < '0.6.4')
