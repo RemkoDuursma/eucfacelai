@@ -4,10 +4,11 @@ my_co2cols <- function()c("blue","red")
 
 my_ringcols <- function(){
   
-  reds <- brewer.pal(5,"Reds")[3:5]
-  blues <- brewer.pal(5,"Blues")[3:5]
+#   reds <- brewer.pal(5,"Reds")[3:5]
+#   blues <- brewer.pal(5,"Blues")[3:5]
+#   c(reds[1],blues[1:2],reds[2:3],blues[3])
   
-  c(reds[1],blues[1:2],reds[2:3],blues[3])
+  c("#FB6A4A","#6BAED6","#3182BD","#DE2D26","#A50F15","#08519C")
 }
 
 timeseries_axis <- function(labels=TRUE){

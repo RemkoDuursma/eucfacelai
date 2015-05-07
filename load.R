@@ -1,10 +1,12 @@
 
-library(plyr)
+# library(plyr)
 library(dplyr)
 library(HIEv)
 library(canopyphoto)
 library(plotrix)
 library(RColorBrewer)
+library(doBy)
+library(plantecophys)
 library(plotBy)
 library(scales)
 library(Hmisc)
