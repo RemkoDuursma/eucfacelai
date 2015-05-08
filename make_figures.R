@@ -4,8 +4,8 @@ source("R/figures.R")
 source("R/derivSimulCI.R")
 
 
-maxdate <- as.Date("2015-3-1")
-# maxdate <- as.Date(today())
+#maxdate <- as.Date("2015-3-1")
+maxdate <- as.Date(today())
 
 to.pdf(figure1(subset(facegap_cloudy_byring,Date < maxdate), ramp),
        filename="output/figures/Figure1.pdf",
