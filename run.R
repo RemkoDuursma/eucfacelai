@@ -7,6 +7,9 @@ source("load.R")
 # 30minutely radiation data
 facepar <- makeFACEPAR(uploadnew=FALSE)
 
+# One bad row
+facepar$PAR_Den_2_Avg[facepar$Ring == "R4" & facepar$Date == as.Date("2013-9-8")] <- NA
+
 # Rainfall data, averaged across 3 rain gauges.
 facerain <- get_rain("rawmean")
 faceraindaily <- get_rain("daily")
