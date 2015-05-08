@@ -25,6 +25,7 @@ Remko A. Duursma^1^, Teresa E. Gimeno^1,2^, Matthias M. Boer^1^, Kristine Y. Cro
 
 ```{r echo=FALSE, message=FALSE}
 library(knitr)
+
 load("cache/lai_workspace.RData")
 source("load.R")
 
@@ -38,7 +39,7 @@ library(reporttools)
 pval <- function(...)formatPval(..., includeEquality=TRUE)
 
 # Number of digits in printing of numbers
-options(scipen = 1, digits = 2)
+options(scipen = 1, digits = 3)
 
 # Some definitions of constants
 .gambase <- 18
@@ -122,7 +123,7 @@ Leaf area index (*L*) is an important ecosystem attribute underlying productivit
 Direct effects of eC~a~ on vegetation processes include an enhancement of photosynthesis and productivity, a decrease in stomatal conductance and leaf-level water use and an increase in the water-use efficiency [@Ainsworth2005; @Ellsworth2012]. Although numerous studies have been conducted on the response of physiology and plant growth to eC~a~, very few of these inform the response of steady-state *L* to eC~a~, because it requires a sufficiently mature forest to be exposed to free air CO~2~ enrichment (FACE) [@Norby2011]. Increased carbon availability through enhanced photosynthesis under eC~a~ does not necessarily lead to increases in *L*. Out of the six forest FACE studies that have been carried out worldwide, only broad-leaved deciduous aspen stands (in monoculture or mixed with birch) and needle-leaved evergreen pine stands showed increased *L* in response to eC~a~ *L* [@Norby2011], although positive responses to eC~a~ in terms of productivity were observed at all six sites [@Norby2005]. Interestingly, Norby and Zak [-@Norby2011] found a negative correlation between pre-treatment *L* and the responsiveness to eC~a~, leading to the prediction that stands with low *L* will show a larger response to eC~a~. 
 
 \
-In ecosystems where water availability limits productivity, we could expect eC~a~ to further affect *L* [@Donohue2009], since eC~a~ reduces stomatal conductance, and hence water use per unit of leaf area [@Warren2010] leading to increased soil water availability. These ‘water savings’ can be expected to lead to an increase in *L* in water-limited ecosystems, consistent with a tight coupling of *L* with precipitation across gradients [@Ma2013; @Jin2013; @Hatton2008]. In support of this prediction, Donohue et al. [-@Donohue2013] attributed the observed global increase in *L* in arid and semi-arid areas over the last 30 years to rising C~a~. Based on the same water-savings principle, we predict that *L* should increase under eC~a~ in water-limited forests. 
+In ecosystems where water availability limits productivity, we could expect eC~a~ to further affect *L* [@Donohue2009], since eC~a~ reduces stomatal conductance, and hence water use per unit of leaf area [@Warren2010] leading to increased soil water availability. These ‘water savings’ can be expected to lead to an increase in *L* in water-limited ecosystems, consistent with a tight coupling of *L* with precipitation across gradients [@Ma2013; @Jin2013; @Ellis2008]. In support of this prediction, Donohue et al. [-@Donohue2013] attributed the observed global increase in *L* in arid and semi-arid areas over the last 30 years to rising C~a~. Based on the same water-savings principle, we predict that *L* should increase under eC~a~ in water-limited forests. 
 
 \
 Most previous studies on *L* responses to environmental drivers have focused on the seasonal, mostly temperature and light-driven, timing of *L* dynamics observed in N-hemisphere forests [e.g. @Richardson2012; @Savoy2015] whereas *L* responses to fluctuations in water availability are qualitatively well-known [@Pook1985; @Specht1989; @Whitehead2004; @Pook1997; @Limousin2009], but poorly quantified. The strong relationship between *L* and rainfall observed across Australia [@Ellis2008; @Specht1989; @Broich2014], and other continents [@Donohue2013; @Grier1977; @Jin2013] represents the adaptation of vegetation structure and density to long-term climate conditions. However, local *L* is also highly responsive to water availability at shorter time scales [@Pook1985; @Pook1997], driven by the dynamics of leaf turnover [@Misson2011] and leaf flushing and expansion [@Muller2011], which are both highly responsive to soil water availability. Understanding dynamics of *L* in response to water availability and its potential interactions with C~a~ is crucial if we are to improve phenology models in water-limited ecosystems [@Misson2011].
@@ -171,7 +172,7 @@ $$\tau_d = 2\int_0^{\pi/2} e^{-LG(\theta)/cos(\theta)}sin(\theta)cos(\theta)d\th
 where $\theta$ is the solar zenith angle, G($\theta$) is the foliage projection function in the direction of the beam [-@Campbell2000]. Because we assumed a spherical leaf angle distribution, G($\theta$) = 0.5 [@Stenberg2006]. We solved numerically for *L* in Eq. 2, using a smooth integration over $\theta$, yielding $L_\tau$. 
 
 \
-To overcome violations in the assumptions underlying Eq. 2, we calibrated *L_\tau* against cumulative litter production during a drought period in 2013 (indicated in Fig. 1). During this period (14 July 2013 – 12 Nov 2013), no leaf growth occurred but *L* decreased steadily (and thus $\tau_d$ increased steadily, see Fig. 1). During the drought, only 42 mm precipitation was recorded, which was the second driest July-October period recorded at a nearby (<2km) weather station since 1881 (compared to a long-term average of 188 mm). A total of n=11 days with sufficiently diffuse conditions to estimate $\tau_d$  were available during this period. Cumulative *L* leaf litter production ($P_L$, expressed in units of *L*) should match the observed decrease in *L* estimated from canopy transmittance. We calibrated Eq. 3,
+To overcome violations in the assumptions underlying Eq. 2, we calibrated $L_\tau$ against cumulative litter production during a drought period in 2013 (indicated in Fig. 1). During this period (14 July 2013 – 12 Nov 2013), no leaf growth occurred but *L* decreased steadily (and thus $\tau_d$ increased steadily, see Fig. 1). During the drought, only 42 mm precipitation was recorded, which was the second driest July-October period recorded at a nearby (<2km) weather station since 1881 (compared to a long-term average of 188 mm). A total of n=11 days with sufficiently diffuse conditions to estimate $\tau_d$  were available during this period. Cumulative *L* leaf litter production ($P_L$, expressed in units of *L*) should match the observed decrease in *L* estimated from canopy transmittance. We calibrated Eq. 3,
 
 \
 (3) 
@@ -188,14 +189,22 @@ We took advantage of the detailed timeseries of *L* estimates from canopy transm
 (4) 
 $$L_p = -log(\tau_p)/k$$
 
-where $\tau_p$ canopy transmission estimated from canopy photos. We assumed that the extinction coefficient *k* = 0.5, following Macfarlane et al. [-@Macfarlane2007] recommendation for eucalypt forests. Without further calibration, the two estimates were reasonably well correlated, though on average $L_\tau$ was `r 100*(with(flatcan_byring, mean(LAI.PAR.mean / LAI))-1)` higher than $L_p$ (Fig. SI2, $R^2$=`r glance(lmphoto)$r.squared`, RMSE=`r glance(lmphoto)$sigma`) (Fig. S2). We also estimated the extinction coefficient that minimized the difference between the two estimates of *L* (Fig. S2), giving *k* = `r kopt`. These comparisons are encouraging because the photos measure *L* near the zenith (+/- 15°), while $L_\tau$ is integrated over the sky hemisphere (Eq. 3), weighted towards the zenith. 
+where $\tau_p$ canopy transmission estimated from canopy photos. We assumed that the extinction coefficient *k* = 0.5, following Macfarlane et al. [-@Macfarlane2007] recommendation for eucalypt forests. Without further calibration, the two estimates were reasonably well correlated, though on average $L_\tau$ was `r 100*(with(flatcan_byring, mean(LAI.PAR.mean / LAI))-1)`% higher than $L_p$ (Fig. SI2, $R^2$=`r glance(lmphoto)$r.squared`, RMSE=`r glance(lmphoto)$sigma`) (Fig. S2). We also estimated the extinction coefficient that minimized the difference between the two estimates of *L* (Fig. S2), giving *k* = `r kopt`. These comparisons are encouraging because the photos measure *L* near the zenith (+/- 15°), while $L_\tau$ is integrated over the sky hemisphere (Eq. 3), weighted towards the zenith. 
 
 
 ## Data analysis
-We used generalized additive models (gam) for all analyses of *L* and $\tau_d$ timeseries [@Wood2006], using the *mgcv* package in R [@RCT2015]. For all time-series, we used a base of `r .gambase` when fitting the gams, which resulted in biologically realistic smoothed *L* dynamics. In all fits, we used the FACE ring as a random effect, except when we analysed average *L* across all rings (Fig. 7). We estimated the derivative of the fitted gam, including confidence intervals for the derivative, following Simpson [@Simpson2014]. For comparison between *L* from photos and PAR transmittance, we used simple linear regression. To test for effects of C~a~ treatment on $L_\tau$ and litter production, we used linear-mixed effects models with FACE ring as the random effect, and C~a~ treatment and date as a factor.
+We used generalized additive models (GAM) for all analyses of *L* and $\tau_d$ timeseries [@Wood2006], using the *mgcv* package in R [@RCT2015]. A GAM is a semi-parametric fitting method that allows the estimation of smoothed trends in the data, including confidence intervals. In all fitted GAMs, we used a cubic regression spline. For the smoothed term in the model (days since start of experiment), we used up to `r .gambase` degrees of freedom, which resulted in biologically realistic smoothed *L* dynamics. Random effects were included to account for the grouping of data within FACE rings, except when we analysed average *L* across all rings (Fig. 7). For Fig. 7, we estimated the derivative of the fitted GAM, including confidence intervals for the derivative, following Simpson [-@Simpson2014; see also @Curtis2014]. 
+
+\
+For comparison between *L* from photos and PAR transmittance, we used simple linear regression. To test for effects of C~a~ treatment on $L_\tau$ and litter production, we used linear-mixed effects models with FACE ring as the random effect, and C~a~ treatment and date as factor variables.
 
 \
 To assess effects of eC~a~ on $L_\tau$, we accounted for pre-treatment differences in canopy structure, as follows. The average $L_\tau$ over the entire period was well correlated with basal area (BA) measured prior to the onset of the eC~a~ treatment across the FACE rings (Fig. 3). Because the EucFACE woodland is well established, the differences in BA are not due to C~a~ treatment effects, but instead represent natural variation within the woodland. We then calculated the deviation of actual $L_\tau$ from the fitted relationship with BA shown in Fig. 3, to yield a ‘*L* anomaly’. This way, we effectively used BA as a covariate in the analysis to account for pre-treatment variation. 
+
+\
+The entire analysis presented in this paper will be made available as a *git* repository (http://www.github.com/remkoduursma/XXXXX), published on figshare (doi:XXXX). The repository includes the processed data needed to run the analyses and figures (*raw data needs to be shared too, have to figure out how though!*).
+
+
 
 # Results
 Canopy transmittance ($\tau_d$) varied between `r min(df$Gapfraction.mean)` and `r max(df$Gapfraction.mean)`, with much temporal variation, and substantial absolute differences between the individual FACE rings (Fig. 1).  However, temporal trends were very similar between the rings. Since the understorey comprises mostly grasses and forbs, and the PAR sensors were installed at 1 m height, this variation is due to the overstorey trees only. 
@@ -258,25 +267,73 @@ We found no clear annual pattern in dynamics of *L*, instead, a net increase in 
 # Acknowledgments {.unnumbered}
 We thank Steven Wohl, Vinod Kumar, Craig Barton and Craig McNamara for maintaining the FACE site and its wide array of sensors, and Andrew Gherlenda, Julia Cooke and Catherine Beattie for significant efforts in separating and weighing the litter samples. We also thank Gerry Devine for support in data management. EucFACE is an initiative supported by the Australian Government through the Department of Industry and Science in partnership with the University of Western Sydney. Facilities and instrumentation at EucFACE were assembled as an initiative of the Australian Government as part of the Nation-building Economic Stimulus Package.
 
-# Figure captions {.unnumbered}
+# Figures {.unnumbered}
+
+```{r}
+options(scipen = 1, digits = 5)
+```
+
+```{r fig.width=8, fig.height=6, echo=FALSE, message=FALSE}
+figure1(subset(facegap_cloudy_byring,Date < maxdate), ramp)
+```
 
 **Figure 1**. (a) Target [CO~2~] (C~a~) relative to the ambient C~a~ treatment at the EucFACE. The elevated C~a~ treatment proceeded in steps of 30 ppm, reaching +150 ppm in Feb. 2013. (b) Canopy transmittance ($\tau_d$) estimated from continuous time series of photosynthetically active radition (PAR) below and above the canopy, for highly diffuse conditions (F~diff~ > 0.98) only. The solid lines are smoothed time series (with 95% confidence intervals) for each FACE ring (using a generalized additive model). Lines in blue colours denote ambient C~a~ treatment, red colours are elevated C~a~ (+150 ppm). Note steep increase in $\tau_d$ for Ring 6 around November 2014, due to an insect attack that resulted in near defoliation of the canopy. The arrow labelled ‘calibration’ indicates a drought period when $\tau_d$ steadily increased, used to calibrate *L* estimates to litter production (see Methods). 
 
+```{r fig.width=4, fig.height=4, echo=FALSE, message=FALSE}
+figure2(ba)
+```
+
 **Figure 2**. Average $L_\tau$ over the entire study period plotted against the basal area (sum of stem cross-sectional areas) of the FACE rings ($R^2$ = `r glance(balm)$r.squared`, *L* = `r tidy(balm)$estimate[1]` + `tidy(balm)$estimate[2]` BA). This relationship was used to calculate the *L* anomaly in Fig. 3, as the difference between *L* predicted from this regression and the actual $L_\tau$ at any given time.
+
+```{r fig.width=8, fig.height=4, echo=FALSE, message=FALSE}
+figure3(subset(facegap_cloudy_byring, Date < maxdate))
+```
 
 **Figure 3**.Time series of *L* after correcting for plot-to-plot differences in basal area (BA). At every time point, the *L* anomaly was calculated as $L_\tau$ minus *L* fitted from the relationship with BA shown in Fig. 2. Each symbol is a value for a FACE ring, but the smooth curve (fitted with a generalized additive model) takes into account the random plot effect. Note that the 95% confidence always overlap, denoting no significant treatment effect at $\alpha$ = 0.05, except for a brief period in late 2014. This difference was due to an insect attack that led to partial defoliation of the canopy in one FACE ring (see Fig. 1).
 
+```{r fig.width=6, fig.height=4, echo=FALSE, message=FALSE, echo=FALSE, message=FALSE}
+figure4(dLAIlitter)
+```
+
 **Figure 4**. Comparison of absolute changes in *L* ($\Delta L$) to litter production (in units of *L*), calculated for each litter collection period (approx. monthly). To calculate $\Delta L$, we fit a generalized additive model fitted to data from each FACE ring separately, and estimated the change in L during the litter collection period (and expressed as monthly changes, by accounting for the differences in actual lengths of litter collection periods). Green symbols indicate periods during which $\Delta L$ was positive (net leaf production), orange symbols when $\Delta L$ was negative (net leaf loss). Solid black lines are 1:1 lines, coloured lines regression lines with 95% confidence intervals. The strong positive correlation between litter production and $\Delta L$ during periods of net leaf production indicates that during leaf flushing, old leaves are actively shed.
+
+```{r fig.width=8, fig.height=4, echo=FALSE, message=FALSE}
+figure5(dLAIlitter)
+```
 
 **Figure 5**. Timeseries of litter production and estimated gross leaf production rate. Leaf production rate was estimated as the sum of the net change in *L* and litter production (converted to a per area basis using specific leaf area estimates, see Methods). Error bars are omitted for clarity. We did not find any differences in litter production or leaf production between C~a~ treatments (see Results).
 
+```{r fig.width=8, fig.height=4, echo=FALSE, message=FALSE}
+figure6(ba)
+```
+
 **Figure 6**.  (a) Total litter production (converted from data in Fig. 5 to an annual estimate) for each of the FACE rings plotted against mean $L_\tau$ during the entire litter collection period. The ratio of mean $L_\tau$ to annual litter production gives the mean leaf life span. Grey lines indicate leaf lifespan isolines. (b) Calculated leaf lifespan for the six FACE rings shows a significant difference between C~a~ treatments (p `r pval(LLtest$p.value)`).
+
+```{r fig.width=10, fig.height=8, echo=FALSE, message=FALSE}
+figure7(subset(facegap_cloudy_byring, Date < maxdate),
+               subset(facesoilwater, Date < maxdate),
+               subset(faceraindaily, Date < maxdate),
+               subset(airt, Date < maxdate))
+```
 
 **Figure 7**. Dynamics of *L* in relation to environmental drivers. (a) Smoothed time series of $L_\tau$ averaged across all six FACE rings. (b) From panel (a), we calculated the daily change in *L* (dL/dt), including the 95% confidence interval for the derivative of the time series. Green indicates significant positive dL/dt, red indicates significant negative dL/dt (at $\alpha$ = 0.05). Four of the five significant positive increases corresponded to approximate dates of commencement of leaf flushing (horizontal lines) observed in the field (except the third brief significant increase). (c) Soil water content estimated from over 0-80 cm soil depth interval, averaged across all sensors and all rings (blue line), and daily rainfall (black lines).  (d) Average daily air temperature with a fitted smoother.
 
+```{r fig.width=5, fig.height=8, echo=FALSE, message=FALSE}
+figureSI1(litring, subset(facegap_cloudy_byring, Date < maxdate))
+```
+
 **Figure S1**. Increase in gapfraction ($\tau_d$) and total litter production during the 2013 drought, calculated for each ring separately. Blue colours are ambient, red colours eleveated C~a~. (a) The change in  $\tau_d$ and its 95% confidence interval was calculated from the slope of linear regression of $\tau_d$ with time (number of days since 8 July 2013). (b) Mean litter production for each ring. The confidence interval was calculated based on he 8 litter traps in each ring. Note the overlapping confidence intervals for all rings.
 
+```{r fig.width=8, fig.height=4, echo=FALSE, message=FALSE}
+figureSI2(flatcan_byring)
+```
+
 **Figure S2**. Correlation between *L* estimated from diffuse canopy transmittance ($L_\tau$) and from canopy photos (L~p~). Solid line is a 1:1 line, dashed line a regression line across all data (with the shading indicating the 95% confidence interval), and the colored lines regressions per plot across dates. (a) Estimates of L~p~ with the extinction coefficient (*k*) set to 0.5, as recommended by MacFarlane et al. [-@Macfarlane2007] ($L_\tau$ = `r tidy(lmcanphot)$estimate[1]` + `r tidy(lmcanphot)$estimate[2]` L~p~, R^2^ = `r glance(lmcanphot)$r.squared`, p `r pval(glance(lmcanphot)$p.value)`), (b) Estimates of L~p~ with *k* optimized to minimize the difference between L~p~ and $L_\tau$ ($L_\tau$ = `r tidy(lmcanphot2)$estimate[1]` + `r tidy(lmcanphot2)$estimate[2]`).
+
+```{r fig.width=8, fig.height=5, echo=FALSE, message=FALSE}
+figureSI3(subset(facegap_cloudy_byring, Date < maxdate), 
+          subset(facegap_all_byring, Date < maxdate))
+```
 
 **Figure S3.** Comparison of canopy transmittance ($\tau$) during highly diffuse conditions (F~diff~ > 0.98), or using all PAR data without filtering. Shown are daily average $\tau$ for all six FACE rings (symbols), with a smoother (generalized additive model with 95% confidence intervals). Note the much lower $\tau$ during southern hemisphere winter when using all data compared to diffuse only. This difference arises due to low solar angles, which lead to higher attenuation of the direct beam as a result of a longer path length through the canopy.
 
