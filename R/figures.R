@@ -96,7 +96,7 @@ figure2 <- function(df){
   par(mar=c(5,5,2,2), cex.lab=1.2,xaxs="i", yaxs="i")
   with(df, plot(BA, LAI.mean, pch=19, cex=1.2, col=my_ringcols(),
                 xlab=expression(Basal~area~~(m^2~ha^-1)),
-                ylab=expression(bar(LAI)~~(m^2~m^-2)),
+                ylab=expression(bar(italic(L))~~(m^2~m^-2)),
                 panel.first=predline(lm(LAI.mean ~ BA, data=ba)),
                 ylim=c(1.2,2.4), xlim=c(18,40)))
   legend("bottomright", as.character(1:6), pch=19, bty='n',
@@ -108,7 +108,7 @@ figure2 <- function(df){
 figure3 <- function(df,
                     xlim=NULL, ylim=NULL,
                     legend=TRUE,
-                    ylab=expression(LAI~anomaly~(m^2~m^-2)),
+                    ylab=expression(italic(L)~anomaly~(m^2~m^-2)),
                     cex.lab=1.1, cex.axis=0.8, cex.legend=0.7,
                     legendwhere="topleft",
                     setpar=TRUE,axisline=3,
@@ -123,7 +123,8 @@ figure3 <- function(df,
   if(is.null(xlim))xlim <- with(df, c(min(Date)-15, max(Date)+15))
   if(is.null(ylim))ylim <- c(-0.8,0.8)
   
-  smoothplot(Date, LAIanomaly, g=treatment, R="Ring", ylim=ylim, xlim=xlim, ylab=ylab, xlab="",
+  smoothplot(Date, LAIanomaly, g=treatment, R="Ring", ylim=ylim, xlim=xlim, 
+             ylab=ylab, xlab="",
              data=df, kgam=18, axes=FALSE,
              polycolor=c(alpha("royalblue",0.7),alpha("pink",0.7)))
   
@@ -152,7 +153,7 @@ figure4 <- function(df){
                xlab=expression(Leaf~litter~production~~(m^2~m^-2~mon^-1)),
                xlim=c(0,0.6),
                ylim=c(-0.3,0.5),
-               ylab=expression(Delta*LAI~from~tau[d]~(m^2~m^-2~mon^-1))))
+               ylab=expression(Delta*italic(L)~from~tau[d]~(m^2~m^-2~mon^-1))))
   with(dfdown, points(X, Y, pch=c(17,24)[treatment],
                   col=Cols[LAIchange]))
   
@@ -162,7 +163,8 @@ figure4 <- function(df){
   predline(lm(Y ~ X, data=dfdown), col=Cols[1])
   box()
   
-  l <- legend("bottomright", c(expression(Delta*LAI < 0),expression(Delta*LAI > 0)), 
+  l <- legend("bottomright", c(expression(Delta*italic(L) < 0),
+                               expression(Delta*italic(L) > 0)), 
               pt.bg=Cols, bty='n', cex=0.8, pch=c(24,21))
   
   legend(l$rect$left - l$rect$w, l$rect$top, 
@@ -203,7 +205,7 @@ figure6 <-  function(df){
   
   with(df, plot(LAI.mean.litterperiod, LAIlitter_annual, pch=19, cex=1.2, col=my_ringcols(),
                 ylab=expression(Litter~production~~(m^2~m^-2~yr^-1)),
-                xlab=expression(bar(LAI)~~(m^2~m^-2)),
+                xlab=expression(bar(italic(L))~~(m^2~m^-2)),
                 panel.first={
                   for(z in seq(0.5,2,by=0.1))abline(0,z,col="grey", lty=5)
                 },
@@ -219,7 +221,7 @@ figure6 <-  function(df){
   axis(1, at=1:2, labels=c(expression(a*C[a]), expression(e*C[a])))
   
   tt <- t.test(LL ~ treatment, data=ba)
-  pval <- format.pval(tt$p.value)
+  pval <- format(tt$p.value, digits=3)
   legend("topleft", legend=bquote(italic(p) == .(pval)),
          bty="n")
   
@@ -241,7 +243,7 @@ figure7 <- function(df, facesoilwater, faceraindaily, airt){
   # panel a
   smoothplot(Date, LAI, data=dfa, kgam=18, pointcols="dimgrey", linecols="black", 
              xlim=xl,
-             ylab=expression(LAI~~(m^2~m^-2)),
+             ylab=expression(italic(L)~~(m^2~m^-2)),
              ylim=c(1,2.4), axes=FALSE)
   timeseries_axis(FALSE)
   axis(2)
@@ -257,7 +259,7 @@ figure7 <- function(df, facesoilwater, faceraindaily, airt){
   
   plotCIdate(g, df, axes=FALSE,xlab="",xlim=xl,
        ylim=c(-0.016, 0.016),
-       ylab=expression(dLAI/dt~(m^2~m^-2~d^-1)))
+       ylab=expression(d*italic(L)/dt~(m^2~m^-2~d^-1)))
   abline(h=0)
   
   timeseries_axis(FALSE)
@@ -273,8 +275,6 @@ figure7 <- function(df, facesoilwater, faceraindaily, airt){
   with(subset(facesoilwater, Date > xl[1]), 
        plot(Date, VWC, type='l', lwd=2, xlim=xl, ylim=c(0,0.4), axes=FALSE,
             col="cornflowerblue",
-            #panel.first=abline(h=seq(0,0.4,by=0.05), col="grey", lty=5),
-            #panel.first=abline(h=0.16, col="blue", lwd=2),
             ylab=expression(SWC~~(m^3~m^-3))))
 
   timeseries_axis(FALSE)
@@ -320,17 +320,6 @@ figureSI1 <- function(litring, df){
   df1$numDate <- with(df1, as.numeric(Date - min(Date)))
   df1$taud_0 <- with(df1, ave(Gapfraction.mean, Ring, FUN=function(x)x[which.min(Date)]))
   df1$deltagapfrac <- with(df1, Gapfraction.mean - taud_0)
-  
-  # with(df1, plot(Date, Gapfraction.mean, pch=19, col=my_ringcols()))
-  # 
-  # 
-  # library(plotBy)
-  # plotBy(Gapfraction.mean ~ as.numeric(Date-min(Date))|Ring, 
-  #        enhance="lm", data=df1)
-  
-  #   lm0 <- lm(deltagapfrac ~ Ring + numDate, data=df1)
-  #   lmtaud <- lm(deltagapfrac ~ Ring + Ring:numDate,
-  #                data=df1)
   
   # Get CI on increase in gap fraction from linear regression
   lms <- lapply(split(df1, df1$Ring),
@@ -386,15 +375,16 @@ figureSI2 <- function(df){
   par(mfrow=c(1,2), mar=c(5,5,2,2), cex.axis=0.9)
   plotit <- function(df){
     with(df, plot(LAI, LAI.PAR.mean, 
-                  ylab=expression(LAI~from~tau[d]~~(m^2~m^-2)),
-                  xlab=expression(LAI~from~canopy~photos~~(m^2~m^-2)),
+                  ylab=expression(italic(L)~from~tau[d]~~(m^2~m^-2)),
+                  xlab=expression(italic(L)~from~canopy~photos~~(m^2~m^-2)),
                   pch=19, col=my_ringcols()[Ring],
                   panel.first=predline(lm(LAI.PAR.mean ~ LAI, data=df), lty=5),
                   xlim=c(0.8,2.2), ylim=c(0.8,2.2)))
     abline(0,1)
     
     ds <- split(df, df$Ring)
-    for(i in 1:6)predline(lm(LAI.PAR.mean ~ LAI, data=ds[[i]]), col=my_ringcols()[i], poly=FALSE)
+    for(i in 1:6)predline(lm(LAI.PAR.mean ~ LAI, data=ds[[i]]), 
+                          col=my_ringcols()[i], poly=FALSE)
 
     box()
   }
@@ -423,15 +413,18 @@ figureSI3 <- function(df1, df2){
   dfa2 <- summaryBy(Gapfraction.mean ~ Date, data=df2, FUN=mean, keep.names=TRUE)
   
   par(mar=c(3,5,2,2), tcl=0.2, cex.lab=1.1, mar=c(3,5,2,2))
-  smoothplot(Date, Gapfraction.mean, data=df2, kgam=18, pointcols=alpha(Cols[1],0.5), linecols=Cols[1],
+  smoothplot(Date, Gapfraction.mean, data=df2, kgam=18, 
+             pointcols=alpha(Cols[1],0.5), linecols=Cols[1],
              ylim=c(0,0.4), axes=FALSE,
              xlab="", ylab=expression(tau~~("-")))
-  smoothplot(Date, Gapfraction.mean, data=df1, kgam=18, add=TRUE, pointcols=alpha(Cols[2],0.5),
+  smoothplot(Date, Gapfraction.mean, data=df1, kgam=18, 
+             add=TRUE, pointcols=alpha(Cols[2],0.5),
              linecols=Cols[2])
   timeseries_axis(TRUE)
   axis(2)
   box()
-  legend("bottomleft", c(expression("Diffuse only"~(tau[d])),"All data"), pch=19, col=rev(Cols), bty='n')
+  legend("bottomleft", c(expression("Diffuse only"~(tau[d])),"All data"), 
+         pch=19, col=rev(Cols), bty='n')
   
 }
 
