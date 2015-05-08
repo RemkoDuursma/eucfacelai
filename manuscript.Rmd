@@ -29,6 +29,10 @@ library(knitr)
 load("cache/lai_workspace.RData")
 source("load.R")
 
+source("R/functions-figures.R")
+source("R/figures.R")
+source("R/derivSimulCI.R")
+
 library(broom)
 library(lme4)
 library(lmerTest)
