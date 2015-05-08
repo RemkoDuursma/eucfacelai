@@ -394,7 +394,12 @@ get_rosTair <- function(){
   d <- downloadTOA5(c("ROS_WS","Table05min"), maxnfiles=500)
   
   d <- as.data.frame(dplyr::summarize(group_by(d, Date),
-                                      Tair=mean(AirTC_Avg, na.rm=TRUE)
+                                      Tair=mean(AirTC_Avg, na.rm=TRUE),
+                                      Tmin=min(AirTC_Avg, na.rm=TRUE),
+                                      Tmax=max(AirTC_Avg, na.rm=TRUE),
+                                      RH=mean(RH, na.rm=TRUE),
+                                      RHmin=min(RH, na.rm=TRUE),
+                                      RHmax=max(RH, na.rm=TRUE)
                                       ))
 return(d)  
 }

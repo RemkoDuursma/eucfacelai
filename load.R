@@ -6,6 +6,7 @@ library(doBy)     # summaryBy
 library(gplots)   # plotCI
 library(mgcv)     # gam
 library(stringr)  # str_trim
+library(Hmisc)    # approxExtrap
 
 library(rmarkdown) # render
 

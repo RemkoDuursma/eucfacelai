@@ -264,9 +264,7 @@ figure7 <- function(df, facesoilwater, faceraindaily, airt){
   axis(2)
   box()
   plotlabel("(b)","topleft", inset.x=xin)
-  
-#   arrows(x0=flushingdates(), x1=flushingdates(), y0=0.015, y1=0.01,
-#          length=0.05)
+
   segments(x0=flushingdates()-10, x1=flushingdates()+7,
            y0=0.014, y1=0.014, lwd=2) 
   
@@ -293,7 +291,6 @@ figure7 <- function(df, facesoilwater, faceraindaily, airt){
   par(mar=c(5,7,0,6))
   smoothplot(Date, Tair, data=subset(airt, Date > xl[1]), 
              kgam=25, pointcols=alpha("grey",0.8), linecols="black",axes=FALSE,
-#              panel.first=abline(h=seq(0,30,by=2), col="grey", lty=5),
              ylab=expression(T[air]~~(degree*C)), 
              xlab="",
              ylim=c(0,30), xlim=xl)
