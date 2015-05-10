@@ -13,7 +13,7 @@ return(ramp)
 
 get_solvars <- function(){
   
-  downloadCSV(c("P0037","SOLVARS"))
+  downloadCSV(c("P0037","SOLVARS"), tryoffline=TRUE)
   
 }
 
@@ -350,9 +350,9 @@ get_rain <- function(how=c("daily", "raw", "rawmean")){
   how <- match.arg(how)
   
   # Rain.
-  R1 <- downloadTOA5(filename="FACE_R1_T1_Rain")
-  R3 <- downloadTOA5(filename="FACE_R3_T1_Rain")
-  R4 <- downloadTOA5(filename="FACE_R4_T1_Rain")
+  R1 <- downloadTOA5(filename="FACE_R1_T1_Rain", tryoffline=TRUE)
+  R3 <- downloadTOA5(filename="FACE_R3_T1_Rain", tryoffline=TRUE)
+  R4 <- downloadTOA5(filename="FACE_R4_T1_Rain", tryoffline=TRUE)
   R1$Ring <- "R1"
   R3$Ring <- "R3"
   R4$Ring <- "R4"
@@ -370,7 +370,7 @@ get_rain <- function(how=c("daily", "raw", "rawmean")){
     names(rainagg)[3] <-"Rain"
     rainw <- reshape(rainagg, direction="wide", timevar="Ring", idvar="Date")
     
-    ros <- downloadTOA5("ROS_WS_Table15")
+    ros <- downloadTOA5("ROS_WS_Table15", tryoffline=TRUE)
     rosrain <- summaryBy(Rain_mm_Tot ~ Date, FUN=sum, data=ros, keep.names=TRUE)
     names(rosrain)[2] <- "Rain.ROS"
     
@@ -391,7 +391,7 @@ get_rain <- function(how=c("daily", "raw", "rawmean")){
 
 get_rosTair <- function(){
   
-  d <- downloadTOA5(c("ROS_WS","Table05min"), maxnfiles=500)
+  d <- downloadTOA5(c("ROS_WS","Table05min"), maxnfiles=500, tryoffline=TRUE)
   
   d <- as.data.frame(dplyr::summarize(group_by(d, Date),
                                       Tair=mean(AirTC_Avg, na.rm=TRUE),
@@ -415,7 +415,7 @@ get_soilwater <- function(how=c("mean","byring")){
     rowMeans(dfr, na.rm=TRUE)
   }
   
-  soilw <- downloadTOA5("SoilVars", maxnfiles=500)
+  soilw <- downloadTOA5("SoilVars", maxnfiles=500, tryoffline=TRUE)
   soilw$Ring <- as.factor(paste0("R",  str_extract(soilw$Source, "[0-9]")))
   
   if(how == "mean"){
@@ -438,7 +438,7 @@ getROSrain <- function(getnewdata=TRUE,
   
   if(getnewdata){
     
-    rosmet <- downloadTOA5("ROS_WS_Table15min", maxnfiles=200)
+    rosmet <- downloadTOA5("ROS_WS_Table15min", maxnfiles=200, tryoffline=TRUE)
     rosmet <- rosmet[!duplicated(rosmet$DateTime),]
     
     rosmet$Date <- as.Date(rosmet$DateTime)
@@ -602,7 +602,7 @@ makeFACEPAR <- function(uploadnew=FALSE){
   }
   
   # Get previously compiled PARAGG from HIEv
-  PARAGG <- downloadCSV("P0037_RA_PARAGG")
+  PARAGG <- downloadCSV("P0037_RA_PARAGG", tryoffline=TRUE)
   # Delete _v1
   PARAGG <- PARAGG[!grepl("_v1", PARAGG$Source),]
   
@@ -627,7 +627,7 @@ makePARAGG <- function(startdate, enddate=as.Date(Sys.time())){
   
   # AirVars
   airvars <- downloadTOA5(c("FACE","airvars"), startDate=startdate, endDate=enddate,
-                          maxnfiles=200)
+                          maxnfiles=200, tryoffline=TRUE)
   airvars$Ring <- addRing(airvars)
   
   airvarsagg <- dplyr::summarize(group_by(airvars,DateTime=nearestTimeStep(DateTime,30),Ring),
@@ -638,7 +638,7 @@ makePARAGG <- function(startdate, enddate=as.Date(Sys.time())){
   
   # General
   general <- downloadTOA5(c("FACE","general"), startDate=startdate, endDate=enddate,
-                          maxnfiles=200)
+                          maxnfiles=200, tryoffline=TRUE)
   general$Ring <- addRing(general)
   
   generalagg <- dplyr::summarize(group_by(general,DateTime=nearestTimeStep(DateTime,30),Ring),
@@ -648,7 +648,7 @@ makePARAGG <- function(startdate, enddate=as.Date(Sys.time())){
   
   # Eddy
   eddy <- downloadTOA5("Eddyflux_slow_met", startDate=startdate, endDate=enddate,
-                       maxnfiles=200, allowedExtensions=c(".dat"))
+                       maxnfiles=200, allowedExtensions=c(".dat"), tryoffline=TRUE)
   
   # glitch fix, hopefully remove soon
   eddysept <- readTOA5("c:/hievdata/EddyFlux_slow_met_20140930.dat")
