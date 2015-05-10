@@ -11,7 +11,7 @@ library(Hmisc)    # approxExtrap
 library(rmarkdown) # render
 
 
-if(packageVersion('HIEv') < '0.6.4')
+if(packageVersion('HIEv') < '0.7')
   stop("Please update the HIEv package!")
 
 # set path for HIEv
