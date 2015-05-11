@@ -33,12 +33,6 @@ source("R/functions-figures.R")
 source("R/figures.R")
 source("R/derivSimulCI.R")
 
-library(broom)
-library(lme4)
-library(lmerTest)
-library(car)
-library(reporttools)
-
 # shortcut to formatPval
 pval <- function(...)formatPval(..., includeEquality=TRUE)
 
