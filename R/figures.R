@@ -67,7 +67,7 @@ figure1 <- function(df, ramp){
   
   smoothplot(Date, Gapfraction.mean, g=Ring, data=df, k=18,axes=FALSE,
              ylim=c(0,0.4),
-             xlab="",xlim=xl,
+             xlab="",xlim=xl, npred=201,
              ylab=expression(tau[d]~~("-")),
              pointcols=rep("grey",8), linecols=my_ringcols())
   

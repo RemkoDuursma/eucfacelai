@@ -180,6 +180,7 @@ smoothplot <- function(x,y,g=NULL,data,
                        xlab=NULL, ylab=NULL,
                        polycolor=alpha("lightgrey",0.7),
                        plotit=TRUE, add=FALSE,
+                       npred=101,
                        ...){
   
   fittype <- match.arg(fittype)
@@ -282,7 +283,7 @@ smoothplot <- function(x,y,g=NULL,data,
     for(i in 1:length(fits)){
       
       if(fittype == "gam"){
-        nd <- data.frame(X=seq(hran[[i]][1], hran[[i]][2], length=101))
+        nd <- data.frame(X=seq(hran[[i]][1], hran[[i]][2], length=npred))
         if(!inherits(fits[[i]], "try-error")){
           p <- predict(fits[[i]],nd,se.fit=TRUE)
           addpoly(nd$X, p$fit-2*p$se.fit, p$fit+2*p$se.fit, col=polycolor[i])
