@@ -103,6 +103,41 @@ lmcanphot2 <- lm(LAI.PAR.mean ~ LAI, data=flatcan_byring2)
 
 ```
 
+<!--- 
+TO DO:
+Answers to the following questions (max 50 words per answer). Please take time to prepare your answers to these questions; this information may be used to determine if the manuscript should progress to stage two of the review process.
+
+What is the scientific question you are addressing?
+What is/are the key finding(s) that answers this question?
+What are the three most recently published papers that are relevant to this question?
+Why is this work important and timely?
+Does your paper falls within the scope of GCB; what biological AND global change aspects does it address?
+Provide information about suggested and non-preferred reviewers including their area of research and how it relates to your paper. Also provide justification for why you do not prefer certain reviewers.
+Provide justification for any non-conformance to author guidelines and/or formatting
+
+1. Title page
+      i. Title: this should be concise and informative            
+      ii. Running head: a shortened title with no more than 45 characters, including spaces
+      iii. List of authors
+      iv. Institute or laboratory of origin: Where authors have different addresses, use numbered superscripts to refer to each address provided
+      v. Corresponding author: include their telephone, fax and email details
+      vi. Keywords: 6 – 10 key words or short phrases to enable retrieval and indexing by searching techniques. Authors are encouraged to include scientific names, common names, and pseudonyms that are not mentioned in the title.
+      vii. Type of Paper
+      
+      7. Conclusions
+Only Reviews may have conclusions sections. All other article types should incorporate any conclusions into the Discussion section, and should not include a “Conclusions” subheading.
+
+      13. Figure captions
+Figure captions should be listed one after the other, as part of the text document, separate from the figure files. Do not include captions below the figures. Enough detail should be given so that the figure can be understood without reference to the text. In the full-text online edition of the journal, figure captions may be truncated in abbreviated links to the full screen version. Therefore, the first 100 characters of any caption should inform the reader of key aspects of the figure. If you wish to publish figures in color online and grayscale in print, figure captions should be appropriate for both color and grayscale versions; do not refer to colors in the figure.
+
+15. Supporting information
+Appendicies will not be published in print, but may be submitted as Supporting Information to be published in the online version of the article. These files are not included in the typeset manuscript, but are downloadable and fully searchable from the HTML version of the article. This material should be submitted with the original manuscript in order that it can be included in the review process. The conclusions of an Author's manuscripts should not depend on the material supplied in Supporting Information. Supporting information will be made available in exactly the same form as originally provided; it will not be copyedited or typeset. All supporting information must be referred to in the manuscript with a leading capital S (e.g., fig. S2 for the second supporting information figure). Authors should include a Supporting Information section after the references in the main article. This section consists of short captions for each supporting information file. Full captions should be included within the online supporting information file. Please see Wiley-Blackwell's Supporting Information Guidelines for more information.
+
+Figure formatting
+http://goo.gl/iARuKc
+
+
+-->
 
 
 
