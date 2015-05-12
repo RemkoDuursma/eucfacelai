@@ -1,14 +1,21 @@
 
+source("R/utils.R")
 
-library(dplyr)    # summarize, group_by
-library(HIEv)
-library(doBy)     # summaryBy
-library(gplots)   # plotCI
-library(mgcv)     # gam
-library(stringr)  # str_trim
-library(Hmisc)    # approxExtrap
+Library(dplyr)    # summarize, group_by
+Library(HIEv)
+Library(doBy)     # summaryBy
+Library(gplots)   # plotCI
+Library(mgcv)     # gam
+Library(stringr)  # str_trim
+Library(Hmisc)    # approxExtrap
 
-library(rmarkdown) # render
+Library(rmarkdown) # render
+
+Library(broom)    # tidy; glance
+Library(lme4)     # lmer
+Library(lmerTest) # anova.merMod
+Library(car)      # Anova
+Library(reporttools)  # formatPval
 
 
 if(packageVersion('HIEv') < '0.7')
