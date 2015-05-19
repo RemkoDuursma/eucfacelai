@@ -1,6 +1,5 @@
 ---
-title: Canopy leaf area of an evergreen Eucalyptus woodland does not respond to elevated
-  atmospheric [CO~2~] but tracks water availability
+title: Canopy leaf area of an evergreen *Eucalyptus* woodland does not respond to elevated atmospheric [CO~2~] but tracks water availability
 author: ''
 date: ''
 output:
@@ -32,6 +31,12 @@ source("load.R")
 source("R/functions-figures.R")
 source("R/figures.R")
 source("R/derivSimulCI.R")
+
+library(broom)
+library(lme4)
+library(lmerTest)
+library(car)
+library(reporttools)
 
 # shortcut to formatPval
 pval <- function(...)formatPval(..., includeEquality=TRUE)
@@ -103,41 +108,6 @@ lmcanphot2 <- lm(LAI.PAR.mean ~ LAI, data=flatcan_byring2)
 
 ```
 
-<!--- 
-TO DO:
-Answers to the following questions (max 50 words per answer). Please take time to prepare your answers to these questions; this information may be used to determine if the manuscript should progress to stage two of the review process.
-
-What is the scientific question you are addressing?
-What is/are the key finding(s) that answers this question?
-What are the three most recently published papers that are relevant to this question?
-Why is this work important and timely?
-Does your paper falls within the scope of GCB; what biological AND global change aspects does it address?
-Provide information about suggested and non-preferred reviewers including their area of research and how it relates to your paper. Also provide justification for why you do not prefer certain reviewers.
-Provide justification for any non-conformance to author guidelines and/or formatting
-
-1. Title page
-      i. Title: this should be concise and informative            
-      ii. Running head: a shortened title with no more than 45 characters, including spaces
-      iii. List of authors
-      iv. Institute or laboratory of origin: Where authors have different addresses, use numbered superscripts to refer to each address provided
-      v. Corresponding author: include their telephone, fax and email details
-      vi. Keywords: 6 – 10 key words or short phrases to enable retrieval and indexing by searching techniques. Authors are encouraged to include scientific names, common names, and pseudonyms that are not mentioned in the title.
-      vii. Type of Paper
-      
-      7. Conclusions
-Only Reviews may have conclusions sections. All other article types should incorporate any conclusions into the Discussion section, and should not include a “Conclusions” subheading.
-
-      13. Figure captions
-Figure captions should be listed one after the other, as part of the text document, separate from the figure files. Do not include captions below the figures. Enough detail should be given so that the figure can be understood without reference to the text. In the full-text online edition of the journal, figure captions may be truncated in abbreviated links to the full screen version. Therefore, the first 100 characters of any caption should inform the reader of key aspects of the figure. If you wish to publish figures in color online and grayscale in print, figure captions should be appropriate for both color and grayscale versions; do not refer to colors in the figure.
-
-15. Supporting information
-Appendicies will not be published in print, but may be submitted as Supporting Information to be published in the online version of the article. These files are not included in the typeset manuscript, but are downloadable and fully searchable from the HTML version of the article. This material should be submitted with the original manuscript in order that it can be included in the review process. The conclusions of an Author's manuscripts should not depend on the material supplied in Supporting Information. Supporting information will be made available in exactly the same form as originally provided; it will not be copyedited or typeset. All supporting information must be referred to in the manuscript with a leading capital S (e.g., fig. S2 for the second supporting information figure). Authors should include a Supporting Information section after the references in the main article. This section consists of short captions for each supporting information file. Full captions should be included within the online supporting information file. Please see Wiley-Blackwell's Supporting Information Guidelines for more information.
-
-Figure formatting
-http://goo.gl/iARuKc
-
-
--->
 
 
 
@@ -151,7 +121,7 @@ Canopy leaf area, quantified by the leaf area index (*L*), is a crucial driver o
 
 # Introduction
 
-Leaf area index (*L*) is an important ecosystem attribute underlying productivity of vegetation [@Reich2012], and a key variable in land surface models [@Kala2013; @Walker2014]. *L* is a dynamic canopy property, as it is generally responsive to variation in water and nutrient availability, as demonstrated in experiments [@Herbert1995; @Hubbard2004; @White2010] and observational studies across rainfall gradients [@Ellis2008; @Iio2013; @Jin2013].  Ecosystem models generally predict that *L* increases with eC~a~, largely in response to  due to increased net carbon uptake [@DeKauwe2014; @Hatton1992; @Kergoat2002; @Zhu2012]. This potential change in *L* is of central importance for the net effect of eC~a~ on water, CO~2~ and energy fluxes as it may modify or even reverse the direct physiological responses to C~a~ [@Tor-ngern2015; @Murray2012]. Despite its importance, little empirical evidence is available on the response of *L* to eC~a~ in mature forests [@Norby2011].
+Leaf area index (*L*) is an important ecosystem attribute underlying productivity of vegetation [@Reich2012], and a key variable in land surface models [@Kala2013; @Walker2014]. *L* is a dynamic canopy property, as it is generally responsive to variation in water and nutrient availability, as demonstrated in experiments [@Herbert1995; @Hubbard2004; @White2010] and observational studies across rainfall gradients [@Ellis2008; @Iio2013; @Jin2013].  Ecosystem models generally predict that *L* increases with eC~a~, largely in response to increased net carbon uptake [@DeKauwe2014; @Hatton1992; @Kergoat2002; @Zhu2012]. This potential change in *L* is of central importance for the net effect of eC~a~ on water, CO~2~ and energy fluxes as it may modify or even reverse the direct physiological responses to C~a~ [@Tor-ngern2015; @Murray2012]. Despite its importance, little empirical evidence is available on the response of *L* to eC~a~ in mature forests [@Norby2011].
 
 \
 Direct effects of eC~a~ on vegetation processes include an enhancement of photosynthesis and productivity, a decrease in stomatal conductance and leaf-level water use and an increase in the water-use efficiency [@Ainsworth2005; @Ellsworth2012]. Although numerous studies have been conducted on the response of physiology and plant growth to eC~a~, very few of these inform the response of steady-state *L* to eC~a~, because it requires a sufficiently mature forest to be exposed to free air CO~2~ enrichment (FACE) [@Norby2011]. Increased carbon availability through enhanced photosynthesis under eC~a~ does not necessarily lead to increases in *L*. Out of the six forest FACE studies that have been carried out worldwide, only broad-leaved deciduous aspen stands (in monoculture or mixed with birch) and needle-leaved evergreen pine stands showed increased *L* in response to eC~a~ *L* [@Norby2011], although positive responses to eC~a~ in terms of productivity were observed at all six sites [@Norby2005]. Interestingly, Norby and Zak [-@Norby2011] found a negative correlation between pre-treatment *L* and the responsiveness to eC~a~, leading to the prediction that stands with low *L* will show a larger response to eC~a~. 
@@ -169,10 +139,10 @@ We estimated *L* from near-continuous measurements of canopy transmittance in a 
 # Materials and Methods
 
 ## Site description and experimental design
-The EucFACE experiment is located on an ancient alluvial floodplain about 5 km from the Hawkesbury River in western Sydney (Australia) at 30 m a.s.l. elevation (33^o^ 37'S, 150^o^ 44'E). It is located within a remnant patch  of native Cumberland Plain woodland [@Tozer2003]. The vegetation, maintained in this location since the 1880’s, retains some old-growth trees and some re-growth vegetation though it has been undisturbed for ca. 70 years. The site is characterized by a humid temperate-subtropical transitional climate with a mean annual temperature of 17 ^o^C and mean annual precipitation (P) of 800 mm (Bureau of Meteorology, station 067105 in Richmond, NSW Australia; http://www.bom.gov.au). The potential evapotranspiration (PET) is ca. 1500mm (*to be refined!*), giving a ratio of P/PET of ca. 0.53 (*quite dry - details to be added*).
+The EucFACE experiment is located on an ancient alluvial floodplain in western Sydney (Australia, 33^o^ 37'S, 150^o^ 44'E, 30 m a.s.l.). The site is part of a remnant patch  of native Cumberland Plain woodland [@Tozer2003]. The vegetation consists of a native woodland undisturbed for ca. 70 years and maintained in this location since the 1880’s. The site is characterized by a humid temperate-subtropical transitional climate with a mean annual temperature of 17 ^o^C and mean annual precipitation (P) of 800 mm (Bureau of Meteorology, station 067105 in Richmond, NSW Australia; http://www.bom.gov.au). The potential evapotranspiration (PET) is ca. 1500mm (*to be refined!*), giving a ratio of P/PET of ca. 0.53 (*quite dry - details to be added*).
 
 \
-The soil at the site is a loamy sand in the Clarendon Formation [@Barton2010; @Isbell2002], a slightly-acid, low-organic C, well-drained soil. The soil surface is a loamy sand with > 75% sand content, and from ca. 50 to 300 cm depth, soils are a sandy clay loam with > 30% silt and clay. The soil is nutrient poor, and a strong limitation of P on tree growth at the site has recently been demonstrated [@Crous2015]. Groundwater depth is 12.6 – 12.9 m below the soil surface. The woodland ranges in density from 600-1000 trees ha^-1^. The vegetation consists of an open woodland (basal area before treatment, BA = `r mean(ba$BA)`, SE = `r sd(ba$BA)/sqrt(6)` m^2^ha^-1^, n = 6 plots) with a single major canopy-forming tree (*Eucalyptus tereticornis* Sm.) with a minor component of *E. amplifolia* Naudin. The understory stratum is composed mainly of grass species dominated by *Microlaena stipoides* (Labill.) R.Br., with lower densities of forbs of *Commelina cyanea* R.Br., *Lobelia purpurascens* R.Br., *Dichondra repens* J.R.Forst. & G.Forst and occasional shrubs of *Breynia oblongifolia* (Mull.Arg.) Mull.Arg. and *Bursaria spinosa* Cav.
+At the site, the soil at the surface is a loamy sand with > 75% sand content, and from ca. 50 to 300 cm depth, soils are a sandy clay loam with > 30% silt and clay. The soil is nutrient poor, and a strong limitation of P on tree growth at the site has recently been demonstrated [@Crous2015]. Groundwater depth is 12.6 – 12.9 m below the soil surface. The vegetation consists of an open woodland (600-1000 trees ha^-1^, basal area before treatment, BA = `r mean(ba$BA)`, SE = `r sd(ba$BA)/sqrt(6)` m^2^ha^-1^, n = 6 plots). There is one single dominant species (*Eucalyptus tereticornis* Sm.) with some scattered individuals of *E. amplifolia* Naudin. The understory stratum is  dominated by the grass *Microlaena stipoides* (Labill.) R.Br., with lower densities of forbs of *Commelina cyanea* R.Br., *Lobelia purpurascens* R.Br., *Dichondra repens* J.R.Forst. & G.Forst and occasional shrubs of *Breynia oblongifolia* (Mull.Arg.) Mull.Arg. and *Bursaria spinosa* Cav.
 
 \
 Within the EucFACE site, there are six 25-m diameter circular plots (designated hereafter as ‘rings’). Each ring comprises 32 vent pipes in a cylindrical frame extending above the tree canopy to 28 m high. Each vertical pipe is subtended by a control valve and is connected to a circular plenum [@Hendrey1999] through which a computer-controlled system modulates release of diluted CO~2~ into the vegetation according to a proportional-integral-differential type of algorithm [@Lewin2009]. The vegetation within three randomly selected rings was exposed to a CO~2~ mole fraction (C~a~) higher than ambient starting in September 2012, whereas the other three rings were identical to the CO~2~ treatment rings in infrastructure and instrumentation but received ambient C~a~, and are used as control plots. The target diurnal C~a~ for the rings exposed to eC~a~ was 150 $\mu$mol CO~2~ mol^-1^ above ambient C~a~ in full operation mode. However, C~a~ was increased gradually for six months at a rate of ca. 30 $\mu$mol CO~2~ mol^-1^ month^-1^ until full operation mode was reached (Fig. 1a).
@@ -186,9 +156,8 @@ In the following, we use the term ‘leaf’ area index (*L*) although the canop
 ## Leaf litter production
 In each ring, 8 litter cloth baskets with an area of 0.1979 m^2^ were installed at 0.5m above the forest floor. Litter was collected approximately monthly, and leaves separated from other components such as twigs, bark, seeds, insect frass, etc. Litter production was converted to units of *L* using an estimate of specific leaf area (SLA) determined from 329 leaves collected from the tree canopies from May 2012 to May 2014 (`r get_sla()` cm^2^ g^-1^, SE=2.14). We did not find a significant effect of C~a~ treatment on SLA (Ellsworth, unpublished data; Ben Moore, unpublished data).
 
-
 ## *L* from diffuse transmittance
-In each of the six FACE rings, 3 photosynthetically active radiation (PAR) sensors (LI-190, Li-cor, Lincoln, NE, U.S.A.) were installed on metal posts at 1 m height similar to the approach used by Norby et al. [-@Norby2003]. Data were logged on data loggers (CR3000, Campbell Scientific Australia, Townsville, Australia) at minutely intervals from 15 Oct. 2012, and automatically uploaded every day to a data management system. At each ring, another PAR sensor was installed above the canopy, on a mast extending above a scaffolding tower in the centre of each ring at 23.5 m height. All PAR data were averaged in 30 min time steps. At a nearby site (within 2 km), we measured the diffuse fraction (F~diff~) of PAR at 30 min time step using a BF5 Sunshine sensor (Delta-T Instruments, Cambridge, UK) installed on a tower extending above the canopy. For determination of *L*, we used only highly diffuse conditions, where F~diff~ > 0.98. We further trimmed the data by excluding low solar elevation (< 10°), because, for unknown reasons, measured canopy transmittance was more variable at these low solar angles. Finally canopy transmittance was calculated for every 30-min time step as,
+In each of the six FACE rings, 3 photosynthetically active radiation (PAR) sensors (LI-190, Li-cor, Lincoln, NE, U.S.A.) were installed on metal posts at 1 m height. Data were logged on data loggers (CR3000, Campbell Scientific Australia, Townsville, Australia) at minutely intervals from 15 Oct. 2012, and automatically uploaded every day to a data management system. At each ring, another PAR sensor was installed above the canopy, on a mast extending above a scaffolding tower in the centre of each ring at 23.5 m height. All PAR data were averaged in 30 min time steps. At a nearby site (within 2 km), we measured the diffuse fraction (F~diff~) of PAR at 30 min time step using a BF5 Sunshine sensor (Delta-T Instruments, Cambridge, UK) installed on a tower extending above the canopy. For determination of *L*, we used only highly diffuse conditions, where F~diff~ > 0.98. We further trimmed the data by excluding low solar e levation (< 10°), because, for unknown reasons, measured canopy transmittance was more variable at these low solar angles. Finally canopy transmittance was calculated for every 30-min time step as,
 
 \
 (1) 
@@ -223,7 +192,7 @@ We took advantage of the detailed timeseries of *L* estimates from canopy transm
 (4) 
 $$L_p = -log(\tau_p)/k$$
 
-where $\tau_p$ canopy transmission estimated from canopy photos. We assumed that the extinction coefficient *k* = 0.5, following Macfarlane et al. [-@Macfarlane2007] recommendation for eucalypt forests. Without further calibration, the two estimates were reasonably well correlated, though on average $L_\tau$ was `r 100*(with(flatcan_byring, mean(LAI.PAR.mean / LAI))-1)`% higher than $L_p$ (Fig. SI2, R^2^=`r glance(lmphoto)$r.squared`, RMSE=`r glance(lmphoto)$sigma`) (Fig. S2). We also estimated the extinction coefficient that minimized the difference between the two estimates of *L* (Fig. S2), giving *k* = `r kopt`. These comparisons are encouraging because the photos measure *L* near the zenith (+/- 15^o^), while $L_\tau$ is integrated over the sky hemisphere (Eq. 3), weighted towards the zenith. 
+where $\tau_p$ canopy transmission estimated from canopy photos. We assumed that the extinction coefficient *k* = 0.5, following Macfarlane et al. [-@Macfarlane2007] recommendation for eucalypt forests. Without further calibration, the two estimates were reasonably well correlated, though on average $L_\tau$ was `r 100*(with(flatcan_byring, mean(LAI.PAR.mean / LAI))-1)`% higher than $L_p$ (Fig. SI2, R^2^=`r glance(lmphoto)$r.squared`, RMSE=`r glance(lmphoto)$sigma`) (Fig. S2). We also estimated the extinction coefficient that minimized the difference between the two estimates of *L* (Fig. S2), giving *k* = `r kopt`. These comparisons are encouraging because the photos measure *L* near the zenith (+/- 15^o^), while $L_\tau$ is integrated over the sky hemisphere (Eq. 2), weighted towards the zenith. 
 
 
 ## Data analysis
@@ -238,8 +207,6 @@ To assess effects of eC~a~ on $L_\tau$, we accounted for pre-treatment differenc
 \
 The entire analysis presented in this paper will be made available as a *git* repository (http://www.github.com/remkoduursma/XXXXX), published on figshare (doi:XXXX). The repository includes the raw data needed to run the analyses, the source code for the analysis and manuscript (which was written in markdown, with the rmarkdown package in Rstudio, which uses Pandoc for conversion).
 
-
-
 # Results
 Canopy transmittance ($\tau_d$) varied between `r min(df$Gapfraction.mean)` and `r max(df$Gapfraction.mean)`, with much temporal variation, and substantial absolute differences between the individual FACE rings (Fig. 1).  However, temporal trends were very similar between the rings. Since the understorey comprises mostly grasses and forbs, and the PAR sensors were installed at 1 m height, this variation is due to the overstorey trees only. 
 
@@ -247,8 +214,7 @@ Canopy transmittance ($\tau_d$) varied between `r min(df$Gapfraction.mean)` and 
 An outbreak of psyllids (*Cardiaspina* sp.), a tiny sap-feeding insect, resulted in rapid loss of canopy leaf area in one of the rings, starting in Sept. 2014 [for description of a similar outbreak in *Eucalyptus moluccana*, see @Hall2015]. This rapid decrease in *L* was evident in a quick increase in $\tau_d$ (Fig. 1). However, it recovered rapidly after rainfall in December 2014, resulting in a lower $\tau_d$ than before the insect attack. 
 
 \
-We found no differences in the *L* anomaly between the C~a~ treatments, as shown by consistent overlap of the the 95% confidence intervals of the generalized additive model  (thus, p > 0.05 at any timepoint, Fig. 3). A brief exception was the period where one of the rings was affected by an insect outbreak (see above). 
-A linear mixed-effects model with C~a~ and time as fixed effects, and FACE ring as a random effect also showed no significant effect of C~a~ on the *L* anomaly (p `r pval(LanomAOV[[3]][1])`). What difference between C~a~ treatments could we have reasonably detected? The average half-width of the confidence interval on the *L* anomaly (Fig. 4) was `r LanomCIamb` m^2^ m^-2^ for aC~a~, and `r LanomCIele` m^2^m^-2^ for the eC~a~ treatment. This means that, provided the within-treatment variance stays the same, we could detect a difference of `r LanomCIamb + LanomCIele` $m^2$ $m^{-2}$ (the sum of the half-width CI’s), or about a change of `r Ldetect`% over the mean *L* of the EucFACE (`r mean(ba$LAI.mean)` m^2^m^-2^).
+We found no differences in the *L* anomaly between the C~a~ treatments, as shown by consistent overlap of the the 95% confidence intervals of the generalized additive model  (thus, p > 0.05 at any timepoint, Fig. 3). A brief exception was the period where one of the rings was affected by an insect outbreak (see above). A linear mixed-effects model with C~a~ and time as fixed effects, and FACE ring as a random effect also showed no significant effect of C~a~ on the *L* anomaly (p `r pval(LanomAOV[[3]][1])`). What difference between C~a~ treatments could we have reasonably detected? The average half-width of the confidence interval on the *L* anomaly (Fig. 4) was `r LanomCIamb` m^2^m^-2^ for aC~a~, and `r LanomCIele` m^2^m^-2^ for the eC~a~ treatment. This means that, provided the within-treatment variance stays the same, we could detect a difference of `r LanomCIamb + LanomCIele` $m^2$ $m^{-2}$ (the sum of the half-width CI’s), or about a change of `r Ldetect`% over the mean *L* of the EucFACE (`r mean(ba$LAI.mean)` m^2^m^-2^).
 
 \
 The dynamics of $L_\tau$ were compared with litter fall, by estimating the absolute change in $L_\tau$ for every FACE ring, for every period when litter was collected. We did this by fitting a generalized additive model to $L_\tau$ for each ring separately (similar to shown for $\tau_d$ in Fig. 1), and calculating the change in $L_\tau$ for each period ($\Delta L_\tau$). Litter production correlated significantly with $\Delta L_\tau$ when the latter was separated into periods where $\Delta L_\tau$ > 0 (net leaf growth) and $\Delta L_\tau$ <  0 (net leaf loss) (Fig. 4). During periods of net leaf loss, we found a significant correlation (with a slope of `r tidy(lmlitdown)$estimate[2]`, SE = `r tidy(lmlitdown)$estimate[2]`, n = `r glance(lmlitdown)$df.residual+2`), close to the 1:1 line, as expected since no leaf growth was observed during any period where *L* was decreasing. During periods of net leaf growth, we found a significant correlation (with a slope of `r tidy(lmlitup)$estimate[2]`, SE = `r tidy(lmlitup)$std.error[2]`, n = `r glance(lmlitup)$df.residual+2`) between $\Delta L_\tau$ and litter production (Fig. 5). 
@@ -261,7 +227,6 @@ Next, we related P~L~ to average $L_\tau$ (during the litter collection period) 
 
 \
 Finally, we quantified the relationship between timing of leaf flushing and environmental drivers. During the `r nummon` month study period, we observed four leaf flushing events in the field, with one before estimates of $L_\tau$ were available (Fig. 7). These events occurred in spring and summer, with no clear annual cycle (Oct. 2012, Jan. 2013, Dec. 2013 and Jan. 2015). The dynamics of $L_\tau$ from the sensor record matched these events observed in the field quite well (Fig. 7a), as estimated from a generalized additive model fitted to the average $L_\tau$ across the six FACE rings. From the fitted model, we estimated the numerical derivative of *L* (dL/dt), as well as its confidence interval. All four leaf flushing events corresponded to significant positive dL/dt. One brief significant positive dL/dt (June 2013) did not correspond to an actual leaf flushing event, but it was small in magnitude. It is also obvious that every leaf flush event occurred shortly after a heavy rainfall event (Fig. 4 and 6), when the soil water content in the top 80 cm increased to ca. > 0.2 m^3^ m^-3^. Two periods of sustained decrease in *L* (red lines in Fig. 7b, during winter of 2013 and 2014) corresponded to periods of low soil water availability.
-
 
 # Discussion
 
@@ -277,11 +242,10 @@ A possible explanation for the lack of a *L* response to eC~a~ is that leaf grow
 \
 Despite a lack of response of canopy *L*, we did find a significantly longer leaf lifespan (LL) in eC~a~, consistent with our second hypothesis. We could not determine whether there was an interaction with water availability, since we estimated leaf turnover from mean *L* and total accumulated leaf litter (Fig. 6). Although LL was increased in eC~a~, this was not reflected in a difference in leaf litter production at any time point (Fig. 5), suggesting the change in LL reflects a small but significant shift in leaf retention, not related to decreased litter production during drought. There is little evidence from other FACE sites that LL is affected by eC~a~. Taylor et al. [-@Taylor2008] reported delayed autumn senescence in *Populus* in two FACE experiments (PopFACE and AspenFACE). Although this indicates the canopy stayed green longer in elevated C~a~, [@Gielen2001] reported faster turnover rate of leaves in elevated C~a~, leading to similar *L* in ambient C~a~ despite higher productivity. In contrast, Warren et al. [-@Warren2011] found increased senescence in eC~a~ at the ORNL FACE site (*Liquidambar styraciflua* plantation), in response to a combined drought and heat wave.
 
-##Continuous measurement of *L*
+## Continuous measurement of *L*
 Studying canopy leaf area index in an evergreen natural woodland poses unique challenges. Unlike in deciduous canopies, litter production cannot be used to estimate *L*, because leaf lifespan (LL) is unknown (instead, we used *L* and litter production to estimate LL). We can also not rely on leaf area estimates from allometric relationships with stem diameter or height, since these equations are not available for mature *E. tereticornis*, and would be useless anyway since *L* is highly variable temporally (Figs. 1, 7). We found that indirect estimates of *L* based on canopy transmittance were very reliable because relatively small temporal changes in *L* could be detected, indicating leaf flushing events after rainfall, increased litter production during drought, and an insect attack (Figs. 1, 5, 7). We do argue that the raw data must be filtered by diffuse conditions, as the spatial and within-day variance are negligible compared to periods of direct sunshine [@Chason1991; @Dufrene1995; @Nilson1999]. As expected, when we used unfiltered canopy transmittance data, the seasonal patterns in canopy transmittance were much more distinct (Fig. S3), because longer path lengths in the winter result in lower overall transmittance. Using diffuse PAR only avoids having to correct for these path length effects. 
 
 We used the opportunity provided by the high quality timeseries of *L* to test a simple photography-based method suggested by Macfarlane et al. [-@Macfarlane2007]. The two methods compared quite well (R^2^ = `r glance(lmcanphot)$r.squared`) (Fig. S2), suggesting the photography-based method can be reliably used in *Eucalyptus*-dominated woodlands to estimate *L*. 
-
 
 ## Litter production and dynamics of *L*
 We found a correlation between *L* dynamics and litter production, when the data were analyzed separately for periods of decreasing and increasing *L* (Fig. 4). As expected, during periods of decreasing *L*, the change in *L* was correlated with litter production, and we were able to use a four-month period in 2013 without significant rainfall to calibrate estimates of *L* against litter production. During periods of increasing *L*, litter fall increased sharply (Figs. 4 and 5), indicating replacement of old leaves by young leaves. Indeed we observed in the field that very few old leaves were present in the canopy after the significant flushing event of Dec. 2013. This is in line with Pook [-@Pook1984], who showed in *Corymbia maculata* (a genus closely related to *Eucalyptus*) accelerated litter production during periods of net *L* increase, but with a lag between litter fall and production of about 2 months. Similarly, Stone and Bacon [-@Stone1995] showed that drought-stressed trees had higher litter production at the branch scale, but irrigated trees had larger litter production at the canopy scale. Since leaf flushing has been shown to be closely related to soil water availability [Fig. 7; @Pook1984a], net leaf turnover is driven by water availability both through increased litter production during extended droughts, and complete canopy replacement following leaf flushing (Fig. 5). The consequence is that leaf turnover is highly variable in time (Fig. 5).
@@ -370,7 +334,6 @@ figureSI3(subset(facegap_cloudy_byring, Date < maxdate),
 ```
 
 **Figure S3.** Comparison of canopy transmittance ($\tau$) during highly diffuse conditions (F~diff~ > 0.98), or using all PAR data without filtering. Shown are daily average $\tau$ for all six FACE rings (symbols), with a smoother (generalized additive model with 95% confidence intervals). Note the much lower $\tau$ during southern hemisphere winter when using all data compared to diffuse only. This difference arises due to low solar angles, which lead to higher attenuation of the direct beam as a result of a longer path length through the canopy.
-
 
 # References {.unnumbered}
 
