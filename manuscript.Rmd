@@ -23,92 +23,7 @@ Remko A. Duursma^1^, Teresa E. Gimeno^1,2^, Matthias M. Boer^1^, Kristine Y. Cro
 
 
 ```{r echo=FALSE, message=FALSE}
-library(knitr)
-
-load("cache/lai_workspace.RData")
-source("load.R")
-
-source("R/functions-figures.R")
-source("R/figures.R")
-source("R/derivSimulCI.R")
-
-library(broom)
-library(lme4)
-library(lmerTest)
-library(car)
-library(reporttools)
-
-# shortcut to formatPval
-pval <- function(...)formatPval(..., includeEquality=TRUE)
-
-# Number of digits in printing of numbers
-# options(scipen = 1, digits = 3)
-
-# Shortcut to significant digits formatting
-f <- function(x, digits=2)sprintf(x, fmt=paste0("%.",digits,"f"))
-
-# Some definitirons of constants
-.gambase <- 18
-.maxSD <- 0.03
-
-# Main results
-df <- facegap_cloudy_byring
-
-# Some pre-calculations
-caliblm <- calibrateToDrought(df)$lmfit
-
-# Number of months of study
-r <- range(df$Date)
-r[2] <- maxdate
-nummon <- as.numeric(floor(difftime(r[2],r[1],units="weeks")/(52/12)))
-
-# Range mean LAI
-dfa <- summaryBy(LAI ~ Date, FUN=mean, na.rm=TRUE, data=df)
-rangeLAI <- round(range(dfa$LAI),1)
-
-# LAI ~ BA
-balm <- lm(LAI.mean ~ BA, data=ba)
-
-# Comparison flat canopy photo with transmittance
-lmphoto <- lm(LAI.PAR.mean ~ LAI, data=flatcan_byring)
-
-# Significance CO2 on LAI anomaly
-df$Time <- as.factor(df$Date - min(df$Date))
-m3 <- lmer(LAIanomaly ~ treatment*Time + (1|Ring), data=df)
-LanomAOV <- Anova(m3)
-
-# Average CI width in Fig 4.
-fit <- smoothplot(Date, LAIanomaly, g=treatment, R="Ring", 
-                  data=facegap_cloudy_byring, plot=FALSE, kgam=.gambase)
-pa <- predict(fit$ambient, data.frame(X=as.numeric(facegap_cloudy_byring$Date)), se.fit=TRUE)
-pe <- predict(fit$elevated, data.frame(X=as.numeric(facegap_cloudy_byring$Date)), se.fit=TRUE)
-LanomCIamb <- mean(pa$se.fit)*2
-LanomCIele <- mean(pe$se.fit)*2
-
-# Detectable Ca effect on LAI
-Ldetect <- 100 * (LanomCIamb + LanomCIele) / mean(ba$LAI.mean)
-
-# Litter - dLAI correlations Figure 4
-dl <- dLAIlitter
-dl$Y <- with(dl, dLAI * 30.5/ndays)
-dl$X <- with(dl, dLAIlitter.mean * 30.5/ndays)
-dlup <- dl[dl$LAIchange == "increasing",]
-dldown <- dl[dl$LAIchange == "decreasing",]
-lmlitup <- lm(Y ~ X, data=dlup)
-lmlitdown <- lm(Y ~ X, data=dldown)
-
-# Leaf lifespan
-LLtest <- tidy(t.test(LL ~ treatment,data=ba))
-
-# Canopy photo - Ltau comparison
-lmcanphot <- lm(LAI.PAR.mean ~ LAI, data=flatcan_byring)
-
-# With optimized k
-flatcan_byring2 <- agg_flatcan(flatcan, by="Ring", k=kopt)
-flatcan_byring2 <- add_PARLAI_to_flatcan(facegap_cloudy_byring,flatcan_byring2)
-lmcanphot2 <- lm(LAI.PAR.mean ~ LAI, data=flatcan_byring2)
-
-
+source("manuscript_calcs.R")
 ```
 
 
@@ -136,13 +51,13 @@ In ecosystems where water availability limits productivity, we could expect eC~a
 Most previous studies on *L* responses to environmental drivers have focused on the seasonal, mostly temperature and photo period-driven, timing of *L* dynamics observed in N-hemisphere forests [e.g. @Richardson2012; @Savoy2015] whereas *L* responses to fluctuations in water availability are qualitatively well-known [@Pook1985; @Specht1989; @Whitehead2004; @Pook1997; @Limousin2009], but poorly quantified. The strong relationship between *L* and rainfall observed across Australia [@Ellis2008; @Specht1989; @Broich2014], and other continents [@Donohue2013; @Grier1977; @Jin2013] represents the adaptation of vegetation structure and density to long-term climate conditions. However, local *L* is also highly responsive to water availability at shorter time scales [@Pook1985; @Pook1997], driven by the dynamics of leaf turnover [@Misson2011] and leaf flushing and expansion [@Muller2011], which are both highly responsive to soil water availability. Understanding dynamics of *L* in response to water availability and its potential interactions with eC~a~ is crucial if we are to improve phenology models in water-limited ecosystems [@Misson2011].
 
 \
-We estimated *L* from near-continuous measurements of canopy transmittance in a *Eucalyptus*-dominated mature woodland exposed to eC~a~, the EucFACE experiment. The woodland at the EucFACE is frequently water-limited, as judged from the deficit between potential evapotranspiration (long-term mean of 1500mm; BOM) and mean annual precipitation of 800mm. The strong seasonal and interannual variability in precipitation at the site allowed us to quantify the dynamics of *L*, and its components (litter fall and production) in response to water availability. We hypothesized that eC~a~ would result in an increase in *L*, particularly during periods of water limitation. In addition, we expected that the low *L* that is typical of native *Eucalyptus*-dominated woodlands [@Whitehead2004] allowed a positive response of *L* to eC~a~ [cf. @Norby2011], either via an increase in the rate of leaf production or leaf retention (leaf lifespan). Our second objective was to quantify the temporal dynamics of *L*, in particular in relation to fluctuating water availability.
+We estimated *L* from near-continuous measurements of canopy transmittance in a *Eucalyptus*-dominated mature woodland exposed to eC~a~, the EucFACE experiment. The woodland at the EucFACE is frequently water-limited, as judged from the deficit between potential evapotranspiration [long-term mean of 1350mm; @Zomer2008] and mean annual precipitation of 800mm. The strong seasonal and interannual variability in precipitation at the site allowed us to quantify the dynamics of *L*, and its components (litter fall and production) in response to water availability. We hypothesized that eC~a~ would result in an increase in *L*, particularly during periods of water limitation. In addition, we expected that the low *L* that is typical of native *Eucalyptus*-dominated woodlands [@Whitehead2004] allowed a positive response of *L* to eC~a~ [cf. @Norby2011], either via an increase in the rate of leaf production or leaf retention (leaf lifespan). Our second objective was to quantify the temporal dynamics of *L*, in particular in relation to fluctuating water availability.
 
 
 # Materials and Methods
 
 ## Site description and experimental design
-The EucFACE experiment is located in a remnant patch  of native Cumberland Plain woodland [@Tozer2003] on an ancient alluvial floodplain in western Sydney (Australia, 33^o^ 37'S, 150^o^ 44'E, 30 m a.s.l.). The vegetation consists of a native woodland undisturbed for ca. 70 years and maintained in this location since the 1880’s. The site is characterized by a humid temperate-subtropical transitional climate with a mean annual temperature of 17 ^o^C and mean annual precipitation (P) of 800 mm (Bureau of Meteorology, station 067105 in Richmond, NSW Australia; http://www.bom.gov.au). The potential evapotranspiration (PET) is ca. 1500mm (*to be refined!*), giving a ratio of P/PET of ca. 0.53. Over the last 30 years, monthly PET has exceeded monthly P 78% of the time, indicating very frequent water limitation.
+The EucFACE experiment is located in a remnant patch  of native Cumberland Plain woodland [@Tozer2003] on an ancient alluvial floodplain in western Sydney (Australia, 33^o^ 37'S, 150^o^ 44'E, 30 m a.s.l.). The vegetation consists of a native woodland undisturbed for ca. 70 years and maintained in this location since the 1880’s. The site is characterized by a humid temperate-subtropical transitional climate with a mean annual temperature of 17 ^o^C and mean annual precipitation (P) of 800 mm (Bureau of Meteorology, station 067105 in Richmond, NSW Australia; http://www.bom.gov.au). An estimate of potential evapotranspiration (PET) at the site (1350mm) was from the Global-PET database [http://www.cgiar-csi.org, @Zomer2008], giving a ratio of P/PET of ca. 0.59. In addition, over the last 30 years, monthly PET has exceeded monthly P 78% of the time, indicating very frequent water limitation.
 
 \
 At the site, the soil at the surface is a loamy sand with > 75% sand content, and from ca. 50 to 300 cm depth, soils are a sandy clay loam with > 30% silt and clay. The soil is nutrient poor, and a strong limitation of P on tree growth at the site has recently been demonstrated [@Crous2015]. Groundwater depth is 12.6 – 12.9 m below the soil surface. The vegetation consists of an open woodland (600-1000 trees ha^-1^, basal area before treatment, BA = `r f(mean(ba$BA))`, SE = `r f(sd(ba$BA)/sqrt(6))` m^2^ha^-1^, n = 6 plots), with a single dominant species (*Eucalyptus tereticornis* Sm.) and some scattered individuals of *E. amplifolia* Naudin.  The understory stratum is  dominated by the grass *Microlaena stipoides* (Labill.) R.Br., with lower densities of forbs of *Commelina cyanea* R.Br., *Lobelia purpurascens* R.Br., *Dichondra repens* J.R.Forst. & G.Forst and occasional shrubs of *Breynia oblongifolia* (Mull.Arg.) Mull.Arg. and *Bursaria spinosa* Cav.
@@ -157,7 +72,7 @@ Air temperature was measured on top of the central tower of each ring (23.5 m he
 In the following, we use the term 'leaf' area index (*L*) although the canopy and FACE rings contain non-leaf shading elements, i.e. woody stems and infrastructure. This avoids the need to switch between different terminologies when comparing temporal changes in *L* to litter production, and absolute values between different methods. The temporal changes in *L* are due to leaf area dynamics only, because infrastructure area is constant, and woody stem area is very nearly constant over the two-year study period since no tree mortality has occurred.
 
 ## Leaf litter production
-In each ring, 8 litter cloth baskets with an area of 0.1979 m^2^ were installed at 0.5m above the forest floor. Litter was collected monthly since October 2012, and leaves were separated from other components such as twigs, bark, seeds, insect frass, etc. Litter production was converted to units of *L* using an estimate of specific leaf area (SLA) determined from 329 leaves collected from the tree canopies from May 2012 to May 2014 (`r get_sla()` cm^2^ g^-1^, SE=2.14). We did not find a significant effect of C~a~ treatment on SLA (Ellsworth, unpublished data; Ben Moore, unpublished data).
+In each ring, 8 litter cloth baskets with an area of 0.1979 m^2^ were installed at 0.5m above the forest floor. Litter was collected monthly since October 2012, and leaves were separated from other components such as twigs, bark, seeds, insect frass, etc. Litter production was converted to units of *L* using an estimate of specific leaf area (SLA) determined from 329 leaves collected from the tree canopies from May 2012 to May 2014 (`r get_sla()` cm^2^ g^-1^, SE=2.14). We did not find a significant effect of C~a~ treatment on SLA (Ellsworth, unpublished data) at any of the collection dates.
 
 ## *L* from diffuse transmittance
 In each of the six FACE rings, three photosynthetically active radiation (PAR) sensors (LI-190, Li-cor, Lincoln, NE, U.S.A.) were installed on metal posts at 1 m height. Data were logged on data loggers (CR3000, Campbell Scientific Australia, Townsville, Australia) at minutely intervals from 15 Oct. 2012, and automatically uploaded every day to a data management system. At each ring, another PAR sensor was installed above the canopy, on a mast extending above a scaffolding tower in the centre of each ring at 23.5 m height. All PAR data were averaged in 30 min time steps. At a nearby flux tower site (within 2 km), we measured the diffuse fraction (F~diff~) of PAR at 30 min time step using a BF5 Sunshine sensor (Delta-T Instruments, Cambridge, UK) installed on a tower extending ca. 5m above the canopy. For determination of *L*, we used only highly diffuse conditions, where F~diff~ > 0.98. We further trimmed the data by excluding low solar e levation (< 10^o^), because measured canopy transmittance was more variable at these low solar angles. Finally canopy transmittance was calculated for every 30-min time step as,
