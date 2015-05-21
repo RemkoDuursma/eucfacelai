@@ -93,7 +93,7 @@ figure1 <- function(df, ramp){
 
 figure2 <- function(df){
   
-  par(mar=c(5,5,2,2), cex.lab=1.2,xaxs="i", yaxs="i")
+  par(mar=c(5,5,2,2), cex.lab=1.2,xaxs="i", yaxs="i", tcl=0.2, las=1)
   with(df, plot(BA, LAI.mean, pch=19, cex=1.2, col=my_ringcols(),
                 xlab=expression(Basal~area~~(m^2~ha^-1)),
                 ylab=expression(bar(italic(L))~~(m^2~m^-2)),
@@ -147,7 +147,7 @@ figure4 <- function(df){
   dfup <- df[df$LAIchange == "increasing",]
   dfdown <- df[df$LAIchange == "decreasing",]
   
-  par(mar=c(5,5,2,2), cex.lab=1.1, cex.axis=0.9, las=1, xaxs="i", yaxs="i")
+  par(mar=c(5,5,2,2), cex.lab=1.1, cex.axis=0.9, las=1, xaxs="i", yaxs="i", tcl=0.2)
   with(dfup, plot(X, Y, pch=c(19,21)[treatment],
                col=Cols[LAIchange],
                xlab=expression(Leaf~litter~production~~(m^2~m^-2~mon^-1)),
@@ -201,7 +201,7 @@ figure5 <- function(dLAIlitter){
 
 figure6 <-  function(df){
 
-  par(mar=c(5,5,2,2), cex.lab=1.2, xaxs="i", yaxs="i", mfrow=c(1,2))
+  par(mar=c(5,5,2,2), cex.lab=1.2, xaxs="i", yaxs="i", mfrow=c(1,2), tcl=0.2)
   
   LLs <- seq(0.8,2,by=0.1)
   
@@ -262,7 +262,7 @@ figure7 <- function(df, facesoilwater, faceraindaily, airt, kgam=18){
   plotlabel("(a)","topleft", inset.x=xin)
   
   # panel b
-  par(mar=c(0,7,1.5,6))
+  par(mar=c(0,7,1.5,6), tcl=0.2)
   
  
   df$Time <- as.numeric(df$Date - min(df$Date))
@@ -282,7 +282,7 @@ figure7 <- function(df, facesoilwater, faceraindaily, airt, kgam=18){
            y0=0.014, y1=0.014, lwd=2) 
   
   # panel c
-  par(mar=c(1.5,7,1.5,6))
+  par(mar=c(1.5,7,1.5,6), tcl=0.2)
   with(subset(facesoilwater, Date > xl[1]), 
        plot(Date, VWC, type='l', lwd=2, xlim=xl, ylim=c(0,0.4), axes=FALSE,
             col="cornflowerblue",
@@ -299,7 +299,7 @@ figure7 <- function(df, facesoilwater, faceraindaily, airt, kgam=18){
   plotlabel("(c)","topleft", inset.x=xin)
   
   # panel d
-  par(mar=c(5,7,0,6))
+  par(mar=c(5,7,0,6), tcl=0.2)
   smoothplot(Date, Tair, data=subset(airt, Date > xl[1]), 
              kgam=25, pointcols=alpha("grey",0.8), linecols="black",axes=FALSE,
              ylab=expression(T[air]~~(degree*C)), 
@@ -349,7 +349,7 @@ figureSI1 <- function(litring, df){
   
   # plot
   par(mfrow=c(2,1), mar=c(0,0,0,0),
-      oma=c(5,5,1,1), cex.lab=1.2)
+      oma=c(5,5,1,1), cex.lab=1.2, tcl=0.2)
   suppressWarnings(plotCI(1:6, delta_gapfr_mu[ind], 
                           ui=delta_gapfr_ci[2,][ind],
                           li=delta_gapfr_ci[1,][ind],
@@ -383,7 +383,7 @@ figureSI1 <- function(litring, df){
 
 figureSI2 <- function(df){
   
-  par(mfrow=c(1,2), mar=c(5,5,2,2), cex.axis=0.9)
+  par(mfrow=c(1,2), mar=c(5,5,2,2), cex.axis=0.9, tcl=0.2)
   plotit <- function(df){
     with(df, plot(LAI, LAI.PAR.mean, 
                   ylab=expression(italic(L)~from~tau[d]~~(m^2~m^-2)),

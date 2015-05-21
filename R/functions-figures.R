@@ -39,7 +39,7 @@ plotlabel <- function(txt, where, inset=0.08, inset.x=inset, inset.y=inset,...){
   if(grepl("bottom",where))y <- u[3] + inset.y*(u[4]-u[3])
   if(grepl("top",where))y <- u[4] - inset.y*(u[4]-u[3])
   
-  text(x,y,txt,...)
+  text(x,y,txt,font=2,...)
 }
 
 
