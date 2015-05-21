@@ -203,15 +203,26 @@ figure6 <-  function(df){
 
   par(mar=c(5,5,2,2), cex.lab=1.2, xaxs="i", yaxs="i", mfrow=c(1,2))
   
+  LLs <- seq(0.8,2,by=0.1)
+  
   with(df, plot(LAI.mean.litterperiod, LAIlitter_annual, pch=19, cex=1.2, col=my_ringcols(),
                 ylab=expression(Litter~production~~(m^2~m^-2~yr^-1)),
                 xlab=expression(bar(italic(L))~~(m^2~m^-2)),
                 panel.first={
-                  for(z in seq(0.5,2,by=0.1))abline(0,z,col="grey", lty=5)
+                  for(z in LLs)abline(0,1/z,col="grey", lty=5)
                 },
                 xlim=c(1.2,2.2), ylim=c(1.2,2.2)))
   plotlabel("(a)", "topright")
+  legend("topleft", as.character(1:6), pch=19, bg="white", box.col="white",
+         col=my_ringcols(), title="Ring", cex=0.8)
   box()
+  x <- c(2.05, 2.05,2.05,1.965,1.83)
+  lls <- seq(1.3,0.9,by=-0.1)
+  b1 <- 1/lls
+  y <- b1*x
+  text(x,y,pos=4, labels=as.character(lls), cex=0.75, col="darkgrey",
+       font=3)
+  text(1.68, y[length(y)], "LL = ", font=3, cex=0.75, col="darkgrey", pos=4)
   
   with(df, plot(as.numeric(treatment), LL, axes=FALSE, xlim=c(0,3), ylim=c(0.5,1.5),
                 pch=19, col=my_ringcols(), xlab="",cex=1.2,
@@ -230,7 +241,7 @@ figure6 <-  function(df){
 }
 
 
-figure7 <- function(df, facesoilwater, faceraindaily, airt){
+figure7 <- function(df, facesoilwater, faceraindaily, airt, kgam=18){
     
   xin <- 0.02 # for panel label x inset
   
@@ -241,7 +252,7 @@ figure7 <- function(df, facesoilwater, faceraindaily, airt){
   par(mfrow=c(4,1), mar=c(0,7,5,6), cex.lab=1.3, las=1, mgp=c(4,1,0),yaxs="i",tcl=0.2)
   
   # panel a
-  smoothplot(Date, LAI, data=dfa, kgam=18, pointcols="dimgrey", linecols="black", 
+  smoothplot(Date, LAI, data=dfa, kgam=kgam, pointcols="dimgrey", linecols="black", 
              xlim=xl,
              ylab=expression(italic(L)~~(m^2~m^-2)),
              ylim=c(1,2.4), axes=FALSE)
@@ -255,7 +266,7 @@ figure7 <- function(df, facesoilwater, faceraindaily, airt){
   
  
   df$Time <- as.numeric(df$Date - min(df$Date))
-  g <- gamm(LAI ~ s(Time, k=18), random = list(Ring=~1), data=df)
+  g <- gamm(LAI ~ s(Time, k=kgam), random = list(Ring=~1), data=df)
   
   plotCIdate(g, df, axes=FALSE,xlab="",xlim=xl,
        ylim=c(-0.016, 0.016),
