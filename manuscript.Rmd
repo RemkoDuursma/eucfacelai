@@ -208,7 +208,7 @@ options(scipen = 1, digits = 2)
 figure1(subset(facegap_cloudy_byring,Date < maxdate), ramp)
 ```
 
-**Figure 1**. (a) Target [CO~2~] (C~a~) relative to the ambient C~a~ treatment at the EucFACE. The elevated C~a~ treatment proceeded in steps of 30 ppm, reaching +150 ppm in February 2013. (b) Canopy transmittance ($\tau_d$) estimated from continuous time series of photosynthetically active radition (PAR) below and above the canopy, for highly diffuse conditions (F~diff~ > 0.98) only. The solid lines are smoothed time series (with 95% confidence intervals) for each FACE ring (using a generalized additive model). Lines in blue colours denote ambient C~a~ treatment, red colours are elevated C~a~ (+150 ppm). Note the steep increase in $\tau_d$ for Ring 6 around November 2014, due to an insect attack that resulted in near defoliation of the canopy. The arrow labelled ‘calibration’ indicates a drought period when $\tau_d$ steadily increased, used to calibrate *L* estimates to litter production (see Methods). 
+**Figure 1**. (a) Target [CO~2~] (C~a~) relative to the ambient C~a~ treatment at the EucFACE. The elevated C~a~ treatment proceeded in steps of 30 ppm, reaching +150 ppm in February 2013. (b) Canopy transmittance ($\tau_d$) estimated from continuous time series of photosynthetically active radition (PAR) below and above the canopy, for highly diffuse conditions (F~diff~ > 0.98) only. The solid lines are smoothed time series (with 95% confidence intervals) for each FACE ring (using a generalized additive model). Lines in blue colours denote ambient C~a~ treatment, red colours are elevated C~a~. Note the steep increase in $\tau_d$ for Ring 6 around November 2014, due to an insect attack that resulted in near defoliation of the canopy. The arrow labelled ‘calibration’ indicates a drought period when $\tau_d$ steadily increased, used to calibrate *L* estimates to litter production (see Methods). 
 
 ```{r fig.width=4, fig.height=4, echo=FALSE, message=FALSE, eval=includeFigs}
 figure2(ba)
@@ -238,7 +238,7 @@ figure5(dLAIlitter)
 figure6(ba)
 ```
 
-**Figure 6**.  (a) Total litter production (converted from data in Fig. 5 to an annual estimate) for each of the FACE rings plotted against mean $L_\tau$ during the entire litter collection period. The ratio of mean $L_\tau$ to annual litter production gives the mean leaf life span. Grey lines indicate leaf lifespan isolines. (b) Calculated leaf lifespan for the six FACE rings shows a significant difference between C~a~ treatments (p `r pval(LLtest$p.value)`).
+**Figure 6**.  (a) Total litter production (converted from data in Fig. 5 to an annual estimate) for each of the FACE rings plotted against mean $L_\tau$ during the entire litter collection period. The ratio of mean $L_\tau$ to annual litter production gives the mean leaf life span. Grey lines indicate leaf lifespan isolines (in years). (b) Calculated leaf lifespan for the six FACE rings shows a significant difference between C~a~ treatments (t-test, p `r pval(LLtest$p.value)`).
 
 ```{r fig.width=10, fig.height=8, echo=FALSE, message=FALSE, eval=includeFigs}
 figure7(subset(facegap_cloudy_byring, Date < maxdate),
