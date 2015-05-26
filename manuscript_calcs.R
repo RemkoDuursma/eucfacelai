@@ -1,7 +1,7 @@
 
 #' This script is called by Manuscript.Rmd, and includes additional calculations 
 #' used in the manuscript.
-
+#
 
 source("R/utils.R")  # Library()
 
@@ -14,6 +14,9 @@ Library(reporttools)
 
 # Load analysis cache.
 load("cache/lai_workspace.RData")
+
+# Trim data to this date (note: has to be consistent with make_figures.R!) 
+maxdate <- as.Date("2015-3-1")
 
 # More packages, functions, etc.
 source("load.R")
@@ -40,7 +43,7 @@ f <- function(x, digits=2)sprintf(x, fmt=paste0("%.",digits,"f"))
 .maxSD <- 0.03
 
 # Main results
-df <- facegap_cloudy_byring
+df <- subset(facegap_cloudy_byring, Date < maxdate)
 
 # Calibration constant to litter fall.
 caliblm <- calibrateToDrought(df)$lmfit
