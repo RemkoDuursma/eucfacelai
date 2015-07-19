@@ -650,10 +650,6 @@ makePARAGG <- function(startdate, enddate=as.Date(Sys.time())){
   eddy <- downloadTOA5("Eddyflux_slow_met", startDate=startdate, endDate=enddate,
                        maxnfiles=200, allowedExtensions=c(".dat"), tryoffline=TRUE)
   
-  # glitch fix, hopefully remove soon
-  eddysept <- readTOA5("c:/hievdata/EddyFlux_slow_met_20140930.dat")
-  eddy <- rbind(eddy, eddysept)
-  
   # don't actually have to aggregate; but this fixes duplicate entries quickly and safely
   eddyagg <- dplyr::summarize(group_by(eddy,DateTime=nearestTimeStep(DateTime,30)),
                               TotalSS=mean(TotalSS),
