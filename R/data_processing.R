@@ -466,7 +466,9 @@ makeCloudy <- function(df,
                        PARabovecutoff = 10,
                        PARbelowcutoff = 1400, # cannot have very high PAR when it is very cloudy
                        minSolarElevation = 10,
-                       bysensor=FALSE){  
+                       bysensor=FALSE,
+                       addManualCloudyDays=TRUE,
+                       PAR0varname = "LI190SB_PAR_Den_Avg"){  
   
   
   
@@ -481,22 +483,25 @@ makeCloudy <- function(df,
   # Fdiff , fraction diffuse radiation.
   df$Fdiff <- with(df, DiffuseSS / TotalSS)
   
-  # 1. Make Fdiff for manually selected cloudydays, for period before eddy was recording data.
-  addManualClouddays <- function(df,cd){
+  if(addManualCloudyDays){
     
-    df$hourtime <- hour(df$DateTime) + minute(df$DateTime)/60
-    for(i in 1:nrow(cd)){
-      cloudy <- df$Date == cd$Date[i] & df$hourtime >= cd$starthour[i] & df$hourtime <= cd$endhour[i]
-      df$Fdiff[cloudy] <- 0.9999
+    # 1. Make Fdiff for manually selected cloudydays, for period before eddy was recording data.
+    addManualClouddays <- function(df,cd){
+      
+      df$hourtime <- hour(df$DateTime) + minute(df$DateTime)/60
+      for(i in 1:nrow(cd)){
+        cloudy <- df$Date == cd$Date[i] & df$hourtime >= cd$starthour[i] & df$hourtime <= cd$endhour[i]
+        df$Fdiff[cloudy] <- 0.9999
+      }
+      return(df)
     }
-    return(df)
+    df <- addManualClouddays(df, cloudydays())
   }
-  df <- addManualClouddays(df, cloudydays())
   
   #2. Select all half hours that are cloudy.
-  df <- subset(df, Fdiff > Fdiff_cutoff & 
-                        LI190SB_PAR_Den_Avg > PARabovecutoff & 
-                        LI190SB_PAR_Den_Avg < PARbelowcutoff)
+  df <- subset(df, Fdiff > Fdiff_cutoff)
+  df <- df[df[,PAR0varname] > PARabovecutoff & 
+            df[,PAR0varname] < PARbelowcutoff,]
   
   # Subset where PARbelow is not zero (small subset, must be bad values)
   notneg <- function(x)is.na(x) || x > 0
@@ -506,12 +511,12 @@ makeCloudy <- function(df,
     # Calculate gapfraction
     df$PARbelow <- rowMeans(df[,c("PAR_Den_1_Avg","PAR_Den_2_Avg","PAR_Den_3_Avg")],
                                    na.rm=TRUE)
-    df$Gapfraction <- with(df, PARbelow / LI190SB_PAR_Den_Avg)
+    df$Gapfraction <- df$PARbelow / df[,PAR0varname]
     
   } else {
-    df$Gapfraction1 <- with(df, PAR_Den_1_Avg / LI190SB_PAR_Den_Avg)
-    df$Gapfraction2 <- with(df, PAR_Den_2_Avg / LI190SB_PAR_Den_Avg)
-    df$Gapfraction3 <- with(df, PAR_Den_3_Avg / LI190SB_PAR_Den_Avg)
+    df$Gapfraction1 <- df$PAR_Den_1_Avg / df[,PAR0varname]
+    df$Gapfraction2 <- df$PAR_Den_2_Avg / df[,PAR0varname]
+    df$Gapfraction3 <- df$PAR_Den_3_Avg / df[,PAR0varname]
   }
   
   
