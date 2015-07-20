@@ -1,4 +1,29 @@
 
+timeseries_axis <- function(labels=TRUE){
+  
+  XLIM <- par()$usr[1:2]
+  
+  xAT <- seq.Date(as.Date("2012-1-1"), by="1 month", length=100)
+  xAT <- xAT[xAT > XLIM[1] & xAT < XLIM[2]]
+  labs <- substr(format(xAT, "%b"),1,1)
+  
+  axis.Date(1, at=xAT, labels=FALSE, cex.axis=0.6)
+  if(labels)mtext(labs, side=1, line=0, at=xAT, cex=0.7)
+  
+  maj <- seq.Date(as.Date("2012-1-1"),by="1 year", length=10)
+  maj <- maj[maj > XLIM[1] & maj < XLIM[2]]
+  
+  axis.Date(1, at=maj, labels=FALSE, tcl=-0.2, lwd.ticks=2)
+  axis.Date(1, at=maj, labels=FALSE, tcl=0.4, lwd.ticks=2)
+  yrlab <- seq.Date(as.Date("2012-7-1"), by='1 year', length=10)
+  labs <- as.character(seq(2012,length=length(yrlab)))
+  ii <- yrlab > XLIM[1] & yrlab < XLIM[2]
+  yrlab <- yrlab[ii]
+  labs <- labs[ii]
+  
+  if(labels)mtext(labs, side=1, line=1, at=yrlab)
+  
+}
 
 to.pdf <- function(expr, filename, ..., verbose=TRUE) {
   if(!file.exists(dirname(filename)))
