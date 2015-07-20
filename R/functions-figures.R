@@ -1,5 +1,5 @@
 
-timeseries_axis <- function(labels=TRUE){
+timeseries_axis <- function(labels=TRUE, tclminor=-0.2){
   
   XLIM <- par()$usr[1:2]
   
@@ -7,7 +7,7 @@ timeseries_axis <- function(labels=TRUE){
   xAT <- xAT[xAT > XLIM[1] & xAT < XLIM[2]]
   labs <- substr(format(xAT, "%b"),1,1)
   
-  axis.Date(1, at=xAT, labels=FALSE, cex.axis=0.6)
+  axis.Date(1, at=xAT, labels=FALSE, cex.axis=0.6, tcl=tclminor)
   if(labels)mtext(labs, side=1, line=0, at=xAT, cex=0.7)
   
   maj <- seq.Date(as.Date("2012-1-1"),by="1 year", length=10)
