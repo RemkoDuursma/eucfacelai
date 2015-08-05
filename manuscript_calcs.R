@@ -68,6 +68,15 @@ df$Time <- as.factor(df$Date - min(df$Date))
 m3 <- lmer(LAIanomaly ~ treatment*Time + (1|Ring), data=df)
 LanomAOV <- Anova(m3)
 
+# significance of LAI when using BA as actual covariate
+df2 <- merge(df, ba[,c("Ring","BA")])
+df2 <- subset(df2, Date < as.Date("2014-9-1"))
+m4 <- lmer(LAI ~ treatment * as.factor(Date) + BA + (1|Ring), data=df2)
+lmer_LAI <- Anova(m4, test="F")
+rownames(lmer_LAI) <- c("C~a~","Date","BA","C~a~ x Date")
+colnames(lmer_LAI) <- c("F","numDF","denDF","p-value")
+
+
 # Average CI width in Fig 4.
 fit <- smoothplot(Date, LAIanomaly, g=treatment, R="Ring", 
                   data=facegap_cloudy_byring, plot=FALSE, kgam=.gambase)
@@ -98,4 +107,6 @@ lmcanphot <- lm(LAI.PAR.mean ~ LAI, data=flatcan_byring)
 flatcan_byring2 <- agg_flatcan(flatcan, by="Ring", k=kopt)
 flatcan_byring2 <- add_PARLAI_to_flatcan(facegap_cloudy_byring,flatcan_byring2)
 lmcanphot2 <- lm(LAI.PAR.mean ~ LAI, data=flatcan_byring2)
+
+
 

@@ -47,7 +47,7 @@ $$L_p = -log(\tau_p)/k$$
 figureSI2(flatcan_byring)
 ```
 
-**Figure S2**. Correlation between LAI estimated from diffuse canopy transmittance ($L_\tau$) and from canopy photos (L~p~). Solid line is a 1:1 line, dashed line a regression line across all data (with the shading indicating the 95% confidence interval), and the colored lines regressions per plot across dates. (a) Estimates of L~p~ with the extinction coefficient (*k*) set to 0.5, as recommended by MacFarlane et al. [-@Macfarlane2007] ($L_\tau$ = `r tidy(lmcanphot)$estimate[1]` + `r tidy(lmcanphot)$estimate[2]` L~p~, R^2^ = `r glance(lmcanphot)$r.squared`, p `r pval(glance(lmcanphot)$p.value)`), (b) Estimates of L~p~ with *k* optimized to minimize the difference between L~p~ and $L_\tau$ ($L_\tau$ = `r tidy(lmcanphot2)$estimate[1]` + `r tidy(lmcanphot2)$estimate[2]`).
+**Figure S3**. Correlation between LAI estimated from diffuse canopy transmittance ($L_\tau$) and from canopy photos (L~p~). Solid line is a 1:1 line, dashed line a regression line across all data (with the shading indicating the 95% confidence interval), and the colored lines regressions per plot across dates. (a) Estimates of L~p~ with the extinction coefficient (*k*) set to 0.5, as recommended by MacFarlane et al. [-@Macfarlane2007] ($L_\tau$ = `r tidy(lmcanphot)$estimate[1]` + `r tidy(lmcanphot)$estimate[2]` L~p~, R^2^ = `r glance(lmcanphot)$r.squared`, p `r pval(glance(lmcanphot)$p.value)`), (b) Estimates of L~p~ with *k* optimized to minimize the difference between L~p~ and $L_\tau$ ($L_\tau$ = `r tidy(lmcanphot2)$estimate[1]` + `r tidy(lmcanphot2)$estimate[2]`).
   
 
   
