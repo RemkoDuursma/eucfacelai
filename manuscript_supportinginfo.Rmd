@@ -1,0 +1,54 @@
+---
+title: Supporting Information
+author: ''
+date: ''
+output:
+  word_document:
+    reference_docx: manuscriptstyle.docx
+  pdf_document: default
+  html_document:
+    number_sections: yes
+csl: global-change-biology.csl
+bibliography: references.bib
+---
+
+## Supporting Figures
+ 
+ 
+```{r fig.width=4, fig.height=6, echo=FALSE, message=FALSE, eval=TRUE}
+figureSI1(litring, subset(facegap_cloudy_byring, Date < maxdate))
+```
+
+**Figure S1**. Increase in gapfraction ($\tau_d$) and total litter production during the 4-month drought period in 2013, calculated for each ring separately. Blue colours are ambient, red colours elevated C~a~. (a) The change in  $\tau_d$ and its 95% confidence interval was calculated from the slope of linear regression of $\tau_d$ with time (number of days since 8 July 2013). (b) Mean litter production expressed in terms of LAI for each ring. The confidence interval was calculated based on the 8 litter traps in each ring. Note the overlapping confidence intervals for all rings.
+
+  
+\
+```{r fig.width=8, fig.height=5, echo=FALSE, message=FALSE, eval=TRUE}
+figureSI3(subset(facegap_cloudy_byring, Date < maxdate), 
+          subset(facegap_all_byring, Date < maxdate))
+```
+
+**Figure S2.** Comparison of canopy transmittance ($\tau$) during highly diffuse conditions (F~diff~ > 0.98), or using all PAR data without filtering. Shown are daily average $\tau$ for all six FACE rings (symbols), with a smoother (generalized additive model with 95% confidence intervals). Note the much lower $\tau$ during southern hemisphere winter when using all data compared to diffuse only. This difference arises due to low solar angles, which lead to higher attenuation of the direct beam as a result of a longer path length through the canopy.
+
+
+
+## Notes S1. Estimation of leaf area index from digital photography
+
+We took advantage of the detailed timeseries of LAI estimates from canopy transmittance to test a simple photography-based method proposed by Macfarlane et al. [-@Macfarlane2007], which is extensively applied to *Eucalyptus*-dominated forests. From October 2012 to October 2013, we took ca. monthly canopy photographs in each FACE ring. Photographs were taken in the morning on cloudy days. We took one photograph at each point of a 4 x 4 m grid established within each ring, unless obstructed by trees, yielding 20-23 photos per ring. Sampling points too close to either the vertical vent pipes (edges of the ring) or the central scaffolding tower were excluded. The camera was aligned with the north-south axis and set at 1.25 m height.  The camera lens was pointed directly upwards and leveled using a three axis bubble level. We used a Nikon D90 camera with a Nikon AF 50 mm lens (Nikon Corporation, Tokyo, Japan). To measure cover, the camera was set to automatic exposure, Aperture-Priority and automatic autofocus mode and F10 lens. Following recommendations by Jonckheere et al. [-@Jonckheere2005], we used the automated Ridler algorithm to threshold the canopy photos. We then calculated canopy transmittance ($\tau_p$) from each canopy photo as the proportion of pixels with intensity in the blue band below that threshold. LAI from canopy photos ($L_p$) was calculated with a simple Beer-Lambert law (Eq. 4).
+
+\
+(4) 
+$$L_p = -log(\tau_p)/k$$
+  
+  where $\tau_p$ canopy transmission estimated from canopy photos. We assumed that the extinction coefficient *k* = 0.5, following Macfarlane et al. [-@Macfarlane2007] recommendation for eucalypt forests. Without further calibration, the two estimates were reasonably well correlated, though on average $L_\tau$ was `r f(100*(with(flatcan_byring, mean(LAI.PAR.mean / LAI))-1))`% higher than $L_p$ (R^2^ = `r f(glance(lmphoto)$r.squared)`, RMSE = `r f(glance(lmphoto)$sigma)`) (Fig. S2). We also estimated the extinction coefficient that minimized the difference between the two estimates of LAI (Fig. S2), giving *k* = `r f(kopt)`. These comparisons are encouraging because the photos measure LAI near the zenith (+/- 15^o^), while $L_\tau$ is integrated over the sky hemisphere (Eq. 2), weighted towards the zenith. 
+  
+\
+```{r fig.width=8, fig.height=4, echo=FALSE, message=FALSE, eval=TRUE}
+figureSI2(flatcan_byring)
+```
+
+**Figure S3**. Correlation between LAI estimated from diffuse canopy transmittance ($L_\tau$) and from canopy photos (L~p~). Solid line is a 1:1 line, dashed line a regression line across all data (with the shading indicating the 95% confidence interval), and the colored lines regressions per plot across dates. (a) Estimates of L~p~ with the extinction coefficient (*k*) set to 0.5, as recommended by MacFarlane et al. [-@Macfarlane2007] ($L_\tau$ = `r tidy(lmcanphot)$estimate[1]` + `r tidy(lmcanphot)$estimate[2]` L~p~, R^2^ = `r glance(lmcanphot)$r.squared`, p `r pval(glance(lmcanphot)$p.value)`), (b) Estimates of L~p~ with *k* optimized to minimize the difference between L~p~ and $L_\tau$ ($L_\tau$ = `r tidy(lmcanphot2)$estimate[1]` + `r tidy(lmcanphot2)$estimate[2]`).
+  
+
+  
+  

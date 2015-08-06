@@ -114,6 +114,7 @@ message(m1)
 
 # Make manuscript
 render("manuscript.Rmd", "word_document", "manuscript.docx")
+render("manuscript_supportinginfo.Rmd", "word_document", "manuscript_SuppInfo.docx")
 
 # Make md like this:
 # render("manuscript.Rmd", md_document())
