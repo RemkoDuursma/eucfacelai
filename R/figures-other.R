@@ -1,3 +1,34 @@
+figure3b <- function(df,
+                    xlim=NULL, ylim=NULL,
+                    legend=TRUE,
+                    ylab=expression(italic(L)~(m^2~m^-2)),
+                    cex.lab=1.1, cex.axis=0.8, cex.legend=0.7,
+                    legendwhere="topleft",
+                    setpar=TRUE,axisline=3,
+                    horlines=TRUE,
+                    greyrect=FALSE,
+                    addpoints=TRUE){
+  
+  if(setpar)par(cex.axis=cex.axis, mar=c(3,5,2,5), las=1, cex.lab=1.2, yaxs="i", tcl=0.2)
+  par(cex.lab=cex.lab)
+  palette(my_co2cols())
+  
+  if(is.null(xlim))xlim <- with(df, c(min(Date)-15, max(Date)+15))
+  if(is.null(ylim))ylim <- c(0,2.8)
+  
+  smoothplot(Date, LAI, g=treatment, R="Ring", ylim=ylim, xlim=xlim, 
+             ylab=ylab, xlab="",
+             data=df, kgam=18, axes=FALSE,
+             polycolor=c(alpha("royalblue",0.4),alpha("pink",0.4)))
+  
+  l <- legend("topleft", c("Ambient","Elevated"), title=expression(italic(C)[a]~treatment), 
+              fill=my_co2cols(), bty="n", cex=cex.legend)
+  axis(2) #, at=seq(-0.75,0.75,by=0.25))
+  box()
+  
+  timeseries_axis()  
+}
+
 
 
 #-----------------------------------------------------------------------------------------#
@@ -150,15 +181,17 @@ figure_timeseries <- function(df,flatcan_byCO2,
   
   adddata <- match.arg(adddata)
   
+  df <- df[order(df$Date),]
+  
   if(setpar)par(cex.axis=cex.axis, mar=c(3,5,2,5), las=1, cex.lab=1.2, yaxs="i")
   par(cex.lab=cex.lab)
   palette(my_co2cols())
   
   if(is.null(xlim))xlim <- with(df, c(min(Date)-15, max(Date)+15))
-  if(is.null(ylim))ylim <- with(df, c(0, 1.08*max(LAI.mean)))
+  if(is.null(ylim))ylim <- with(df, c(0, 1.08*max(LAI)))
   
   with(subset(df, treatment == "ambient"),
-       plot(Date, LAI.mean, col=palette()[1], type='l', lwd=2, 
+       plot(Date,LAI, col=palette()[1], type='l', lwd=2, 
             xlab="",
             ylab=ylab,
             axes=FALSE,
@@ -172,19 +205,19 @@ figure_timeseries <- function(df,flatcan_byCO2,
        ))
   
   with(subset(df, treatment == "elevated"),
-       points(Date, LAI.mean, col=palette()[2], type='l', lwd=2)
+       points(Date, LAI, col=palette()[2], type='l', lwd=2)
   )
   
   with(subset(df, treatment == "elevated"),
-       points(Date, LAI.mean, col="white", cex=0.05, pch=19)
+       points(Date, LAI, col="white", cex=0.05, pch=19)
   )
   with(subset(df, treatment == "ambient"),
-       points(Date, LAI.mean, col="white", cex=0.05, pch=19)
+       points(Date, LAI, col="white", cex=0.05, pch=19)
   )
   
   
   if(addpoints){
-    with(df, points(Date, LAI.mean, pch=19, cex=0.05, col="white"))
+    with(df, points(Date, LAI, pch=19, cex=0.05, col="white"))
   }
   
   with(flatcan_byCO2, points(Date, LAI.mean, pch=21, bg=treatment, col="black"))

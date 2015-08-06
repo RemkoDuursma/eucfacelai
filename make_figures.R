@@ -51,3 +51,13 @@ to.pdf(figureSI3(subset(facegap_cloudy_byring, Date < maxdate), subset(facegap_a
        width=8, height=5)
 
 
+
+
+to.pdf(figure_timeseries(facegap_cloudy_byring, flatcan_byCO2),
+       filename="output/LAI_timeseries.pdf",
+       width=10, height=8)
+
+to.pdf(figure3b(facegap_cloudy_byring),
+       filename="output/figures/Figure3b.pdf",
+       width=8, height=4)
+
