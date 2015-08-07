@@ -15,6 +15,10 @@ Library(reporttools)
 # Load analysis cache.
 load("cache/lai_workspace.RData")
 
+# Current R version
+rv <- R.Version()
+r_version <- paste(rv$major, rv$minor, sep=".")
+
 # Trim data to this date (note: has to be consistent with make_figures.R!) 
 maxdate <- as.Date("2015-3-1")
 

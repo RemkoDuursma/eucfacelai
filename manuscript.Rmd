@@ -126,13 +126,13 @@ We used the opportunity provided by the high quality timeseries of LAI to test a
 
 
 ## Data analysis
-We used generalized additive models (GAM) for all analyses of LAI and $\tau_d$ timeseries [@Wood2006], using the *mgcv* package in R [@RCT2015]. A GAM is a semi-parametric fitting method that allows the estimation of smoothed trends in the data, including confidence intervals. In all fitted GAMs, we used a cubic regression spline. For the smoothed term in the model (days since start of experiment), we used up to `r .gambase` degrees of freedom, which resulted in biologically realistic smoothed LAI dynamics. Within the GAM, we used a penalized regression smoother [@Wood2006] to allow the final degree of smoothness to be estimated from the data. Random effects were included to account for the grouping of data within FACE rings, except when we analysed average LAI across all rings (Fig. 7). For Fig. 7, we estimated the derivative of the fitted GAM, including confidence intervals for the derivative, following Simpson [-@Simpson2014; see also @Curtis2014]. 
+We used generalized additive models (GAM) for all analyses of LAI and $\tau_d$ timeseries [@Wood2006], using the *mgcv* package in R version `r r_version` [@RCT2015]. A GAM is a semi-parametric fitting method that allows the estimation of smoothed trends in the data, including confidence intervals. In all fitted GAMs, we used a cubic regression spline. For the smoothed term in the model (days since start of experiment), we used up to `r .gambase` degrees of freedom, which resulted in biologically realistic smoothed LAI dynamics. Within the GAM, we used a penalized regression smoother [@Wood2006] to allow the final degree of smoothness to be estimated from the data. Random effects were included to account for the grouping of data within FACE rings, except when we analysed average LAI across all rings (Fig. 7). For Fig. 7, we estimated the derivative of the fitted GAM, including confidence intervals for the derivative, following Simpson [-@Simpson2014; see also @Curtis2014]. 
 
 \
-For comparison between LAI from photos and PAR transmittance, we used linear regression. To test for effects of C~a~ treatment on $LAI_\tau$ and litter production, we used linear-mixed effects models with FACE ring as the random effect, and C~a~ treatment and date as factor variables.
+To test for effects of C~a~ treatment on LAI and litter production, we used linear-mixed effects models with FACE ring as the random effect, and C~a~ treatment and date as factor variables. The random effect accounts for the repeated measures nature of the data. For LAI, we further used pre-treatment basal area (BA) of each FACE ring as a covariate. Because the EucFACE woodland is well established, the differences in BA are not due to C~a~ treatment effects, but instead represent natural variation within the woodland.
 
-\
-To assess effects of eC~a~ on $LAI_\tau$, we accounted for pre-treatment differences in canopy structure, as follows. The average $LAI_\tau$ over the entire period was well correlated with basal area (BA) measured prior to the onset of the eC~a~ treatment across the FACE rings (Fig. 3). Because the EucFACE woodland is well established, the differences in BA are not due to C~a~ treatment effects, but instead represent natural variation within the woodland. We then calculated the deviation of actual $LAI_\tau$ from the fitted relationship with BA shown in Fig. 3, to yield a 'LAI anomaly'. This way, we effectively used BA as a covariate in the analysis to account for pre-treatment variation. 
+**More details here;package, which anova for Table 1; and now we use BA as a covariate  **
+
 
 \
 The entire analysis presented in this paper will be made available as a *git* repository (http://www.github.com/remkoduursma/XXXXX), published on figshare (doi:XXXX). The repository includes the raw data needed to run the analyses, the source code for the analysis and manuscript (which was written in markdown, with the rmarkdown package in Rstudio, which uses Pandoc for conversion).
@@ -249,6 +249,16 @@ figure7(subset(facegap_cloudy_byring, Date < maxdate),
 ```
 
 **Figure 7**. Dynamics of LAI in relation to environmental drivers. (a) Smoothed time series of $LAI_\tau$ averaged across all six FACE rings. (b) From panel (a), we calculated the daily change in LAI (dL/dt), including the 95% confidence interval for the derivative of the time series. Green indicates significant positive dL/dt, red indicates significant negative dL/dt (at $\alpha$ = 0.05). Four of the five significant positive increases corresponded to approximate dates of commencement of leaf flushing (horizontal lines) observed in the field (except the third brief significant increase). (c) Time course of soil water content measured over 0-80 cm soil depth interval, averaged across all sensors and all rings (blue line), and daily rainfall (black lines).  (d) Average daily air temperature with a fitted smoother.
+
+
+# Supporting information captions {.unnumbered}
+
+**Figure S1**. Increase in gapfraction ($\tau_d$) and total litter production during the 4-month drought period in 2013, calculated for each ring separately. 
+
+**Figure S2**. Correlation between L estimated from diffuse canopy transmittance (LAI) and from canopy photos. 
+
+**Figure S3**. Comparison of canopy transmittance ($\tau$) during highly diffuse conditions (F~diff~ > 0.98), or using all PAR data without filtering. 
+
 
 # References {.unnumbered}
 
