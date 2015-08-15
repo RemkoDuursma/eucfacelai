@@ -1,0 +1,218 @@
+In this manuscript, Duursma et al. present findings on the response of LAI and litter production to elevated atmospheric CO2 in EucFACE, a free air CO2 enrichment experiment established in a Eucalyptus woodland. The authors had expected elevated CO2 to increase LAI and litter production. In contrast to these expectations, the authors found CO2 to have no significant effect on either LAI or litter production over the 28-month experiment. However, they did find that CO2 extended leaf lifespan by approximately two months.
+
+Overall, it is my opinion that this manuscript is unsuitable for publication in Global Change Biology in its current form and should be rejected. I do not take this recommendation lightly, since data from forest CO2 enrichment experiments is highly valuable and in great demand. However, I have several issues with the field techniques and analyses addressed in this manuscript and the effort required to address them warrants the submission of an entirely new manuscript in my opinion.
+
+The largest issue is that LAI anomaly (the main response analyzed) is essentially calculated from the mean of LAI over the experimental period. In an attempt to account for initial differences between plots, the authors correlated mean LAI and basal area for each plot. They then calculated the difference between the observed LAI and the expected value based on the LAI-BA relationship and defined it as “LAI anomaly.” However, because LAI and BA were so tightly correlated, this LAI anomaly is essentially the same as the difference between the mean LAI and the observed LAI. Since LAI means are the means of the observed values, all plots have a mean LAI anomaly of approximately zero (this can be seen in Fig. 3). This heavily restricts the ability of any statistical test to detect differences between plots or treatments. Thus, the finding of no response of LAI anomaly to elevated CO2 is not surprising.
+
+**We now use pre-treatment BA as a covariate in a mixed-effects model. We found no CO2 or CO2 x time effect on LAI when BA was used as a covariate. There is also no effect of CO2 when BA is not included as a covariate, but due to the tight relationship between BA and LAI, using BA as a covariate increases the ability to find a CO2 effect. We only show the results when including BA as a covariate in the manuscript.**
+
+The only statistically significant response of LAI that would be expected under the current statistical design would be from a CO2 x time interaction. While no statistics are reported, an interaction may have been detected but attributed exclusively to an insect outbreak, whereas it also has the potential to due to a real response. However, the inclusion of the post-outbreak data makes this difficult to discern. The outbreak confounds the effect of CO2 with that of the outbreak, and thus data from the infested plot should only be considered up until the outbreak occurred.
+
+**As noted above, we have redone the analysis and find no CO2 or CO2 x time effect. Although there was a brief period when the 95% confidence intervals were not overlapping, this brief period did not result in a significant overall CO2 x time effect. For this reason we have not removed the insect attack from the study (it would have been appropriate if we did find a CO2 x time effect).**
+
+The techniques used to collect litter are also concerning. The authors deployed eight 0.2 m2 litter traps in each ~123 m2 plot and used the litter collected from these traps to estimate litter production. However, considering the size of each individual trap and scale of the experiment, there is significant doubt that the traps provided a representative sample of each plot. Additionally, the analyses performed using litter data make several assumptions that are unlikely to hold.
+
+*TODO* **We have included more background on the design of the litter collection methods. As the table below shows, the number and size (and fractional area of the plot covered) are in the upper range of six other FACE experiments. It is clear from this comparison that our methods are justified. Further, the standard errors for litter within a plot BLAH BLAH**
+
+Another issue lies in the inclusion of an add-on analysis comparing two LAI estimation techniques. While useful, this comparison should be its own methods paper and does not align well with the scope of the rest of the manuscript. Currently, it adds to an already lengthy paper and distracts from the authors’ main points.
+
+**We have moved this analysis, including the methods, to the Supporting Information. We believe this is interesting information for others concerned with LAI estimation, but agree it is a side-objective. We only briefly mention in the Methods that the two methods gave comparable results.**
+
+Finally, the manuscript requires extensive editing for structure and flow. The introduction does not sufficiently establish the expectation of litter responses. 
+
+*TODO* **We have added a couple of sentences indicating the expectation of the litter response; it follows logically from the test of differences in LAI**
+
+The methods are incomplete and unclear. Specifically, there are many portions of the Results section that should be included in Materials and Methods. 
+
+**We have moved all methods-related content from the Results to the Methods section. We respond further to specific comments related to the Methods below**
+
+Additionally, it is unclear if the authors’ used repeated measures to analyze their data, which would be necessary considering the experimental design. 
+
+**Using a mixed-effects model as we have done (also in the original manuscript), with FACE ring as a random effect, accounts for the repeated measures nature of the data. We have clarified this in the Methods.**
+
+Beyond these issues, the manuscript also should be revised for clarity and brevity.
+
+**We have done so in response to specific comments listed below**
+
+
+Specific Comments (line number given):
+  Abstract
+l.26 What do you mean by (hot summer), and is it necessary? This is not how you describe the climate in the methods.
+
+**Reworded to 'subtropical', which is more fitting** *IS THIS CORRECT*
+
+l.30 “this timeframe” is a stretched reference (ref. l.24). Reword
+
+**Removed 'in this timeframe'.**
+
+l.31 You don’t provide expectation of a seasonal pattern in the abstract, so explaining that there isn’t one is distracting here.
+l.37 I would expect that GCB readers would know what FACE stands for, but it might be good to say free air CO2 enrichment to be safe.
+
+**It was already defined both at the top of the Abstract and the second paragraph of the Introduction**
+
+Introduction
+l.40 Does it save a lot of space to abbreviate LAI as L or is there another reason for not using the conventional LAI? Unless there’s a strong reason to keep it as L, it would be more intuitive to have this as LAI.
+
+**Changed to LAI throughout the manuscript**
+
+l.55 drop the “the” in “the water-use efficiency”
+
+**done**
+
+l.60 this would make a better topic sentence for this paragraph than the current one
+
+**todo**
+
+l.69+ you can use stronger language here and throughout. If you expect X, say so. No need for “can” or “could.” Also, this is a very drawn-out sentence. The length of this sentence and others throughout weakens them and reduces their clarity. Be concise, particularly in your topic sentences.
+
+**todo**
+
+l.75 The meaning of Ca can be inferred from your definition of eCa, but it’s better to just write it out when you’re not using a defined term. So here, atmospheric [CO2]
+
+**todo**
+
+l.79 This sentence is awkwardly constructed. Again, too long and an unclear topic sentence. If the point of this sentence is to set up a paragraph about water, why start it off talking about temperature and photo period? It would be better to frame this as quantitative water effects being relatively unknown as opposed to qualitative effects being well-known. I would just drop l.79-81, and start with “The response of L to fluctuations in water availability….” Issues like this need to be addressed throughout the paper.
+
+**todo**
+
+l.94 the tense of this paragraph is weird. You’re moving between your hypotheses (which should be present tense) to your methods (in past tense). This is makes it unclear which statements you’re making a priori.
+
+**todo**
+
+l.95 to eCa in the EucFace experiment. EucFace needs to be defined in the body of the manuscript
+
+**todo**
+
+l.97 are these means over the same period? This type of detail should be in the methods, not the introduction
+
+**todo**
+
+l.99 Because Production – Litter = LAI? Currently, the introduction doesn’t address litter fall, so why is this expected to change?
+
+**todo**
+
+Materials and Methods
+l.110 What do you mean by undisturbed? Be specific
+
+**todo**
+
+l.116 How accurate is this calculation? Are the P and PET values for the site or the region? Are they from different areas?
+
+**todo**
+
+l.136 unclear use of Ca
+
+**todo**
+
+l.160 “litter cloth basket” is odd. Where were they placed? This is a very small portion of the total plot area and indeed the area where litter would be expected to fall (an area much larger than the plot). So, these baskets are likely capturing only a tiny fraction of the litter from each plot and might even be catching litter from outside the plot as well, depending on where they are located. Can such a small and potentially contaminated sample be representative of such a large plot?
+
+**We have responded to this issue above.**
+
+l.163 provide this calculation. Was it LAI (cm2/cm2) = SLA  (cm2/g) x Litter (g/cm2)?
+
+**totally obvious but yeah we'll add that**
+
+l.206 The calibration is difficult to follow
+
+**todo. which part is difficult???**
+
+l.267 Was this set up as a repeated measures?
+
+**toto. as mentioned above, yes. We have now clarified this.**
+
+l.269 The calculation of the anomaly is problematic. Ideally, it would be done considering some pre-treatment value or, less desirably, using a starting condition value. Since there is a strong correlation between mean LAI and BA, and the anomaly is currently based on values from this correlation, the mean anomaly of each plot is inherently very close to zero (this can be seen in Fig. 3). Thus, using the mean value from the experimental period inherently removes almost any possibility of there being a meaningful main treatment effect, since all rings are forced to have roughly the same mean anomaly over the course of the experiment. In contrast, anomalies calculated based on a pre-treatment values are not defined as having the same mean and therefore can reveal significant main effect differences.
+
+**We have responded to the data analysis concerns above.**
+
+
+Results
+l.290 The insect outbreak confounds your results and is not something that you really set out to examine. Consider excluding ring 6 data from the outbreak onward.
+
+**todo. But it happened so why rmeove it.**
+
+l.299 See above comments (a significant main Ca effect is almost impossible). A significant Ca x Date interaction is possible, but not reported here. However, if a significant interaction was found, it seems like it was likely attributed only to the insect outbreak in ring 6, but might also be due to Ca effects obscured by the current anomaly calculation.
+
+**We have responded to the concerns about data analysis above.**
+
+l.301+ move to the discussion
+
+**todo**
+
+l.307 move to methods
+
+**todo**
+
+l.314 Did you verify that there was no leaf growth, or is this an assumption based on drought?
+
+**todo. field-verified - clarify**
+
+l.318 move to methods. This calculation assumes litter is grown and lost in the same time period. This is unlikely, especially since a month is an ecologically arbitrary duration. So, this calculation could indicate that a period of reduced Lt and large litter fall was associated with positive leaf production. However, the leaves lost as litter were likely produced over a variety of time points. This also ignores the problems of incomplete litter capture and non-experimental litter entering the plot.
+
+**no idea what this is all about. Explain that leaf production must equal net increase of LAI (LAIt=2 - LAIt=1) PLUS the litter produced in that time period. It has nothing to do what happened previously. Incomplete litter capture was responded to above**
+
+l.330 methods
+l.333 methods
+
+**todo. moved to methods**
+
+
+Discussion
+l.361 Its somewhat misleading to claim that basal area was included as a covariate, since it was not actually included in any statistical analysis of a response variable.
+
+**The previous analysis was equivalent to using BA as a covariate, however this is now irrelevant since we have redone the analysis**
+
+l.368 There are a lot of places throughout the manuscript where you start a thought with “X showed Y response,” which puts the emphasis on the authors (X) and not the concept (Y). The points you’re trying to make are Y, not who showed them. This is not a huge problem, but the current emphases on authors and not concepts makes portions of the manuscript feel disjointed and list-y.
+
+**todo. fixed throughout**
+
+l.376 you originally expected that, but did not find it, right? Again, remove “could”
+
+**todo**
+
+l.377 “very” is redundant. How does this relate to the point you’re trying to make?
+
+**todo**
+
+l.378 The purpose of this manuscript was not to make broad generalizations on FACE L responses. This whole paragraph should be dropped.
+
+**todo. I'd hate to remove this completely - maybe move some of it to introduction to show that the responses sofar are inconclusive so we need more info?**
+
+l.381-5 pick one of these two sentences
+
+**todo**
+
+l.388 eCa. Be consistent
+
+**todo**
+
+l.389+ how does this support the message of this manuscript?
+
+**todo**
+
+l.395 define LL earlier in the ms and use throughout
+
+**todo**
+
+l.401+ Is the point what all these studies found specifically, or that there are mixed effects of eCa on LL?
+
+**todo**
+
+l.408 formatted as parenthetical reference
+
+**todo**
+
+
+Figures: Consider using other colors to avoid problems for red/blue colorblind readers. This is a lot of figures, evaluate which ones are essential to the main points of the manuscript and put non-essential figures in supplements.
+
+**todo. Move LAI-BA to the SuppInfo, otherwise keep everything. Six is not a lot.**
+
+3: include a 1:1 line for positive values too.
+
+**todo**
+
+4: Increase line thickness.
+
+**todo**
+
+
+
