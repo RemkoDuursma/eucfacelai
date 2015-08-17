@@ -44,7 +44,6 @@ figure1 <- function(df, ramp){
              ylab=expression(tau[d]~~("-")),
              pointcols=rep("grey",8), linecols=my_ringcols())
   
-  
   timeseries_axis()
   
   axis(2)
@@ -62,55 +61,43 @@ figure1 <- function(df, ramp){
 }
 
 
-
-
-figure2 <- function(df){
-  
-  par(mar=c(5,5,2,2), cex.lab=1.2,xaxs="i", yaxs="i", tcl=0.2, las=1)
-  with(df, plot(BA, LAI.mean, pch=19, cex=1.2, col=my_ringcols(),
-                xlab=expression(Basal~area~~(m^2~ha^-1)),
-                ylab=expression(bar(italic(L))~~(m^2~m^-2)),
-                panel.first=predline(lm(LAI.mean ~ BA, data=ba)),
-                ylim=c(1.2,2.4), xlim=c(18,40)))
-  legend("bottomright", as.character(1:6), pch=19, bty='n',
-         col=my_ringcols(), title="Ring", cex=0.6, pt.cex=1)
-
-}
-
-
-figure3 <- function(df,
+figure2 <- function(df,
                     xlim=NULL, ylim=NULL,
                     legend=TRUE,
-                    ylab=expression(italic(L)~anomaly~(m^2~m^-2)),
+                    ylab=expression(italic(LAI)~~(m^2~m^-2)),
                     cex.lab=1.1, cex.axis=0.8, cex.legend=0.7,
                     legendwhere="topleft",
-                    setpar=TRUE,axisline=3,
+                    setpar=TRUE,
+                    axisline=3,
                     horlines=TRUE,
                     greyrect=FALSE,
                     addpoints=TRUE){
     
   if(setpar)par(cex.axis=cex.axis, mar=c(3,5,2,5), las=1, cex.lab=1.2, yaxs="i", tcl=0.2)
   par(cex.lab=cex.lab)
-  palette(my_co2cols())
+  palette(rev(my_co2cols()))
   
   if(is.null(xlim))xlim <- with(df, c(min(Date)-15, max(Date)+15))
-  if(is.null(ylim))ylim <- c(-0.8,0.8)
+  if(is.null(ylim))ylim <- c(0,2.8)
   
-  smoothplot(Date, LAIanomaly, g=treatment, R="Ring", ylim=ylim, xlim=xlim, 
+  # switch levels so that ambient will be on top
+  df$treatment <- factor(df$treatment, levels=c("elevated","ambient"))
+  
+  smoothplot(Date, LAI, g=treatment, R="Ring", ylim=ylim, xlim=xlim, 
              ylab=ylab, xlab="",
              data=df, kgam=18, axes=FALSE,
-             polycolor=c(alpha("royalblue",0.7),alpha("pink",0.7)))
+             polycolor=rev(c(alpha("royalblue",0.7),alpha("pink",0.7))))
   
   l <- legend("topleft", c("Ambient","Elevated"), title=expression(italic(C)[a]~treatment), 
               fill=my_co2cols(), bty="n", cex=cex.legend)
-  axis(2, at=seq(-0.75,0.75,by=0.25))
+  axis(2, at=seq(0,2.8,by=0.4))
   box()
   
   timeseries_axis()  
 }
 
 
-figure4 <- function(df){
+figure3 <- function(df){
 
   Cols <- c("darkorange","forestgreen")
   
@@ -126,18 +113,19 @@ figure4 <- function(df){
                xlab=expression(Leaf~litter~production~~(m^2~m^-2~mon^-1)),
                xlim=c(0,0.6),
                ylim=c(-0.3,0.5),
-               ylab=expression(Delta*italic(L)~from~tau[d]~(m^2~m^-2~mon^-1))))
+               ylab=expression(Delta*italic(LAI)~from~tau[d]~(m^2~m^-2~mon^-1))))
   with(dfdown, points(X, Y, pch=c(17,24)[treatment],
                   col=Cols[LAIchange]))
   
   abline(h=0, lty=5)
   abline(0,-1)
+  abline(0,1)
   predline(lm(Y ~ X, data=dfup), col=Cols[2])
   predline(lm(Y ~ X, data=dfdown), col=Cols[1])
   box()
   
-  l <- legend("bottomright", c(expression(Delta*italic(L) < 0),
-                               expression(Delta*italic(L) > 0)), 
+  l <- legend("bottomright", c(expression(Delta*italic(LAI) < 0),
+                               expression(Delta*italic(LAI) > 0)), 
               pt.bg=Cols, bty='n', cex=0.8, pch=c(24,21))
   
   legend(l$rect$left - l$rect$w, l$rect$top, 
@@ -145,7 +133,7 @@ figure4 <- function(df){
   
 }
 
-figure5 <- function(dLAIlitter){
+figure4 <- function(dLAIlitter){
   da <- summaryBy(. ~ Date + treatment, FUN=mean, data=dLAIlitter, keep.names=TRUE)
   
   da$laprod <- with(da, 30.5 * (dLAI+dLAIlitter.mean)/ndays)
@@ -172,7 +160,7 @@ figure5 <- function(dLAIlitter){
 }
 
 
-figure6 <-  function(df){
+figure5 <-  function(df){
 
   par(mar=c(5,5,2,2), cex.lab=1.2, xaxs="i", yaxs="i", mfrow=c(1,2), tcl=0.2)
   
@@ -180,7 +168,7 @@ figure6 <-  function(df){
   
   with(df, plot(LAI.mean.litterperiod, LAIlitter_annual, pch=19, cex=1.2, col=my_ringcols(),
                 ylab=expression(Litter~production~~(m^2~m^-2~yr^-1)),
-                xlab=expression(bar(italic(L))~~(m^2~m^-2)),
+                xlab=expression(bar(italic(LAI))~~(m^2~m^-2)),
                 panel.first={
                   for(z in LLs)abline(0,1/z,col="grey", lty=5)
                 },
@@ -214,7 +202,7 @@ figure6 <-  function(df){
 }
 
 
-figure7 <- function(df, facesoilwater, faceraindaily, airt, kgam=18){
+figure6 <- function(df, facesoilwater, faceraindaily, airt, kgam=18){
     
   xin <- 0.02 # for panel label x inset
   
@@ -227,7 +215,7 @@ figure7 <- function(df, facesoilwater, faceraindaily, airt, kgam=18){
   # panel a
   smoothplot(Date, LAI, data=dfa, kgam=kgam, pointcols="dimgrey", linecols="black", 
              xlim=xl,
-             ylab=expression(italic(L)~~(m^2~m^-2)),
+             ylab=expression(italic(LAI)~~(m^2~m^-2)),
              ylim=c(1,2.4), axes=FALSE)
   timeseries_axis(FALSE)
   axis(2)
@@ -413,7 +401,18 @@ figureSI3 <- function(df1, df2){
 }
 
 
-
+figureSI4 <- function(df){
+  
+  par(mar=c(5,5,2,2), cex.lab=1.2,xaxs="i", yaxs="i", tcl=0.2, las=1)
+  with(df, plot(BA, LAI.mean, pch=19, cex=1.2, col=my_ringcols(),
+                xlab=expression(Basal~area~~(m^2~ha^-1)),
+                ylab=expression(bar(italic(LAI))~~(m^2~m^-2)),
+                panel.first=predline(lm(LAI.mean ~ BA, data=ba)),
+                ylim=c(1.2,2.4), xlim=c(18,40)))
+  legend("bottomright", as.character(1:6), pch=19, bty='n',
+         col=my_ringcols(), title="Ring", cex=0.6, pt.cex=1)
+  
+}
 
 
 

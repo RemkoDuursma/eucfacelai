@@ -208,7 +208,7 @@ Figures: Consider using other colors to avoid problems for red/blue colorblind r
 
 3: include a 1:1 line for positive values too.
 
-**todo**
+**Done.**
 
 4: Increase line thickness.
 
