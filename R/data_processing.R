@@ -263,7 +263,7 @@ make_dLAI_litter <- function(dat, litter, kgam=15){
       d <- diff(z$LAIsm)
       dnegLAI <- sum(d[d < 0])
       dposLAI <- sum(d[d > 0])
-      return(data.frame(dLAI=dLAI, dnegLAI=dnegLAI, dposLAI=dposLAI))
+      return(data.frame(dLAI=dLAI, dnegLAI=dnegLAI, dposLAI=dposLAI, LAI=mean(z$LAIsm)))
     }))
   }
   
