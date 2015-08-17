@@ -1,24 +1,50 @@
+---
+output: word_document
+---
 In this manuscript, Duursma et al. present findings on the response of LAI and litter production to elevated atmospheric CO2 in EucFACE, a free air CO2 enrichment experiment established in a Eucalyptus woodland. The authors had expected elevated CO2 to increase LAI and litter production. In contrast to these expectations, the authors found CO2 to have no significant effect on either LAI or litter production over the 28-month experiment. However, they did find that CO2 extended leaf lifespan by approximately two months.
 
 Overall, it is my opinion that this manuscript is unsuitable for publication in Global Change Biology in its current form and should be rejected. I do not take this recommendation lightly, since data from forest CO2 enrichment experiments is highly valuable and in great demand. However, I have several issues with the field techniques and analyses addressed in this manuscript and the effort required to address them warrants the submission of an entirely new manuscript in my opinion.
 
 The largest issue is that LAI anomaly (the main response analyzed) is essentially calculated from the mean of LAI over the experimental period. In an attempt to account for initial differences between plots, the authors correlated mean LAI and basal area for each plot. They then calculated the difference between the observed LAI and the expected value based on the LAI-BA relationship and defined it as “LAI anomaly.” However, because LAI and BA were so tightly correlated, this LAI anomaly is essentially the same as the difference between the mean LAI and the observed LAI. Since LAI means are the means of the observed values, all plots have a mean LAI anomaly of approximately zero (this can be seen in Fig. 3). This heavily restricts the ability of any statistical test to detect differences between plots or treatments. Thus, the finding of no response of LAI anomaly to elevated CO2 is not surprising.
 
-**We now use pre-treatment BA as a covariate in a mixed-effects model. We found no CO2 or CO2 x time effect on LAI when BA was used as a covariate. There is also no effect of CO2 when BA is not included as a covariate, but due to the tight relationship between BA and LAI, using BA as a covariate increases the ability to find a CO2 effect. We only show the results when including BA as a covariate in the manuscript.**
+**We now use pre-treatment BA as a covariate in a mixed-effects model. We found no CO2 or CO2 x time effect on LAI when BA was used as a covariate. There is also no effect of CO2 when BA is not included as a covariate, but due to the tight relationship between BA and LAI, using BA as a covariate increases the ability to find a CO2 effect. We only show the results when including BA as a covariate in the manuscript. Fig.2 now shows the LAI timeseries instead of the anomaly as before, and we have amended the text in various places to account for these changes.**
 
 The only statistically significant response of LAI that would be expected under the current statistical design would be from a CO2 x time interaction. While no statistics are reported, an interaction may have been detected but attributed exclusively to an insect outbreak, whereas it also has the potential to due to a real response. However, the inclusion of the post-outbreak data makes this difficult to discern. The outbreak confounds the effect of CO2 with that of the outbreak, and thus data from the infested plot should only be considered up until the outbreak occurred.
 
-**As noted above, we have redone the analysis and find no CO2 or CO2 x time effect. Although there was a brief period when the 95% confidence intervals were not overlapping, this brief period did not result in a significant overall CO2 x time effect. For this reason we have not removed the insect attack from the study (it would have been appropriate if we did find a CO2 x time effect).**
+**As noted above, we have redone the analysis and find no CO2 or CO2 x time effect. Although there was a brief period when the 95% confidence intervals were not overlapping (for the anomaly, though not when LAI is considered, see new Fig.2), this brief period did not result in a significant overall CO2 x time effect. For this reason we have not removed the insect attack from the study (it would have been appropriate if we did find a CO2 x time effect).**
 
 The techniques used to collect litter are also concerning. The authors deployed eight 0.2 m2 litter traps in each ~123 m2 plot and used the litter collected from these traps to estimate litter production. However, considering the size of each individual trap and scale of the experiment, there is significant doubt that the traps provided a representative sample of each plot. Additionally, the analyses performed using litter data make several assumptions that are unlikely to hold.
 
-*TODO* **We have included more background on the design of the litter collection methods. As the table below shows, the number and size (and fractional area of the plot covered) are in the upper range of six other FACE experiments. It is clear from this comparison that our methods are justified. Further, the standard errors for litter within a plot BLAH BLAH**
+**and**
+
+l.160 “litter cloth basket” is odd. Where were they placed? This is a very small portion of the total plot area and indeed the area where litter would be expected to fall (an area much larger than the plot). So, these baskets are likely capturing only a tiny fraction of the litter from each plot and might even be catching litter from outside the plot as well, depending on where they are located. Can such a small and potentially contaminated sample be representative of such a large plot?
+
+**The size, number, and relative coverage of the litterfall traps is broadly consistent with other forest FACE studies (see Table below), with the largest trap size. The size and coverage of the traps is therefore fully justified. The litter traps were placed in somewhat random locations across the ring, but never within XXX meters of the plot edge, to minimize contamination. We, as in all other FACE sites, cannot be completely certain that contamination did not occur, but it is likely that the vast majority of litter in each basket was produced in that FACE ring.**
+
+```{r echo=FALSE}
+tabl <- read.csv(text="Experiment,	Reference,	Nr Traps per plot,	Trap size (m2),	Plot size (m2),	Coverage (%)
+Duke,Finzi et al. 2001,	12,	0.16,	908,	0.0021
+Oak Ridge,Norby et al. 2003, 	7,	0.19,	491,	0.0027
+PopFACE,Lagomarsino et al. 2013,	18,	0.13,	300, 0.0078
+Rhinelander,Liu et al. 2009,	18,	0.145,	707,	0.0037
+BangorFACE,Godbold et al. 2014,	7,	0.11,	57,	0.0136
+EucFACE,this paper,	8,	0.1979,	491,	0.0032", header=TRUE, check.names=FALSE)
+
+tabl <- tabl[,-ncol(tabl)]
+
+library(knitr)
+kable(tabl)
+```
 
 Another issue lies in the inclusion of an add-on analysis comparing two LAI estimation techniques. While useful, this comparison should be its own methods paper and does not align well with the scope of the rest of the manuscript. Currently, it adds to an already lengthy paper and distracts from the authors’ main points.
 
-**We have moved this analysis, including the methods, to the Supporting Information. We believe this is interesting information for others concerned with LAI estimation, but agree it is a side-objective. We only briefly mention in the Methods that the two methods gave comparable results.**
+**We have moved this analysis, including the methods, to the Supporting Information. We believe this is interesting information for others concerned with LAI estimation, but agree it is a secondary objective only. We only briefly mention in the Methods that the two methods gave comparable results.**
 
-Finally, the manuscript requires extensive editing for structure and flow. The introduction does not sufficiently establish the expectation of litter responses. 
+Finally, the manuscript requires extensive editing for structure and flow. 
+
+**We have made substantial edits to the text, in particular accounting for the reviewer's comments listed below.**
+
+The introduction does not sufficiently establish the expectation of litter responses. 
 
 *TODO* **We have added a couple of sentences indicating the expectation of the litter response; it follows logically from the test of differences in LAI**
 
@@ -32,7 +58,7 @@ Additionally, it is unclear if the authors’ used repeated measures to analyze 
 
 Beyond these issues, the manuscript also should be revised for clarity and brevity.
 
-**We have done so in response to specific comments listed below**
+**We have done so in response to specific comments listed below.**
 
 
 Specific Comments (line number given):
@@ -103,10 +129,6 @@ l.116 How accurate is this calculation? Are the P and PET values for the site or
 l.136 unclear use of Ca
 
 **todo**
-
-l.160 “litter cloth basket” is odd. Where were they placed? This is a very small portion of the total plot area and indeed the area where litter would be expected to fall (an area much larger than the plot). So, these baskets are likely capturing only a tiny fraction of the litter from each plot and might even be catching litter from outside the plot as well, depending on where they are located. Can such a small and potentially contaminated sample be representative of such a large plot?
-
-**We have responded to this issue above.**
 
 l.163 provide this calculation. Was it LAI (cm2/cm2) = SLA  (cm2/g) x Litter (g/cm2)?
 
