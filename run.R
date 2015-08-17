@@ -111,10 +111,13 @@ save.image(file="cache/lai_workspace.RData")
 m1 <- paste0("Most recent day with usable cloudy data: ",max(facegap_cloudy_byring$Date))
 message(m1)
 
+olddigit <- options()$digits
 
 # Make manuscript
 render("manuscript.Rmd", "word_document", "manuscript.docx")
 render("manuscript_supportinginfo.Rmd", "word_document", "manuscript_SuppInfo.docx")
+
+options(digits=olddigit)
 
 # Make md like this:
 # render("manuscript.Rmd", md_document())
