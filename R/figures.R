@@ -75,7 +75,6 @@ figure2 <- function(df,
     
   if(setpar)par(cex.axis=cex.axis, mar=c(3,5,2,5), las=1, cex.lab=1.2, yaxs="i", tcl=0.2)
   par(cex.lab=cex.lab)
-  palette(rev(my_co2cols()))
   
   if(is.null(xlim))xlim <- with(df, c(min(Date)-15, max(Date)+15))
   if(is.null(ylim))ylim <- c(0,2.8)
@@ -86,6 +85,7 @@ figure2 <- function(df,
   smoothplot(Date, LAI, g=treatment, R="Ring", ylim=ylim, xlim=xlim, 
              ylab=ylab, xlab="",
              data=df, kgam=18, axes=FALSE,
+             pointcolor=rev(my_co2cols()),
              polycolor=rev(c(alpha("royalblue",0.7),alpha("pink",0.7))))
   
   l <- legend("topleft", c("Ambient","Elevated"), title=expression(italic(C)[a]~treatment), 
