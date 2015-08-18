@@ -40,6 +40,8 @@ Another issue lies in the inclusion of an add-on analysis comparing two LAI esti
 
 **We have moved this analysis, including the methods, to the Supporting Information. We believe this is interesting information for others concerned with LAI estimation, but agree it is a secondary objective only. We only briefly mention in the Methods that the two methods gave comparable results.**
 
+**We are surprised that the reviewer considers our paper 'lengthy', as the word count of ca. 5500 words is more than 30% lower than the allowed length for Global Change Biology (8000 words).**
+
 Finally, the manuscript requires extensive editing for structure and flow. 
 
 **We have made substantial edits to the text, in particular accounting for the reviewer's comments listed below.**
@@ -58,7 +60,7 @@ Additionally, it is unclear if the authors’ used repeated measures to analyze 
 
 Beyond these issues, the manuscript also should be revised for clarity and brevity.
 
-**We have done so in response to specific comments listed below.**
+**We have done so in response to specific comments listed below, and made more minor changes to increase clarity.**
 
 
 Specific Comments (line number given):
