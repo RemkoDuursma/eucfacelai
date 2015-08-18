@@ -72,67 +72,70 @@ l.30 “this timeframe” is a stretched reference (ref. l.24). Reword
 **Removed 'in this timeframe'.**
 
 l.31 You don’t provide expectation of a seasonal pattern in the abstract, so explaining that there isn’t one is distracting here.
+
+**todo**
+
 l.37 I would expect that GCB readers would know what FACE stands for, but it might be good to say free air CO2 enrichment to be safe.
 
-**It was already defined both at the top of the Abstract and the second paragraph of the Introduction**
+**It was already defined at the top of the Abstract, when the term EucFACE is introduced.**
 
 Introduction
 l.40 Does it save a lot of space to abbreviate LAI as L or is there another reason for not using the conventional LAI? Unless there’s a strong reason to keep it as L, it would be more intuitive to have this as LAI.
 
-**Changed to LAI throughout the manuscript**
+**Changed to LAI throughout the manuscript.**
 
 l.55 drop the “the” in “the water-use efficiency”
 
-**done**
+**Done.**
 
 l.60 this would make a better topic sentence for this paragraph than the current one
 
-**todo**
+**This sentence is now the topic sentence of the paragraph.**
 
 l.69+ you can use stronger language here and throughout. If you expect X, say so. No need for “can” or “could.” Also, this is a very drawn-out sentence. The length of this sentence and others throughout weakens them and reduces their clarity. Be concise, particularly in your topic sentences.
 
-**todo**
+**Edited the paragraph throughout.**
 
 l.75 The meaning of Ca can be inferred from your definition of eCa, but it’s better to just write it out when you’re not using a defined term. So here, atmospheric [CO2]
 
-**todo**
+**Done.**
 
 l.79 This sentence is awkwardly constructed. Again, too long and an unclear topic sentence. If the point of this sentence is to set up a paragraph about water, why start it off talking about temperature and photo period? It would be better to frame this as quantitative water effects being relatively unknown as opposed to qualitative effects being well-known. I would just drop l.79-81, and start with “The response of L to fluctuations in water availability….” Issues like this need to be addressed throughout the paper.
 
-**todo**
+**Edited the paragraph throughout (and deleted l.79-81).**
 
 l.94 the tense of this paragraph is weird. You’re moving between your hypotheses (which should be present tense) to your methods (in past tense). This is makes it unclear which statements you’re making a priori.
 
-**todo**
+**Edited the paragraph throughout, with special attention to tense.**
 
 l.95 to eCa in the EucFace experiment. EucFace needs to be defined in the body of the manuscript
 
-**todo**
+**FACE was defined in the 2nd paragraph of the definition, here the definition of EucFACE is quite obvious from the statement that the woodland is Eucalyptus-dominated**
 
 l.97 are these means over the same period? This type of detail should be in the methods, not the introduction
 
-**todo**
+**Removed info on precipitation and PET here, as it is explained in more detail in the Methods already.**
 
 l.99 Because Production – Litter = LAI? Currently, the introduction doesn’t address litter fall, so why is this expected to change?
 
-**todo**
+**If LAI changes, this must be due to changes in either the production of new foliage, or the lifespan of existing foliage. Both components can be assessed with measurements of litter production in combination with the time dynamics of LAI.** *Expand intro on litter fall a bit!!*
 
 Materials and Methods
 l.110 What do you mean by undisturbed? Be specific
 
-**todo**
+**Added '(unmanaged)'.**
 
 l.116 How accurate is this calculation? Are the P and PET values for the site or the region? Are they from different areas?
 
-**todo**
+**The estimate of PET is used only here to give an estimate of the ratio P/PET as an indicator of long-term water limitation. The global PET database gives average PET based on 1950-2000 climatology, and is widely used to estimate PET across sites. It is beyond the scope of this manuscript to calculate more accurate estimates of PET, as we do not use PET in any of the subsequent analyses.**
 
 l.136 unclear use of Ca
 
-**todo**
+**Removed Ca.**
 
 l.163 provide this calculation. Was it LAI (cm2/cm2) = SLA  (cm2/g) x Litter (g/cm2)?
 
-**totally obvious but yeah we'll add that**
+**Changed the text to 'by multiplying it with an estimate of [...] SLA.**
 
 l.206 The calibration is difficult to follow
 
@@ -140,17 +143,16 @@ l.206 The calibration is difficult to follow
 
 l.267 Was this set up as a repeated measures?
 
-**toto. as mentioned above, yes. We have now clarified this.**
+**The random ring effect accounts for the repeated measures structure of the data; we have now clarified this.**
 
 l.269 The calculation of the anomaly is problematic. Ideally, it would be done considering some pre-treatment value or, less desirably, using a starting condition value. Since there is a strong correlation between mean LAI and BA, and the anomaly is currently based on values from this correlation, the mean anomaly of each plot is inherently very close to zero (this can be seen in Fig. 3). Thus, using the mean value from the experimental period inherently removes almost any possibility of there being a meaningful main treatment effect, since all rings are forced to have roughly the same mean anomaly over the course of the experiment. In contrast, anomalies calculated based on a pre-treatment values are not defined as having the same mean and therefore can reveal significant main effect differences.
 
 **We have responded to the data analysis concerns above.**
 
-
 Results
 l.290 The insect outbreak confounds your results and is not something that you really set out to examine. Consider excluding ring 6 data from the outbreak onward.
 
-**todo. But it happened so why rmeove it.**
+**We disagree that the outbreak confounded the results; we did not find effects of CO2 on LAI despite the outbreak. Although we did not set out to examine the outbreak, it occurred nonetheless and we think it is informative as the outbreak reflects natural dynamics of Eucalyptus-dominated woodlands. Also, we do not discuss the outbreak in any sort of detail, so removing it from the figure does not shorten the manuscript.**
 
 l.299 See above comments (a significant main Ca effect is almost impossible). A significant Ca x Date interaction is possible, but not reported here. However, if a significant interaction was found, it seems like it was likely attributed only to the insect outbreak in ring 6, but might also be due to Ca effects obscured by the current anomaly calculation.
 
@@ -158,75 +160,80 @@ l.299 See above comments (a significant main Ca effect is almost impossible). A 
 
 l.301+ move to the discussion
 
-**todo**
+**We have moved the discussion of discernable effect sizes to the discussion.**
 
 l.307 move to methods
 
-**todo**
+**Done.**
 
 l.314 Did you verify that there was no leaf growth, or is this an assumption based on drought?
 
-**todo. field-verified - clarify**
+**We verified in the field that no leaf growth was occurring. We have clarified this in this section as well as made reference to Fig. 6, where we have indicated when leaf growth was observed in the field.**
 
 l.318 move to methods. This calculation assumes litter is grown and lost in the same time period. This is unlikely, especially since a month is an ecologically arbitrary duration. So, this calculation could indicate that a period of reduced Lt and large litter fall was associated with positive leaf production. However, the leaves lost as litter were likely produced over a variety of time points. This also ignores the problems of incomplete litter capture and non-experimental litter entering the plot.
 
-**no idea what this is all about. Explain that leaf production must equal net increase of LAI (LAIt=2 - LAIt=1) PLUS the litter produced in that time period. It has nothing to do what happened previously. Incomplete litter capture was responded to above**
+**Moved to methods. We disagree that this method 'assumes litter is grown and lost in the same time period'. Basically, gross leaf production must be equal to the net change in LAI (=the pool of leaves in the canopy) plus the amount of shedded leaf area, as measured by litter production. And to  "this calculation could indicate that a period of reduced Lt and large litter fall was associated with positive leaf production", this is only true if the reduction in LAI is less than the litter produced. In that case the canopy must have produced new leaves in that period to complete the sum of dLAI/dt = leafgrowth - litter. There are no assumptions on when the leaves were produced that show up in the litter traps at that time.**
+
+**We think that the term 'litter production' may be misleading, as the term 'production' seems to indicate that the leaves were 'produced' during that time period, which we certainly do not assume nor imply (in fact, we have shown that leaf lifespan is ca. 1 year).**
 
 l.330 methods
+
+**Done.**
+
 l.333 methods
 
-**todo. moved to methods**
+**Done.**
 
 
 Discussion
 l.361 Its somewhat misleading to claim that basal area was included as a covariate, since it was not actually included in any statistical analysis of a response variable.
 
-**The previous analysis was equivalent to using BA as a covariate, however this is now irrelevant since we have redone the analysis**
+**The previous analysis was essentially equivalent to using BA as a covariate, however this is now irrelevant since we have redone the analysis.**
 
 l.368 There are a lot of places throughout the manuscript where you start a thought with “X showed Y response,” which puts the emphasis on the authors (X) and not the concept (Y). The points you’re trying to make are Y, not who showed them. This is not a huge problem, but the current emphases on authors and not concepts makes portions of the manuscript feel disjointed and list-y.
 
-**todo. fixed throughout**
+**The manuscript was edited throughout to make statements more direct.**
 
 l.376 you originally expected that, but did not find it, right? Again, remove “could”
 
-**todo**
+**Removed 'could'.**
 
 l.377 “very” is redundant. How does this relate to the point you’re trying to make?
 
-**todo**
+**Removed 'very'.**
 
 l.378 The purpose of this manuscript was not to make broad generalizations on FACE L responses. This whole paragraph should be dropped.
 
-**todo. I'd hate to remove this completely - maybe move some of it to introduction to show that the responses sofar are inconclusive so we need more info?**
+**It was not the purpose of the manuscript to generalize to other FACE sites, but we feel it is relevant discussion to the results of this study to the other FACE sites. This is informative because the results from the EucFACE do not fit well with a generalization across other FACE sites as presented by Norby and Zak (2011).**
 
 l.381-5 pick one of these two sentences
 
-**todo**
+**Deleted sentence on line 381.**
 
 l.388 eCa. Be consistent
 
-**todo**
+**Done.**
 
 l.389+ how does this support the message of this manuscript?
 
-**todo**
+**Here we try to reconcile the apparent inconsistency : we found no effect of CO2 on LAI, but we did find a longer leaf lifespan in elevated CO2. This implies that the fractional allocation to leaves in elevated CO2 has decreased (through mass balance considerations). We have shortened this part of the paragraph.**
 
 l.395 define LL earlier in the ms and use throughout
 
-**todo**
+**We now define LL in the Methods and use it more consistently throughout.**
 
 l.401+ Is the point what all these studies found specifically, or that there are mixed effects of eCa on LL?
 
-**todo**
+**Edited the sentence for clarity.**
 
 l.408 formatted as parenthetical reference
 
-**todo**
+**Done.**
 
 
 Figures: Consider using other colors to avoid problems for red/blue colorblind readers. This is a lot of figures, evaluate which ones are essential to the main points of the manuscript and put non-essential figures in supplements.
 
-**todo. Move LAI-BA to the SuppInfo, otherwise keep everything. Six is not a lot.**
+**We have moved Fig. 2 to the Supporting Information. We have retained the other figures as we feel they are essential to the manuscript (and six figures does not seem excessive to us).**
 
 3: include a 1:1 line for positive values too.
 
