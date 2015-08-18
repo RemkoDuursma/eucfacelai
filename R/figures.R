@@ -64,7 +64,7 @@ figure1 <- function(df, ramp){
 figure2 <- function(df,
                     xlim=NULL, ylim=NULL,
                     legend=TRUE,
-                    ylab=expression(italic(LAI)~~(m^2~m^-2)),
+                    ylab=expression(LAI~~(m^2~m^-2)),
                     cex.lab=1.1, cex.axis=0.8, cex.legend=0.7,
                     legendwhere="topleft",
                     setpar=TRUE,
@@ -110,10 +110,10 @@ figure3 <- function(df){
   par(mar=c(5,5,2,2), cex.lab=1.1, cex.axis=0.9, las=1, xaxs="i", yaxs="i", tcl=0.2)
   with(dfup, plot(X, Y, pch=c(19,21)[treatment],
                col=Cols[LAIchange],
-               xlab=expression(Leaf~litter~production~~(m^2~m^-2~mon^-1)),
+               xlab=expression(P[L]~~(m^2~m^-2~mon^-1)),
                xlim=c(0,0.6),
                ylim=c(-0.3,0.5),
-               ylab=expression(Delta*italic(LAI)~from~tau[d]~(m^2~m^-2~mon^-1))))
+               ylab=expression(Delta*LAI~~(m^2~m^-2~mon^-1))))
   with(dfdown, points(X, Y, pch=c(17,24)[treatment],
                   col=Cols[LAIchange]))
   
