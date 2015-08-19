@@ -347,8 +347,8 @@ figureSI2 <- function(df){
   par(mfrow=c(1,2), mar=c(5,5,2,2), cex.axis=0.9, tcl=0.2)
   plotit <- function(df){
     with(df, plot(LAI, LAI.PAR.mean, 
-                  ylab=expression(italic(L)~from~tau[d]~~(m^2~m^-2)),
-                  xlab=expression(italic(L)~from~canopy~photos~~(m^2~m^-2)),
+                  ylab=expression(LAI~from~tau[d]~~(m^2~m^-2)),
+                  xlab=expression(LAI~from~canopy~photos~~(m^2~m^-2)),
                   pch=19, col=my_ringcols()[Ring],
                   panel.first=predline(lm(LAI.PAR.mean ~ LAI, data=df), lty=5),
                   xlim=c(0.8,2.2), ylim=c(0.8,2.2)))
@@ -406,12 +406,68 @@ figureSI4 <- function(df){
   par(mar=c(5,5,2,2), cex.lab=1.2,xaxs="i", yaxs="i", tcl=0.2, las=1)
   with(df, plot(BA, LAI.mean, pch=19, cex=1.2, col=my_ringcols(),
                 xlab=expression(Basal~area~~(m^2~ha^-1)),
-                ylab=expression(bar(italic(LAI))~~(m^2~m^-2)),
+                ylab=expression(bar(LAI)~~(m^2~m^-2)),
                 panel.first=predline(lm(LAI.mean ~ BA, data=ba)),
                 ylim=c(1.2,2.4), xlim=c(18,40)))
   legend("bottomright", as.character(1:6), pch=19, bty='n',
          col=my_ringcols(), title="Ring", cex=0.6, pt.cex=1)
   
+}
+
+figureSI5 <- function(df, ba){
+  
+  df$Date <- as.numeric(df$Date) # for gamm
+  df <- merge(df, ba)
+  
+  # Fit full model
+  g <- gamm(LAI ~ treatment + BA + s(Date, k=18), random = list(Ring=~1), data=df)
+  
+  
+  # Now predict from model at mean basal area.
+  nd <- expand.grid(Date=seq(min(df$Date), max(df$Date), by=1),
+                    treatment=c("ambient","elevated"))
+  nd$BA <- mean(ba$BA)
+  
+  p <- predict(g[[2]], nd, se.fit=TRUE)
+  nd$LAIpred <- p$fit
+  nd$LAIse <- p$se.fit
+  
+  # minimum observable difference
+  halfci <- mean(2 * nd$LAIse)
+  minobsdiff <- 2 *mean(2 * nd$LAIse)/mean(nd$LAIpred)
+  
+  # Make figure
+  nd$Date <- as.Date(nd$Date, origin="1970-1-1")
+  da <- subset(nd, treatment == "ambient")
+  de <- subset(nd, treatment == "elevated")
+  
+  
+  palette(my_co2cols())
+  linecols <- palette()
+  polycolors <- c(alpha("royalblue",0.7),alpha("pink",0.7))
+  
+  par(mar=c(3,5,2,2), yaxs="i")
+  with(df, plot(Date, LAI, pch=19, col=treatment,
+                ylim=c(0,2.8), 
+                ylab=expression(LAI~~(m^2~m^-2)),
+                xlab="",
+                axes=FALSE))
+  
+  addpoly(da$Date, da$LAIpred-2*da$LAIse, da$LAIpred + 2*da$LAIse, col=polycolors[1])
+  addpoly(de$Date, de$LAIpred-2*de$LAIse, de$LAIpred + 2*de$LAIse, col=polycolors[2])
+  
+  lines(da$Date, da$LAIpred, col=linecols[1], lwd=2)
+  lines(de$Date, de$LAIpred, col=linecols[2], lwd=2)
+  
+  l <- legend("topleft", c("Ambient","Elevated"), title=expression(italic(C)[a]~treatment), 
+              fill=my_co2cols(), bty="n", cex=0.8)
+  axis(2, at=seq(0,2.8,by=0.4))
+  box()
+  
+  timeseries_axis()
+
+  
+return(invisible(list(minobsdiff=minobsdiff, halfci=halfci)))
 }
 
 

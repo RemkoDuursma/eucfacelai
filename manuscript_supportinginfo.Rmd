@@ -14,6 +14,7 @@ bibliography: references.bib
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 source("manuscript_calcs.R")
+opts_chunk$set(dpi=300)
 ```
 
 ## Supporting Figures
@@ -49,6 +50,18 @@ figureSI4(ba)
 ```
 
 **Figure SI4**. Average $LAI_\tau$ over the entire study period plotted against the basal area (sum of stem cross-sectional areas) of the FACE rings ($R^2$ = `r glance(balm)$r.squared`, LAI = `r tidy(balm)$estimate[1]` + `r tidy(balm)$estimate[2]` BA). This relationship was used to calculate the LAI anomaly in Fig. 3, as the difference between LAI predicted from this regression and the actual $LAI_\tau$ at any given time. Red symbols are elevated C~a~, blue symbols ambient C~a~.
+
+
+\
+```{r fig.width=8, fig.height=4, echo=FALSE, message=FALSE}
+res <- figureSI5(df, ba)
+```
+
+**Figure SI5**. Detectable differences in LAI between C~a~ treatments after accounting for pre-treatment variation in basal area. We fit LAI with a fitted GAM using C~a~, time and pre-treatment basal area (BA) as the covariates. In the GAM, time was entered as a smooth term (estimated by a cubic spline), and BA as a linear term. Shown are the predictions (smooth lines) from the fitted GAM when BA was set to the mean value across all plots. Shaded areas indicate 95% confidence intervals (CI). Note they are much narrower than the CI across plots when BA was allowed to vary (Fig. 2 in main text). The CI here thus accounts for the pre-treatment differences between rings, and visualizes how using BA as a covariate in the mixed-effects model increases the ability to resolve small difference in LAI that may develop over time. The minimum detectable difference in LAI between C~a~ treatments can be estimated from the average half-width of the CI of fitted LAI at a common BA. A significant effect would could be observed (provided the error variance remains the same) when the two CIs (for aC~a~ and eC~a~) would just not overlap (so that p < 0.05), or twice the half-width CI. This difference was estimated as `r round(res$halfci,2)` m^2^ m^-2^, which when expressed relative to the mean LAI of `r round(mean(ba$LAI.mean),2)` is a difference of only `r round(100*res$minobsdiff,1)`%.
+
+
+
+
 
 
 ## Notes S1. Estimation of leaf area index from digital photography

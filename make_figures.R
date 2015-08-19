@@ -51,6 +51,10 @@ to.pdf(figureSI4(ba),
        filename="output/figures/FigureSI4.pdf",
        width=4, height=4)
 
+to.pdf(figureSI5(df,ba), 
+       filename="output/figures/FigureSI5.pdf",
+       width=8, height=4)
+
 
 # 
 # 
