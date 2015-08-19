@@ -141,13 +141,14 @@ figure4 <- function(dLAIlitter){
   
   par(mar=c(3,5,2,2), cex.lab=1.1,tcl=0.2,las=1)
   with(subset(da, treatment == "ambient"), plot(Date, laprod, type='l', col="blue",
+                                                lwd=2,
                                                 axes=FALSE,xlab="",
                                                 ylab=expression("Leaf or litter production"~(m^2~m^-2~mon^-1)),
                                                 ylim=c(-0.05,0.8)))
-  with(subset(da, treatment == "elevated"), lines(Date, laprod, col="red"))
+  with(subset(da, treatment == "elevated"), lines(Date, laprod, col="red", lwd=2))
   
-  with(subset(da, treatment == "ambient"), lines(Date, lit, col="blue", lty=5))
-  with(subset(da, treatment == "elevated"), lines(Date, lit, col="red", lty=5))
+  with(subset(da, treatment == "ambient"), lines(Date, lit, col="blue", lty=5, lwd=2))
+  with(subset(da, treatment == "elevated"), lines(Date, lit, col="red", lty=5, lwd=2))
   abline(h=0, col="darkgrey")
   axis(2)
   box()

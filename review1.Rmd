@@ -1,17 +1,20 @@
 ---
 output: word_document
 ---
+
+**We thank the reviewer for the detailed and constructive comments. We have redone the data analysis to account for the reviewer's main concern, and provide detailed justification for the litter trap sampling design in the response below. We have accounted for the vast majority of detailed comments and suggestions, and have substantially edited the text for consistency, clarity and brevity.**
+
 In this manuscript, Duursma et al. present findings on the response of LAI and litter production to elevated atmospheric CO2 in EucFACE, a free air CO2 enrichment experiment established in a Eucalyptus woodland. The authors had expected elevated CO2 to increase LAI and litter production. In contrast to these expectations, the authors found CO2 to have no significant effect on either LAI or litter production over the 28-month experiment. However, they did find that CO2 extended leaf lifespan by approximately two months.
 
 Overall, it is my opinion that this manuscript is unsuitable for publication in Global Change Biology in its current form and should be rejected. I do not take this recommendation lightly, since data from forest CO2 enrichment experiments is highly valuable and in great demand. However, I have several issues with the field techniques and analyses addressed in this manuscript and the effort required to address them warrants the submission of an entirely new manuscript in my opinion.
 
 The largest issue is that LAI anomaly (the main response analyzed) is essentially calculated from the mean of LAI over the experimental period. In an attempt to account for initial differences between plots, the authors correlated mean LAI and basal area for each plot. They then calculated the difference between the observed LAI and the expected value based on the LAI-BA relationship and defined it as “LAI anomaly.” However, because LAI and BA were so tightly correlated, this LAI anomaly is essentially the same as the difference between the mean LAI and the observed LAI. Since LAI means are the means of the observed values, all plots have a mean LAI anomaly of approximately zero (this can be seen in Fig. 3). This heavily restricts the ability of any statistical test to detect differences between plots or treatments. Thus, the finding of no response of LAI anomaly to elevated CO2 is not surprising.
 
-**We now use pre-treatment BA as a covariate in a mixed-effects model. We found no CO2 or CO2 x time effect on LAI when BA was used as a covariate. There is also no effect of CO2 when BA is not included as a covariate, but due to the tight relationship between BA and LAI, using BA as a covariate increases the ability to find a CO2 effect. We only show the results when including BA as a covariate in the manuscript. Fig.2 now shows the LAI timeseries instead of the anomaly as before, and we have amended the text in various places to account for these changes.**
+**We now use pre-treatment BA as a covariate in a mixed-effects model. We found no CO2 or CO2 x time effect on LAI when BA was used as a covariate. There is also no effect of CO2 when BA is not included as a covariate, but due to the tight relationship between BA and LAI, using BA as a covariate increases the ability to find a CO2 effect. On this point, we have also added a new figure in the supporting information (Fig. S5) that addresses the minimum detectable difference with a new method. Fig.2 now shows the LAI timeseries instead of the anomaly as before, and we have amended the text in various places to account for these changes.**
 
 The only statistically significant response of LAI that would be expected under the current statistical design would be from a CO2 x time interaction. While no statistics are reported, an interaction may have been detected but attributed exclusively to an insect outbreak, whereas it also has the potential to due to a real response. However, the inclusion of the post-outbreak data makes this difficult to discern. The outbreak confounds the effect of CO2 with that of the outbreak, and thus data from the infested plot should only be considered up until the outbreak occurred.
 
-**As noted above, we have redone the analysis and find no CO2 or CO2 x time effect. Although there was a brief period when the 95% confidence intervals were not overlapping (for the anomaly, though not when LAI is considered, see new Fig.2), this brief period did not result in a significant overall CO2 x time effect. For this reason we have not removed the insect attack from the study (it would have been appropriate if we did find a CO2 x time effect).**
+**As noted above, we have redone the analysis and find no CO2 or CO2 x time effect. Although there was a brief period when the 95% confidence intervals were not overlapping (for the anomaly in the previous manuscript, though not when LAI is considered, see new Fig.2), this brief period did not result in a significant overall CO2 x time effect. For this reason we have not removed the insect attack from the study (it would have been appropriate if we did find a CO2 x time effect), since it does not confound the overall findings.**
 
 The techniques used to collect litter are also concerning. The authors deployed eight 0.2 m2 litter traps in each ~123 m2 plot and used the litter collected from these traps to estimate litter production. However, considering the size of each individual trap and scale of the experiment, there is significant doubt that the traps provided a representative sample of each plot. Additionally, the analyses performed using litter data make several assumptions that are unlikely to hold.
 
@@ -19,7 +22,7 @@ The techniques used to collect litter are also concerning. The authors deployed 
 
 l.160 “litter cloth basket” is odd. Where were they placed? This is a very small portion of the total plot area and indeed the area where litter would be expected to fall (an area much larger than the plot). So, these baskets are likely capturing only a tiny fraction of the litter from each plot and might even be catching litter from outside the plot as well, depending on where they are located. Can such a small and potentially contaminated sample be representative of such a large plot?
 
-**The size, number, and relative coverage of the litterfall traps is broadly consistent with other forest FACE studies (see Table below), with the largest trap size. The size and coverage of the traps is therefore fully justified. The litter traps were placed in somewhat random locations across the ring, but never within XXX meters of the plot edge, to minimize contamination. We, as in all other FACE sites, cannot be completely certain that contamination did not occur, but it is likely that the vast majority of litter in each basket was produced in that FACE ring.**
+**The size, number, and relative coverage of the litterfall traps at EucFACE is consistent with the design of other forest FACE studies (see Table below), with in fact the largest trap size compared to other sites. The size and coverage of the traps is therefore fully justified. The litter traps were placed in somewhat random locations across the ring, but never within 2 meters of the plot edge, to minimize contamination. We, as in all other FACE sites, cannot be completely certain that contamination did not occur, but it is likely that the vast majority of litter in each basket was produced in that FACE ring.**
 
 ```{r echo=FALSE}
 tabl <- read.csv(text="Experiment,	Reference,	Nr Traps per plot,	Trap size (m2),	Plot size (m2),	Coverage (%)
@@ -30,7 +33,7 @@ Rhinelander,Liu et al. 2009,	18,	0.145,	707,	0.0037
 BangorFACE,Godbold et al. 2014,	7,	0.11,	57,	0.0136
 EucFACE,this paper,	8,	0.1979,	491,	0.0032", header=TRUE, check.names=FALSE)
 
-tabl <- tabl[,-ncol(tabl)]
+tabl[,ncol(tabl)] <- 100*tabl[,ncol(tabl)]
 
 library(knitr)
 kable(tabl)
@@ -38,9 +41,7 @@ kable(tabl)
 
 Another issue lies in the inclusion of an add-on analysis comparing two LAI estimation techniques. While useful, this comparison should be its own methods paper and does not align well with the scope of the rest of the manuscript. Currently, it adds to an already lengthy paper and distracts from the authors’ main points.
 
-**We have moved this analysis, including the methods, to the Supporting Information. We believe this is interesting information for others concerned with LAI estimation, but agree it is a secondary objective only. We only briefly mention in the Methods that the two methods gave comparable results.**
-
-**We are surprised that the reviewer considers our paper 'lengthy', as the word count of ca. 5500 words is more than 30% lower than the allowed length for Global Change Biology (8000 words).**
+**We have moved this analysis, including the methods, in its entirety to the Supporting Information. We believe this is interesting information for others concerned with LAI estimation, but agree it is a secondary objective only. We only briefly mention in the Methods that the two methods gave comparable results.**
 
 Finally, the manuscript requires extensive editing for structure and flow. 
 
@@ -48,11 +49,11 @@ Finally, the manuscript requires extensive editing for structure and flow.
 
 The introduction does not sufficiently establish the expectation of litter responses. 
 
-*TODO* **We have added a couple of sentences indicating the expectation of the litter response; it follows logically from the test of differences in LAI**
+**Since the reviewer deems the manuscript too lengthy already, we hesitate to include a full introduction of litter fall and our expectations. We have edited the final paragraph to make it more clear that we are also interested in the components of LAI dynamics, namely, leaf growth and litter production.**
 
 The methods are incomplete and unclear. Specifically, there are many portions of the Results section that should be included in Materials and Methods. 
 
-**We have moved all methods-related content from the Results to the Methods section. We respond further to specific comments related to the Methods below**
+**We have moved all methods-related content from the Results to the Methods section, and substantially edited the entire section for brevity and clarity. We respond further to specific comments related to the Methods below.**
 
 Additionally, it is unclear if the authors’ used repeated measures to analyze their data, which would be necessary considering the experimental design. 
 
@@ -67,7 +68,7 @@ Specific Comments (line number given):
   Abstract
 l.26 What do you mean by (hot summer), and is it necessary? This is not how you describe the climate in the methods.
 
-**Reworded to 'subtropical', which is more fitting** *IS THIS CORRECT*
+**Reworded to 'subtropical', to be consistent with Methods.**
 
 l.30 “this timeframe” is a stretched reference (ref. l.24). Reword
 
@@ -75,7 +76,7 @@ l.30 “this timeframe” is a stretched reference (ref. l.24). Reword
 
 l.31 You don’t provide expectation of a seasonal pattern in the abstract, so explaining that there isn’t one is distracting here.
 
-**todo**
+**Removed from abstract.**
 
 l.37 I would expect that GCB readers would know what FACE stands for, but it might be good to say free air CO2 enrichment to be safe.
 
@@ -112,15 +113,15 @@ l.94 the tense of this paragraph is weird. You’re moving between your hypothes
 
 l.95 to eCa in the EucFace experiment. EucFace needs to be defined in the body of the manuscript
 
-**FACE was defined in the 2nd paragraph of the definition, here the definition of EucFACE is quite obvious from the statement that the woodland is Eucalyptus-dominated**
+**FACE was defined in the 2nd paragraph of the definition, here the definition of EucFACE is hopefully obvious from the statement that the woodland is Eucalyptus-dominated.**
 
 l.97 are these means over the same period? This type of detail should be in the methods, not the introduction
 
-**Removed info on precipitation and PET here, as it is explained in more detail in the Methods already.**
+**Removed info on precipitation and PET here, as it is explained in more detail in the Methods already. In the Methods, we have indicated the period over which P and PET are estimated (both are longterm).**
 
 l.99 Because Production – Litter = LAI? Currently, the introduction doesn’t address litter fall, so why is this expected to change?
 
-**If LAI changes, this must be due to changes in either the production of new foliage, or the lifespan of existing foliage. Both components can be assessed with measurements of litter production in combination with the time dynamics of LAI.** *Expand intro on litter fall a bit!!*
+**If LAI changes over time between treatments, this must be due to changes in either the production of new foliage, or the lifespan of existing foliage. Both components can be assessed with measurements of litter production in combination with the time dynamics of LAI.** 
 
 Materials and Methods
 l.110 What do you mean by undisturbed? Be specific
@@ -141,7 +142,7 @@ l.163 provide this calculation. Was it LAI (cm2/cm2) = SLA  (cm2/g) x Litter (g/
 
 l.206 The calibration is difficult to follow
 
-**todo. which part is difficult???**
+**I HAVE NOT DONE THIS - CAN SOMEONE TELL ME WHAT IS DIFFICULT ABOUT IT???**
 
 l.267 Was this set up as a repeated measures?
 
@@ -162,7 +163,7 @@ l.299 See above comments (a significant main Ca effect is almost impossible). A 
 
 l.301+ move to the discussion
 
-**We have moved the discussion of discernable effect sizes to the discussion.**
+**We have moved the discussion of discernable effect sizes to the discussion, and the details of that analysis to the Supporting Information (new Fig. S5).**
 
 l.307 move to methods
 
@@ -174,9 +175,7 @@ l.314 Did you verify that there was no leaf growth, or is this an assumption bas
 
 l.318 move to methods. This calculation assumes litter is grown and lost in the same time period. This is unlikely, especially since a month is an ecologically arbitrary duration. So, this calculation could indicate that a period of reduced Lt and large litter fall was associated with positive leaf production. However, the leaves lost as litter were likely produced over a variety of time points. This also ignores the problems of incomplete litter capture and non-experimental litter entering the plot.
 
-**Moved to methods. We disagree that this method 'assumes litter is grown and lost in the same time period'. Basically, gross leaf production must be equal to the net change in LAI (=the pool of leaves in the canopy) plus the amount of shedded leaf area, as measured by litter production. And to  "this calculation could indicate that a period of reduced Lt and large litter fall was associated with positive leaf production", this is only true if the reduction in LAI is less than the litter produced. In that case the canopy must have produced new leaves in that period to complete the sum of dLAI/dt = leafgrowth - litter. There are no assumptions on when the leaves were produced that show up in the litter traps at that time.**
-
-**We think that the term 'litter production' may be misleading, as the term 'production' seems to indicate that the leaves were 'produced' during that time period, which we certainly do not assume nor imply (in fact, we have shown that leaf lifespan is ca. 1 year).**
+**Moved to methods (and edited for clarity). We disagree that this method 'assumes litter is grown and lost in the same time period'. Basically, gross leaf production must be equal to the net change in LAI (=the pool of leaves in the canopy) plus the amount of shedded leaf area, as measured by litter production. And to  "this calculation could indicate that a period of reduced Lt and large litter fall was associated with positive leaf production", this is only true if the reduction in LAI is less than the litter produced. In that case the canopy must have produced new leaves in that period to complete the sum of dLAI/dt = leafgrowth - litter. There are no assumptions on when the leaves were produced that show up in the litter traps at that time. We now explain this mass balance consideration in the Methods.**
 
 l.330 methods
 
@@ -206,7 +205,7 @@ l.377 “very” is redundant. How does this relate to the point you’re trying
 
 l.378 The purpose of this manuscript was not to make broad generalizations on FACE L responses. This whole paragraph should be dropped.
 
-**It was not the purpose of the manuscript to generalize to other FACE sites, but we feel it is relevant discussion to the results of this study to the other FACE sites. This is informative because the results from the EucFACE do not fit well with a generalization across other FACE sites as presented by Norby and Zak (2011).**
+**It was not the purpose of the manuscript to generalize to other FACE sites, but we feel it is relevant to compare the results of this study to the other FACE sites. This is informative because the results from the EucFACE do not fit well with a generalization across other FACE sites as presented by Norby and Zak (2011).**
 
 l.381-5 pick one of these two sentences
 
@@ -235,7 +234,7 @@ l.408 formatted as parenthetical reference
 
 Figures: Consider using other colors to avoid problems for red/blue colorblind readers. This is a lot of figures, evaluate which ones are essential to the main points of the manuscript and put non-essential figures in supplements.
 
-**We have moved Fig. 2 to the Supporting Information. We have retained the other figures as we feel they are essential to the manuscript (and six figures does not seem excessive to us).**
+**We have moved Fig. 2 to the Supporting Information. We have retained the other figures as we feel they are essential to the manuscript.**
 
 3: include a 1:1 line for positive values too.
 
@@ -243,7 +242,7 @@ Figures: Consider using other colors to avoid problems for red/blue colorblind r
 
 4: Increase line thickness.
 
-**todo**
+**Done.**
 
 
 
