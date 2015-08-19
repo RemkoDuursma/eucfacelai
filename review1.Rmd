@@ -103,7 +103,7 @@ l.75 The meaning of Ca can be inferred from your definition of eCa, but it’s b
 
 **Done.**
 
-l.79 This sentence is awkwardly constructed. Again, too long and an unclear topic sentence. If the point of this sentence is to set up a paragraph about water, why start it off talking about temperature and photo period? It would be better to frame this as quantitative water effects being relatively unknown as opposed to qualitative effects being well-known. I would just drop l.79-81, and start with “The response of L to fluctuations in water availability….” Issues like this need to be addressed throughout the paper.
+l.79 This sentence is awkwardly constructed. Again, too long and an unclear topic sentence. If the point of this sentence is to set up a paragraph about water, why start it off talking about temperature and photo period? It would be better to frame this as quantitative water effects being relatively unknown as opposed to qualitative effects being well-known. I would just drop l.79-81, and start with “The response of L to fluctuations in water availability.” Issues like this need to be addressed throughout the paper.
 
 **Edited the paragraph throughout (and deleted l.79-81).**
 
