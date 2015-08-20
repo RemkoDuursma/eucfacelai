@@ -22,6 +22,8 @@ converttoJPEGs <- function(){
 # Smoothed gap fraction raw data
 figure1 <- function(df, ramp){
   
+  palette(my_co2cols())
+  
   l <- layout(matrix(c(1,2), ncol=1), heights=c(0.8,2))
   xl <- c(min(ramp$Date), max(df$Date))
   
@@ -64,7 +66,7 @@ figure1 <- function(df, ramp){
 figure2 <- function(df,
                     xlim=NULL, ylim=NULL,
                     legend=TRUE,
-                    ylab=expression(LAI~~(m^2~m^-2)),
+                    ylab=expression(italic(L)~~(m^2~m^-2)),
                     cex.lab=1.1, cex.axis=0.8, cex.legend=0.7,
                     legendwhere="topleft",
                     setpar=TRUE,
@@ -113,7 +115,7 @@ figure3 <- function(df){
                xlab=expression(P[L]~~(m^2~m^-2~mon^-1)),
                xlim=c(0,0.6),
                ylim=c(-0.3,0.5),
-               ylab=expression(Delta*LAI~~(m^2~m^-2~mon^-1))))
+               ylab=expression(Delta*italic(L)~~(m^2~m^-2~mon^-1))))
   with(dfdown, points(X, Y, pch=c(17,24)[treatment],
                   col=Cols[LAIchange]))
   
@@ -124,8 +126,8 @@ figure3 <- function(df){
   predline(lm(Y ~ X, data=dfdown), col=Cols[1])
   box()
   
-  l <- legend("bottomright", c(expression(Delta*italic(LAI) < 0),
-                               expression(Delta*italic(LAI) > 0)), 
+  l <- legend("bottomright", c(expression(Delta*italic(L) < 0),
+                               expression(Delta*italic(L) > 0)), 
               pt.bg=Cols, bty='n', cex=0.8, pch=c(24,21))
   
   legend(l$rect$left - l$rect$w, l$rect$top, 
@@ -169,7 +171,7 @@ figure5 <-  function(df){
   
   with(df, plot(LAI.mean.litterperiod, LAIlitter_annual, pch=19, cex=1.2, col=my_ringcols(),
                 ylab=expression(Litter~production~~(m^2~m^-2~yr^-1)),
-                xlab=expression(bar(italic(LAI))~~(m^2~m^-2)),
+                xlab=expression(bar(italic(L))~~(m^2~m^-2)),
                 panel.first={
                   for(z in LLs)abline(0,1/z,col="grey", lty=5)
                 },
@@ -216,7 +218,7 @@ figure6 <- function(df, facesoilwater, faceraindaily, airt, kgam=18){
   # panel a
   smoothplot(Date, LAI, data=dfa, kgam=kgam, pointcols="dimgrey", linecols="black", 
              xlim=xl,
-             ylab=expression(italic(LAI)~~(m^2~m^-2)),
+             ylab=expression(italic(L)~~(m^2~m^-2)),
              ylim=c(1,2.4), axes=FALSE)
   timeseries_axis(FALSE)
   axis(2)
@@ -348,8 +350,8 @@ figureSI2 <- function(df){
   par(mfrow=c(1,2), mar=c(5,5,2,2), cex.axis=0.9, tcl=0.2)
   plotit <- function(df){
     with(df, plot(LAI, LAI.PAR.mean, 
-                  ylab=expression(LAI~from~tau[d]~~(m^2~m^-2)),
-                  xlab=expression(LAI~from~canopy~photos~~(m^2~m^-2)),
+                  ylab=expression(L~from~tau[d]~~(m^2~m^-2)),
+                  xlab=expression(L~from~canopy~photos~~(m^2~m^-2)),
                   pch=19, col=my_ringcols()[Ring],
                   panel.first=predline(lm(LAI.PAR.mean ~ LAI, data=df), lty=5),
                   xlim=c(0.8,2.2), ylim=c(0.8,2.2)))
@@ -407,7 +409,7 @@ figureSI4 <- function(df){
   par(mar=c(5,5,2,2), cex.lab=1.2,xaxs="i", yaxs="i", tcl=0.2, las=1)
   with(df, plot(BA, LAI.mean, pch=19, cex=1.2, col=my_ringcols(),
                 xlab=expression(Basal~area~~(m^2~ha^-1)),
-                ylab=expression(bar(LAI)~~(m^2~m^-2)),
+                ylab=expression(bar(italic(L))~~(m^2~m^-2)),
                 panel.first=predline(lm(LAI.mean ~ BA, data=ba)),
                 ylim=c(1.2,2.4), xlim=c(18,40)))
   legend("bottomright", as.character(1:6), pch=19, bty='n',
@@ -450,7 +452,7 @@ figureSI5 <- function(df, ba){
   par(mar=c(3,5,2,2), yaxs="i")
   with(df, plot(Date, LAI, pch=19, col=treatment,
                 ylim=c(0,2.8), 
-                ylab=expression(LAI~~(m^2~m^-2)),
+                ylab=expression(italic(L)~~(m^2~m^-2)),
                 xlab="",
                 axes=FALSE))
   
