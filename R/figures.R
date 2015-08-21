@@ -338,7 +338,7 @@ figureSI1 <- function(litring, df){
   box()
   mtext(side=2, at=0.75, text=expression(Delta*tau[d]), line=3, outer=TRUE,
         cex=1.2)
-  mtext(side=2, at=0.25, text=expression(Litter~production~(m^2~m^-2)),
+  mtext(side=2, at=0.25, text=expression(P[L]~~(m^2~m^-2)),
         line=3, outer=TRUE, cex=1.2)
   mtext(side=1, at=0.5, text="Ring", outer=TRUE, line=3, cex=1.2)
   

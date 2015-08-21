@@ -4,7 +4,7 @@ author: ''
 date: ''
 output:
   word_document:
-    reference_docx: manuscriptstyle.docx
+    reference_docx: manuscriptsuppinfostyle.docx
   pdf_document: default
   html_document:
     number_sections: yes
@@ -17,6 +17,9 @@ source("manuscript_calcs.R")
 opts_chunk$set(dpi=300)
 ```
 
+For the article "Canopy leaf area of a mature evergreen *Eucalyptus* woodland does not respond to elevated atmospheric [CO~2~] but tracks water availability" by Remko A. Duursma, Teresa E. Gimeno, Matthias M. Boer, Kristine Y. Crous, Mark G. Tjoelker, David S. Ellsworth.
+
+
 ## Supporting Figures
  
  
@@ -24,8 +27,16 @@ opts_chunk$set(dpi=300)
 figureSI1(litring, subset(facegap_cloudy_byring, Date < maxdate))
 ```
 
-**Figure S1**. Increase in gapfraction ($\tau_d$) and total litter production during the 4-month drought period in 2013, calculated for each ring separately. Blue colours are ambient (nrs 2,3,6), red colours elevated C~a~ (nrs 1,4,5). (a) The change in  $\tau_d$ and its 95% confidence interval was calculated from the slope of linear regression of $\tau_d$ with time (number of days since 8 July 2013). (b) Total litter production during the drought expressed in terms of *L* for each ring. The confidence interval was calculated based on the 8 litter traps in each ring. Note the overlapping confidence intervals for all rings.
+**Figure S1**. Increase in gapfraction ($\tau_d$) and total litter production (P~L~) during the 4-month drought period in 2013, calculated for each ring separately. Blue colours are ambient (nrs 2,3,6), red colours elevated C~a~ (nrs 1,4,5). (a) The change in  $\tau_d$ and its 95% confidence interval was calculated from the slope of linear regression of $\tau_d$ with time (number of days since 8 July 2013). (b) Total litter production during the drought expressed in terms of *L* for each ring. The confidence interval was calculated based on the 8 litter traps in each ring. Note the overlapping confidence intervals for all rings.
 
+  
+\
+```{r fig.width=8, fig.height=4, echo=FALSE, message=FALSE, eval=TRUE}
+figureSI2(flatcan_byring)
+```
+
+**Figure S2**. Correlation between *L* estimated from diffuse canopy transmittance ($L_\tau$) and from canopy photos (L~p~). Solid line is a 1:1 line, dashed line a regression line across all data (with the shading indicating the 95% confidence interval), and the colored lines regressions per plot across dates. (a) Estimates of L~p~ with the extinction coefficient (*k*) set to 0.5, as recommended by MacFarlane et al. [-@Macfarlane2007] ($L_\tau$ = `r tidy(lmcanphot)$estimate[1]` + `r tidy(lmcanphot)$estimate[2]` L~p~, R^2^ = `r glance(lmcanphot)$r.squared`, p `r pval(glance(lmcanphot)$p.value)`), (b) Estimates of L~p~ with *k* optimized to minimize the difference between L~p~ and $L_\tau$ ($L_\tau$ = `r tidy(lmcanphot2)$estimate[1]` + `r tidy(lmcanphot2)$estimate[2]`).
+  
   
 \
 ```{r fig.width=8, fig.height=5, echo=FALSE, message=FALSE, eval=TRUE}
@@ -33,16 +44,9 @@ figureSI3(subset(facegap_cloudy_byring, Date < maxdate),
           subset(facegap_all_byring, Date < maxdate))
 ```
 
-**Figure S2.** Comparison of canopy transmittance ($\tau$) during highly diffuse conditions (F~diff~ > 0.98), or using all PAR data without filtering. Shown are daily average $\tau$ for all six FACE rings (symbols), with a smoother (generalized additive model with 95% confidence intervals). Note the much lower $\tau$ during southern hemisphere winter when using all data compared to diffuse only. This difference arises due to low solar angles, which lead to higher attenuation of the direct beam as a result of a longer path length through the canopy.
+**Figure S3.** Comparison of canopy transmittance ($\tau$) during highly diffuse conditions (F~diff~ > 0.98), or using all PAR data without filtering. Shown are daily average $\tau$ for all six FACE rings (symbols), with a smoother (generalized additive model with 95% confidence intervals). Note the much lower $\tau$ during southern hemisphere winter when using all data compared to diffuse only. This difference arises due to low solar angles, which lead to higher attenuation of the direct beam as a result of a longer path length through the canopy.
 
-
-
-\
-```{r fig.width=8, fig.height=4, echo=FALSE, message=FALSE, eval=TRUE}
-figureSI2(flatcan_byring)
-```
-
-**Figure S3**. Correlation between *L* estimated from diffuse canopy transmittance ($L_\tau$) and from canopy photos (L~p~). Solid line is a 1:1 line, dashed line a regression line across all data (with the shading indicating the 95% confidence interval), and the colored lines regressions per plot across dates. (a) Estimates of L~p~ with the extinction coefficient (*k*) set to 0.5, as recommended by MacFarlane et al. [-@Macfarlane2007] ($L_\tau$ = `r tidy(lmcanphot)$estimate[1]` + `r tidy(lmcanphot)$estimate[2]` L~p~, R^2^ = `r glance(lmcanphot)$r.squared`, p `r pval(glance(lmcanphot)$p.value)`), (b) Estimates of L~p~ with *k* optimized to minimize the difference between L~p~ and $L_\tau$ ($L_\tau$ = `r tidy(lmcanphot2)$estimate[1]` + `r tidy(lmcanphot2)$estimate[2]`).
+  
   
 \
 ```{r fig.width=4, fig.height=4, echo=FALSE, message=FALSE}
