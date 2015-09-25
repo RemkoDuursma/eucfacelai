@@ -4,11 +4,12 @@
 source("load.R")
 
 
-# 30minutely radiation data
-facepar <- makeFACEPAR(uploadnew=FALSE)
+# All figures and analyses use data up to this point.
+.maxdate <- as.Date("2015-3-1")
 
-# One bad row
-facepar$PAR_Den_2_Avg[facepar$Ring == "R4" & facepar$Date == as.Date("2013-9-8")] <- NA
+# 30minutely radiation data
+facepar <- makeFACEPAR(.maxdate)
+
 
 # Rainfall data, averaged across 3 rain gauges.
 facerain <- get_rain("rawmean")

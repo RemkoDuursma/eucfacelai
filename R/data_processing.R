@@ -598,126 +598,22 @@ agglitter <- function(dfr){
 
 
 
-makeFACEPAR <- function(uploadnew=FALSE){
-  
-  # Make monthly chunks and upload whole months to HIEv, if not exists already.
-  if(uploadnew){
-    makeAllMonthPAR()
-    uploadPARAGGtoHIEv()
-  }
-  
+makeFACEPAR <- function(endDate){
+
   # Get previously compiled PARAGG from HIEv
   PARAGG <- downloadCSV("P0037_RA_PARAGG", tryoffline=TRUE)
   # Delete _v1
   PARAGG <- PARAGG[!grepl("_v1", PARAGG$Source),]
   
-  # Add more data
-  newFACEPAR <- makePARAGG(startdate=max(as.Date(PARAGG$DateTime)))
+  # Date
+  PARAGG$Date <- as.Date(PARAGG$DateTime)
   
-  # Last row has NAs?
-  newFACEPAR <- newFACEPAR[!is.na(newFACEPAR$DateTime),]
+  # One bad row
+  PARAGG$PAR_Den_2_Avg[PARAGG$Ring == "R4" & PARAGG$Date == as.Date("2013-9-8")] <- NA
   
-  # Combine, addDate
-  FACE_PAR <- rbind_list(PARAGG, newFACEPAR)
-  FACE_PAR$Date <- as.Date(FACE_PAR$DateTime)
+  PARAGG <- subset(PARAGG, Date <= endDate)
   
-  return(FACE_PAR)
-}
-
-
-# Functions to make 30 minutely radiation data at the EucFACE
-makePARAGG <- function(startdate, enddate=as.Date(Sys.time())){
-  
-  addRing <- function(x)as.factor(str_extract(x$Source, "R[1-6]"))
-  
-  # AirVars
-  airvars <- downloadTOA5(c("FACE","airvars"), startDate=startdate, endDate=enddate,
-                          maxnfiles=200, tryoffline=TRUE)
-  airvars$Ring <- addRing(airvars)
-  
-  airvarsagg <- dplyr::summarize(group_by(airvars,DateTime=nearestTimeStep(DateTime,30),Ring),
-                                 PAR_Den_1_Avg=mean(PAR_Den_1_Avg),
-                                 PAR_Den_2_Avg=mean(PAR_Den_2_Avg),
-                                 PAR_Den_3_Avg=mean(PAR_Den_3_Avg),
-                                 Source_airvars=first(Source))
-  
-  # General
-  general <- downloadTOA5(c("FACE","general"), startDate=startdate, endDate=enddate,
-                          maxnfiles=200, tryoffline=TRUE)
-  general$Ring <- addRing(general)
-  
-  generalagg <- dplyr::summarize(group_by(general,DateTime=nearestTimeStep(DateTime,30),Ring),
-                                 LI190SB_PAR_Den_Avg=mean(LI190SB_PAR_Den_Avg),
-                                 SlrW_Avg=mean(SlrW_Avg),
-                                 Source_general=first(Source))
-  
-  # Eddy
-  eddy <- downloadTOA5("Eddyflux_slow_met", startDate=startdate, endDate=enddate,
-                       maxnfiles=200, allowedExtensions=c(".dat"), tryoffline=TRUE)
-  
-  # don't actually have to aggregate; but this fixes duplicate entries quickly and safely
-  eddyagg <- dplyr::summarize(group_by(eddy,DateTime=nearestTimeStep(DateTime,30)),
-                              TotalSS=mean(TotalSS),
-                              DiffuseSS=mean(DiffuseSS),
-                              PAR_Den=mean(PAR_Den),
-                              Source_eddy=first(Source))
-  
-  FACE_PAR <- merge(airvarsagg, generalagg, by=c("DateTime","Ring"), all=TRUE)
-  FACE_PAR <- merge(FACE_PAR, eddyagg, by="DateTime", all=TRUE)
-  
-  
-  # Remove bad data
-  badpar <- badPARdata()
-  for(i in 1:nrow(badpar)){
-    x <- badpar[i,]
-    dats <- seq.Date(x$startDate, x$endDate, by="1 day")
-    d <- as.Date(FACE_PAR$DateTime)
-    FACE_PAR[d %in% dats & as.character(FACE_PAR$Ring) == x$Ring, x$Sensor] <- NA
-  }
-
-  
-  return(FACE_PAR)
-}
-
-
-# Make monthly chunk
-makeMonthPAR <- function(month, overwrite=FALSE){
-  
-  enddate <- seq.Date(as.Date(month),length=2,by="1 month")[2] - 1
-  fn <- paste0("output/data/paragg/FACE_P0037_RA_PARAGG_",as.Date(month),"_",enddate,".csv")
-  
-  if(file.exists(fn) && !overwrite){
-    message("PARAGG : ", fn, " already exists.")
-    return()
-  }
-  
-  FACE_PAR <- makePARAGG(startdate=month, enddate=enddate)
-  
-  message(fn, "\ndone")
-  write.csv(FACE_PAR,fn,row.names=FALSE)
-}
-
-# Make all monthly chunks; do not do current month.
-makeAllMonthPAR <- function(){
-  mbegin <- seq.Date(from=as.Date("2013-7-1"), to=floor_date(today(), "month"), by="1 month")
-  for(i in 1:(length(mbegin)-1))makeMonthPAR(mbegin[i])
-}
-
-
-# Upload all monthly PARAGG to HIEv unless already on HIEv.
-uploadPARAGGtoHIEv <- function(){
-  
-  fns <- dir("output/data/paragg", full.names=TRUE)
-  for(i in 1:length(fns)){
-    
-    if(!is.null(searchHIEv(basename(fns[i]), quiet=TRUE))){
-      message("File ", basename(fns[i])," is on HIEv, skipping.")
-      next
-    }
-    
-    HIEv:::uploadToHIEv(fns[i], experiment=39, description=readLines("docs/faceparmetadata.txt"))
-    
-  }
+  return(PARAGG)
 }
 
 
