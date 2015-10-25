@@ -8,13 +8,12 @@ source("load.R")
 .maxdate <- as.Date("2015-3-1")
 
 # 30minutely radiation data
-facepar <- makeFACEPAR(.maxdate)
-
+facepar <- downloadCSV("FACE_RA_P0037_PARAGG_20121016-20150301_L2.csv")
+facepar$Date <- as.Date(facepar$Date)
 
 # Rainfall data, averaged across 3 rain gauges.
 facerain <- get_rain("rawmean")
 faceraindaily <- get_rain("daily")
-facepar <- merge(facepar, facerain, by=c("DateTime"))
 
 
 # Select 'cloudy' data, do some trimming.
@@ -108,10 +107,7 @@ source("make_figures.R")
 save.image(file="cache/lai_workspace.RData")
 # load("cache/lai_workspace.RData")
 
-# Messages.
-m1 <- paste0("Most recent day with usable cloudy data: ",max(facegap_cloudy_byring$Date))
-message(m1)
-
+# save for later (ms resets it)
 olddigit <- options()$digits
 
 # Make manuscript
@@ -119,9 +115,6 @@ render("manuscript.Rmd", "word_document", "manuscript.docx")
 render("manuscript_supportinginfo.Rmd", "word_document", "manuscript_SuppInfo.docx")
 
 options(digits=olddigit)
-
-# Make md like this:
-# render("manuscript.Rmd", md_document())
 
 
 

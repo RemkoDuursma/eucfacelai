@@ -532,11 +532,10 @@ make_litter <- function(trapArea=0.1979,  # m2
   
   what <- match.arg(what)
   
-  # Part 1
-  # WARNING - CHANGED TO OFFLINE!!!!!!
-  # dfr1 <- downloadCSV("FACE_P0017_RA_Litter_20121001-20131231-R.csv")[,1:9]
   
-  dfr1 <- read.csv("cache/FACE_P0017_RA_Litter_20121001-20131231-R.csv")[,1:9]
+  dfr1 <- downloadCSV("FACE_P0017_RA_Litter_20121001-20131231-R.csv")[,1:9]
+  
+  #dfr1 <- read.csv("cache/FACE_P0017_RA_Litter_20121001-20131231-R.csv")[,1:9]
   dfr1$Date <- as.character(dfr1$Date)
   dfr1$Date <- as.Date(dfr1$Date)
   
