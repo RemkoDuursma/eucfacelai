@@ -1,0 +1,17 @@
+
+Leaf litter data collected at the EucFACE
+
+Data owners / collectors: Kristine Crous, Andrew Gherlenda, Jeff Powell, David Ellsworth
+
+This dataset is a subset of the complete dataset, including only the leaf portion of the litter fall, which was separated manually from other components (bark, twigs, frass, etc.).
+
+Leaf litter is also converted to units of leaf area index (m2 m-2), using an estimate of specific leaf area (52.6 cm2 g-1; pers. comm. David Ellsworth), and the area of the litter baskets (0.1979 m2).
+
+
+Variables:
+  - Date: YYYY-MM-DD
+  - Ring: FACE ring (R1, R2, ...,R6)
+  - Leaf: leaf litter on collection date (g)
+  - dLAIlitter: litter converted to units of LAI (m2 m-2)
+  - treatment: 'ambient' or 'elevated'
+  

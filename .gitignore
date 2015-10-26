@@ -4,6 +4,5 @@
 /cache
 *.Rproj
 /output
-*.docx
 *.html
 references.bib.bak

@@ -563,7 +563,7 @@ make_litter <- function(trapArea=0.1979,  # m2
   
   if(what == "byring"){
     
-    return(dfr)
+    return(dfr[,c("Date","Ring","Trap","Leaf","dLAIlitter","treatment")])
     
   } else {
     
@@ -582,6 +582,24 @@ make_litter <- function(trapArea=0.1979,  # m2
     return(litagg)
   }
 }
+
+
+litterbyring <- function(dfr){
+  
+  n <- function(x,...)length(x[!is.na(x)])
+  litagg <- summaryBy(Leaf + dLAIlitter ~ Ring + Date, FUN=c(mean,sd,n),na.rm=TRUE, 
+                      data=dfr, id=~treatment)
+  
+  litagg$n <- litagg$LEAF.n
+  litagg$LEAF.n <- litagg$dLAIlitter.n <- NULL
+  
+  dats <- sort(unique(litagg$Date))
+  datdf <- data.frame(Date=dats, ndays=c(NA,diff(dats)))
+  litagg <- merge(litagg, datdf)
+ 
+return(litagg) 
+}
+
 
 agglitter <- function(dfr){
   
