@@ -1,0 +1,15 @@
+Data for the paper in press at Global Change Biology:
+  
+  Remko A. Duursma, Teresa E. Gimeno, Matthias M. Boer, Kristine Y. Crous, Mark G. Tjoelker, David S. Ellsworth, Canopy leaf area of a mature evergreen Eucalyptus woodland does not respond to elevated atmospheric [CO2] but tracks water availability.
+
+All data files are the result of extensive processing of raw data from automated sensors at the EucFACE, most notably the PAR (photosynthetically active radiation) sensors above and below the canopy. Also included are averages of air temperature, soil water content, and other radiation measures at EucFACE or nearby sites.
+
+This package includes the following files (filename keyword supplied only):
+  - GAPFRACLAI: daily canopy gap fraction and leaf area index for the six EucFACE rings. This file can be constructed from processing of the other files included.  
+  - LEAFLITTER: dry weight and area of (approx.) monthly collection of litter in eight locations in each FACE ring.
+  - PARAGG: 30min averages of radiation data (PAR below and above the canopy, diffuse radiation, etc.)
+  - PHOTOGAPFRAC: canopy gap fraction estimated from analysis of canopy photos
+  - DAILYMET: simple daily averages of common meteorological variables
+  - SOLVARS: solar angle, day length, time of sunset and sunrise in Richmond, NSW.
+  
+  

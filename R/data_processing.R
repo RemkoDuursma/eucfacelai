@@ -20,9 +20,7 @@ get_solvars <- function(){
 
 get_flatcan <- function(){
   
-  # Should be posted to HIEv. For now, part of repository.
-  flatcan <- read.csv("data/FACE_flatcan_gapfraction_all.csv")
-  
+  downloadCSV("FACE_RA_P0037_PHOTOGAPFRAC_20121020-20131022_L2.csv")
 }
 
 agg_flatcan <- function(dfr, by=c("Ring","CO2"), k=0.5, ...){

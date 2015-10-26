@@ -1,0 +1,16 @@
+Simple daily averages of met drivers at EucFACE/ROS
+
+
+This file contains daily averages (min, max) of air temperature, relative humidity and soil water content (VWC).
+Measurements of VWC are at EucFACE across all sensors in all plots. All other data are from the rainout shelter experiment (ROS), because the measurements started earlier (and it was easier to compile it from those data).
+
+These data are only to be used for simple demonstration of temporal patterns, not for serious analysis of meteorology.
+
+This dataset is used in Figure 6 of Duursma et al. 2015 (in press, Global Change Biology).
+
+Variables:
+  - Date: YYYY-MM-DD
+  - Tair,Tmin,Tmax: mean, minimum and maximum daily temperature (deg C)
+  - RH,RHmin,RHmax: mean, minimum and maximum daily relative humidity (percent)
+  - VWC: volumetric water content, daily average across all TDR sensors at EucFACE.
+  

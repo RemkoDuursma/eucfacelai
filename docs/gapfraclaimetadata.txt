@@ -1,0 +1,16 @@
+Estimates of canopy gap fraction and leaf area index for the EucFACE based on diffuse transmittance data. 
+
+Transmittance is estimated as PAR below / PAR above the canopy, for 30min periods where the diffuse fraction > 0.98 (as estimated with the BF5 SunShine sensor at the CUP Eddy flux tower site). 
+
+Estimates are daily averages by Ring. The number of observations varies between days, depending on the number of 30min cloudy periods. 
+
+For details see Duursma et al. (in press, Global Change Biology)
+
+Variables: 
+  - Ring: One of six EucFACE rings (R1, R2, ..., R6) 
+  - Date: YYYY-MM-DD 
+  - Gapfraction.mean: Daily mean gapfraction (0-1) 
+  - Gapfraction.sd: within-day standard deviation of gapfraction
+  - Gapfraction.length: Number of observations within a day
+  - treatment: Either 'elevated' or 'ambient'
+  - LAI: Inferred leaf area index (m2 m-2) using algorithm of Campbell&Norman 2000, based on the attenuation of diffuse radiation in a homogenous canopy.

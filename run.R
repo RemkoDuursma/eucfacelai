@@ -59,6 +59,7 @@ facegap_cloudy_byring <- calculate_LAI(facegap_cloudy_byring, calib=calib)
 facegap_all_byring <- calculate_LAI(facegap_all_byring, calib=calib)
 
 
+
 # Averages across rings (LAI, LL, litter, BA)
 ba <- make_ba(facegap_cloudy_byring, litter)
 
@@ -75,8 +76,16 @@ facegap_all_byCO2 <- aggfacegapbyCO2(facegap_all_byring)
 # Dataset with dLAI from litter and PAR during 2013 drought (used in above calibration).
 face_dLAIdrought2013 <- make_dLAI_drought2013(facegap_cloudy_byring,calib=calib)
 
-# Soil water
-facesoilwater <- get_soilwater()
+# # Soil water
+# facesoilwater <- get_soilwater()
+# 
+# # Air temperature from ROS
+# airt <- get_rosTair()
+# 
+# simplemet <- merge(airt, facesoilwater, all=TRUE)
+
+simplemet <- downloadCSV("FACE_RA_P0037_DAILYMET_20110619-20151026_L2.csv")
+
 
 # Canopy photos.
 flatcan <- get_flatcan()
@@ -95,9 +104,6 @@ kopt <- optimize(Ok, c(0.2, 0.8))$minimum
 
 # Dataset with litter fall comparison to changes in LAI during same period.
 dLAIlitter <- make_dLAI_litter(facegap_cloudy_byring, litter, kgam=20)
-
-# Air temperature from ROS
-airt <- get_rosTair()
 
 # ramp-up CO2 concentration
 ramp <- get_ramp()

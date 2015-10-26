@@ -1,0 +1,15 @@
+Canopy gap fraction estimated from canopy photography
+
+Methods are described in detail in Duursma et al. 2015 (in press, Global Change Biology).
+
+The photos from which these gap fractions were calculated are also on HIEv (FACE_P0037_RA_CANPHOTO...).
+
+Variables:
+  - Ring: One of six EucFACE rings (R1, R2, ..., R6) 
+  - northing: coordinate inside the FACE ring (at white peg)
+  - easting: coordinate inside the FACE ring (at white peg)
+  - filename: unique filename (also on HIEv in zipped archives, see above)
+  - threshold: threshold determined by automatic algorithm
+  - gapfraction: fraction of pixels with intensity > threshold, therefore, the gap fraction of the canopy
+  - Date: YYYY-MM-DD
+  - treatment: elevated or ambient
