@@ -3,15 +3,21 @@
 # Load libraries, functions, etc.
 source("load.R")
 
+get_zipdata()
+
 
 # All figures and analyses use data up to this point.
 .maxdate <- as.Date("2015-3-1")
 
 # 30minutely radiation data
-facepar <- downloadCSV("FACE_RA_P0037_PARAGG_20121016-20150301_L2.csv")
+facepar <- read.csv("data/data/FACE_RA_P0037_PARAGG_20121016-20150301_L2.csv")
+facepar$DateTime <- as.POSIXct(facepar$DateTime, tz="UTC")
 facepar$Date <- as.Date(facepar$Date)
 
 # Rainfall data, averaged across 3 rain gauges.
+# REMOVE
+# HH data is in facepar, can use that to make daily rain dataset for fig 6
+# VWC is in simplemet
 facerain <- get_rain("rawmean")
 faceraindaily <- get_rain("daily")
 
@@ -45,7 +51,7 @@ facegap_cloudy_byring <- subsetFACEPARbyring(facegap_cloudy_byring,
                                       maxSD=0.03)
 
 # Litter fall.
-litring <- downloadCSV("FACE_RA_P0037_LEAFLITTER_20121009-20140814_L2.csv")
+litring <- read.csv("data/data/FACE_RA_P0037_LEAFLITTER_20121009-20140814_L2.csv")
 litring$Date <- as.Date(litring$Date)
 litter <- litterbyring(litring)
 litter_byCO2 <- agglitter(litter)
@@ -84,7 +90,7 @@ face_dLAIdrought2013 <- make_dLAI_drought2013(facegap_cloudy_byring,calib=calib)
 # 
 # simplemet <- merge(airt, facesoilwater, all=TRUE)
 
-simplemet <- downloadCSV("FACE_RA_P0037_DAILYMET_20110619-20151026_L2.csv")
+simplemet <- read.csv("data/data/FACE_RA_P0037_DAILYMET_20110619-20151026_L2.csv")
 
 
 # Canopy photos.

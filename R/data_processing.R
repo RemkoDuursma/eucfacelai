@@ -28,15 +28,16 @@ return(ramp)
 
 get_solvars <- function(){
   
-  downloadCSV(c("P0037","SOLVARS"), tryoffline=TRUE)
+  read.csv("data/data/FACE_RA_P0037_SOLVARS_20120601-20200101_L2.csv")
   
 }
 
 
 get_flatcan <- function(){
   
-  downloadCSV("FACE_RA_P0037_PHOTOGAPFRAC_20121020-20131022_L2.csv")
+  read.csv("data/data/FACE_RA_P0037_PHOTOGAPFRAC_20121020-20131022_L2.csv")
 }
+
 
 agg_flatcan <- function(dfr, by=c("Ring","CO2"), k=0.5, ...){
   
