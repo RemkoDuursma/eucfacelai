@@ -1,4 +1,19 @@
 
+get_zipdata <- function(){
+  
+  # URL to RDA will go here
+  unzip("EucFACE_DUURSMA_GCB_LEAFAREAINDEX.zip", exdir="data", overwrite=FALSE)
+  
+  # Check if files not corrupted
+  md5 <- read.table("data/manifest-md5.txt",stringsAsFactors = FALSE)
+  mymd5 <- tools::md5sum(file.path("data", md5[[2]]))
+  targetmd5 <- md5[[1]]
+  
+  if(!all(targetmd5 == mymd5))stop("At least one file was corrupted during download, please redownload!")
+  
+}
+
+
 # pers. comm. David Ellsworth.
 get_sla <- function()52.6
 
