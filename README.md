@@ -1,4 +1,5 @@
 # Leaf area index at the EucFACE
+[![DOI](https://zenodo.org/badge/11128/RemkoDuursma/eucfacelaipaper.svg)](https://zenodo.org/badge/latestdoi/11128/RemkoDuursma/eucfacelaipaper)
 
 
 This repository contains the code for the paper:
@@ -6,7 +7,6 @@ This repository contains the code for the paper:
 
 Remko A. Duursma, Teresa E. Gimeno, Matthias M. Boer, Kristine Y. Crous, Mark G. Tjoelker, David S. Ellsworth, **Canopy leaf area of a mature evergreen Eucalyptus woodland does not respond to elevated atmospheric [CO~2~] but tracks water availability**. Global Change Biology, accepted.
 
-The entire analysis is written in R.
 
 ## Data
 
