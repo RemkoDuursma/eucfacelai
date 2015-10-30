@@ -7,6 +7,7 @@ Library <- function(pkg, ...){
     library(pkgc, character.only=TRUE)
   } else {
     install.packages(pkgc, ...)
+    library(pkgc, character.only=TRUE)
   }
   
 }
