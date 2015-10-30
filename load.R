@@ -2,13 +2,12 @@
 source("R/utils.R")
 
 Library(dplyr)    # summarize, group_by
-Library(HIEv)
 Library(doBy)     # summaryBy
 Library(gplots)   # plotCI
 Library(mgcv)     # gam
 Library(stringr)  # str_trim
 Library(Hmisc)    # approxExtrap
-
+Library(lubridate)
 Library(rmarkdown) # render
 
 Library(broom)    # tidy; glance
@@ -17,13 +16,11 @@ Library(lmerTest) # anova.merMod
 Library(car)      # Anova
 Library(reporttools)  # formatPval
 
-
-if(packageVersion('HIEv') < '0.7')
-  stop("Please update the HIEv package!")
-
 # set path for HIEv
-if(!file.exists("cache"))dir.create("cache")
-setToPath("cache")
+if(!dir.exists("cache"))dir.create("cache")
+
+if(!dir.exists("output"))dir.create("output")
+if(!dir.exists("output/figures"))dir.create("output/figures")
 
 # Load all functions
 source("R/data_processing.R")
