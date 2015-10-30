@@ -29,7 +29,7 @@ This generates figures in PDF in the subdirectory `output/figures`, and two Word
 The code will also attempt to install any missing packages. If you have problems with package dependencies, here is the list of packages you need to have (and their dependencies). All of these packages are on CRAN.
 
 ```
-dplyr,doBy,gplots,mgcv,stringr,Hmisc,rmarkdown,broom, lme4,lmerTest,car,reporttools
+dplyr,doBy,gplots,mgcv,stringr,Hmisc,lubridate,rmarkdown,broom,lme4,lmerTest,car,reporttools
 ```
 
 For the conversion of the markdown document, you will need to use Rstudio or have an installation of Pandoc. 
