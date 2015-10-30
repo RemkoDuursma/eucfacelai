@@ -1,9 +1,0 @@
-Half-hourly radiation data for the EucFACE
-
-This file is constructed based on radiation data in FACE_general, FACE_airvars and eddy_slowmet.
-The original data is averaged by 30min timestep here (the timestamp refers to the 30min before that time).
-See those collection codes for full documentation.
-
-The variables 'source_airvars', 'source_general' and 'source_eddy' refer to the original files on HIEv that this aggregated version was constructed from.
-
-Data for project P0037 led by Remko Duursma. Anyone can use the data if they have access.

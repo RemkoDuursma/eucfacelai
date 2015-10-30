@@ -3,24 +3,17 @@
 # Load libraries, functions, etc.
 source("load.R")
 
+# Download and unzip raw data.
 get_zipdata()
-
 
 # All figures and analyses use data up to this point.
 .maxdate <- as.Date("2015-3-1")
 
 # 30minutely radiation data
-facepar <- read.csv("data/data/FACE_RA_P0037_PARAGG_20121016-20150301_L2.csv")
-facepar$DateTime <- as.POSIXct(facepar$DateTime, tz="UTC")
-facepar$Date <- as.Date(facepar$Date)
-
-# Rainfall data, averaged across 3 rain gauges.
-# REMOVE
-# HH data is in facepar, can use that to make daily rain dataset for fig 6
-# VWC is in simplemet
-facerain <- get_rain("rawmean")
-faceraindaily <- get_rain("daily")
-
+facepar <- get_facepar()
+  
+# Rainfall data
+faceraindaily <- make_raindaily(facepar)
 
 # Select 'cloudy' data, do some trimming.
 # Can set threshold for diffuse fraction here
@@ -51,8 +44,7 @@ facegap_cloudy_byring <- subsetFACEPARbyring(facegap_cloudy_byring,
                                       maxSD=0.03)
 
 # Litter fall.
-litring <- read.csv("data/data/FACE_RA_P0037_LEAFLITTER_20121009-20140814_L2.csv")
-litring$Date <- as.Date(litring$Date)
+litring <- get_litring()
 litter <- litterbyring(litring)
 litter_byCO2 <- agglitter(litter)
 
@@ -64,15 +56,13 @@ calib <- calibrateToDrought(facegap_cloudy_byring)$calib
 facegap_cloudy_byring <- calculate_LAI(facegap_cloudy_byring, calib=calib)
 facegap_all_byring <- calculate_LAI(facegap_all_byring, calib=calib)
 
-
-
 # Averages across rings (LAI, LL, litter, BA)
 ba <- make_ba(facegap_cloudy_byring, litter)
 
 # LAI anomaly - difference between LAI and prediction from BA.
+# (not actually used in this version of the manuscript)
 facegap_cloudy_byring <- merge(facegap_cloudy_byring, ba[,c("Ring","LAIfromBA")])
 facegap_cloudy_byring$LAIanomaly <- with(facegap_cloudy_byring, LAI - LAIfromBA)
-
 
 # Aggregate by CO2 treatment
 facegap_cloudy_byCO2 <- aggfacegapbyCO2(facegap_cloudy_byring)
@@ -82,25 +72,18 @@ facegap_all_byCO2 <- aggfacegapbyCO2(facegap_all_byring)
 # Dataset with dLAI from litter and PAR during 2013 drought (used in above calibration).
 face_dLAIdrought2013 <- make_dLAI_drought2013(facegap_cloudy_byring,calib=calib)
 
-# # Soil water
-# facesoilwater <- get_soilwater()
-# 
-# # Air temperature from ROS
-# airt <- get_rosTair()
-# 
-# simplemet <- merge(airt, facesoilwater, all=TRUE)
+# Simple daily meteorology
+simplemet <- get_simplemet()
+simplemet <- merge(simplemet, faceraindaily, all=TRUE)
 
-simplemet <- read.csv("data/data/FACE_RA_P0037_DAILYMET_20110619-20151026_L2.csv")
-
-
-# Canopy photos.
+# Flat canopy photos (for supporting information)
 flatcan <- get_flatcan()
 flatcan_byring <- agg_flatcan(flatcan, by="Ring")
 flatcan_byring <- add_PARLAI_to_flatcan(facegap_cloudy_byring,flatcan_byring)
-
 flatcan_byCO2 <- agg_flatcan(flatcan, by="CO2")
 
-# find optimal k for flat canopy photos
+# find optimal k for flat canopy photos, that minimizes difference between canopy transmittance
+# and flat canopy photos.
 Ok <- function(k){
   flatcan_byring <- agg_flatcan(flatcan, by="Ring", k)
   flatcan_byring <- add_PARLAI_to_flatcan(facegap_cloudy_byring,flatcan_byring)
@@ -109,7 +92,7 @@ Ok <- function(k){
 kopt <- optimize(Ok, c(0.2, 0.8))$minimum
 
 # Dataset with litter fall comparison to changes in LAI during same period.
-dLAIlitter <- make_dLAI_litter(facegap_cloudy_byring, litter, kgam=20)
+dLAIlitter <- make_dLAI_litter(facegap_cloudy_byring, litter, simplemet, kgam=20)
 
 # ramp-up CO2 concentration
 ramp <- get_ramp()

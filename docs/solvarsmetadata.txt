@@ -1,8 +1,0 @@
-Solar position and day length data estimated for the EucFACE location. Generated with getRichmondSolar from the HIEv R package. Data in 30min timestep until 2020. 
-
-Variables: 
-  sunrise: time of sunrise (hours) 
-  sunset: time of sunset (hours) 
-  daylength: daylength (hours) 
-  sunelevation: solar elevation (degrees from horizon) 
-  DateTime: YYYY-MM-DD HH:MM

@@ -1,8 +1,16 @@
 
 get_zipdata <- function(){
   
+  zipfn <- "cache/EucFACE_DUURSMA_GCB_LEAFAREAINDEX.zip"
+  
+  url <- "http://research-data.westernsydney.edu.au/redbox/verNum1.8-SNAPSHOT/default/detail/52ed5b8c7bd75b71f6e489a1f4b73e8e/EucFACE_DUURSMA_GCB_LEAFAREAINDEX.zip"
+  
+  if(!file.exists(zipfn)){
+    download.file(url, zipfn, mode="wb")
+  }
+  
   # URL to RDA will go here
-  unzip("EucFACE_DUURSMA_GCB_LEAFAREAINDEX.zip", exdir="data", overwrite=FALSE)
+  unzip(zipfn, exdir="data", overwrite=TRUE)
   
   # Check if files not corrupted
   md5 <- read.table("data/manifest-md5.txt",stringsAsFactors = FALSE)
@@ -13,6 +21,21 @@ get_zipdata <- function(){
   
 }
 
+
+
+get_facepar <- function(){
+  
+  facepar <- read.csv("data/data/FACE_RA_P0037_PARAGG_20121016-20150301_L2.csv")
+  facepar$DateTime <- as.POSIXct(facepar$DateTime, tz="UTC")
+  facepar$Date <- as.Date(facepar$Date)
+  
+  return(facepar)
+}
+
+make_raindaily <- function(df){
+  sum6 <- function(x,...)sum(x,...)/6
+  summaryBy(Rain_mm_Tot ~ Date, FUN=sum6, na.rm=TRUE, data=df, keep.names=TRUE)
+}
 
 # pers. comm. David Ellsworth.
 get_sla <- function()52.6
@@ -28,14 +51,33 @@ return(ramp)
 
 get_solvars <- function(){
   
-  read.csv("data/data/FACE_RA_P0037_SOLVARS_20120601-20200101_L2.csv")
-  
+ df <- read.csv("data/data/FACE_RA_P0037_SOLVARS_20120601-20200101_L2.csv")
+ df$DateTime <- as.POSIXct(df$DateTime, tz="UTC")
+
+return(df)
 }
 
+get_litring <- function(){
+  df <- read.csv("data/data/FACE_RA_P0037_LEAFLITTER_20121009-20140814_L2.csv")
+  df$Date <- as.Date(df$Date)
+  
+return(df)
+}
+
+get_simplemet <- function(){
+  
+  df <- read.csv("data/data/FACE_RA_P0037_DAILYMET_20110619-20151026_L2.csv")
+  df$Date <- as.Date(df$Date)
+  
+return(df)
+}
 
 get_flatcan <- function(){
   
-  read.csv("data/data/FACE_RA_P0037_PHOTOGAPFRAC_20121020-20131022_L2.csv")
+  df <- read.csv("data/data/FACE_RA_P0037_PHOTOGAPFRAC_20121020-20131022_L2.csv")
+  df$Date <- as.Date(df$Date)
+  
+return(df)
 }
 
 
@@ -260,7 +302,7 @@ splitbydate <- function(dfr, datevec){
 }
 
 
-make_dLAI_litter <- function(dat, litter, kgam=15){
+make_dLAI_litter <- function(dat, litter, simplemet, kgam=15){
   
   # LAI by ring with smoother
   dat <- makesmoothLAI(dat, kgam=kgam, timestep="1 day")
@@ -281,7 +323,8 @@ make_dLAI_litter <- function(dat, litter, kgam=15){
     }))
   }
   
-  soilsp <- splitbydate(facesoilwater, litterDates) 
+  soilwater <- simplemet[,c("Date","VWC")]
+  soilsp <- splitbydate(soilwater, litterDates) 
   meansw <- data.frame(Date=litterDates[1:(length(litterDates)-1)], 
                        VWC=sapply(soilsp, function(x)mean(x$VWC, na.rm=TRUE)))
   

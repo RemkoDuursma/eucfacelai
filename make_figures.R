@@ -26,9 +26,7 @@ to.pdf(figure5(ba),
        width=8, height=4)
 
 to.pdf(figure6(subset(facegap_cloudy_byring, Date < .maxdate),
-               subset(facesoilwater, Date < .maxdate),
-               subset(faceraindaily, Date < .maxdate),
-               subset(airt, Date < .maxdate)),
+               subset(simplemet, Date < .maxdate)),
        filename="output/figures/Figure6.pdf",
        width=10, height=8)
 

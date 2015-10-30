@@ -206,17 +206,17 @@ figure5 <-  function(df){
 }
 
 
-figure6 <- function(df, facesoilwater, faceraindaily, airt, kgam=18){
+figure6 <- function(df, simplemet, kgam=18){
     
   xin <- 0.02 # for panel label x inset
   
   dfa <- summaryBy(LAI ~ Date, data=df, FUN=mean, keep.names=TRUE)
   
-  xl <- range(facesoilwater$Date)
+  xl <- as.Date(c("2012-6-1","2015-3-1"))
   
   par(mfrow=c(4,1), mar=c(0,7,5,6), cex.lab=1.3, las=1, mgp=c(4,1,0),yaxs="i",tcl=0.2)
   
-  # panel a
+  # panel a (LAI)
   smoothplot(Date, LAI, data=dfa, kgam=kgam, pointcols="dimgrey", linecols="black", 
              xlim=xl,
              ylab=expression(italic(L)~~(m^2~m^-2)),
@@ -226,10 +226,9 @@ figure6 <- function(df, facesoilwater, faceraindaily, airt, kgam=18){
   box()
   plotlabel("(a)","topleft", inset.x=xin)
   
-  # panel b
+  # panel b (dLAI/dt)
   par(mar=c(0,7,1.5,6), tcl=0.2)
   
- 
   df$Time <- as.numeric(df$Date - min(df$Date))
   g <- gamm(LAI ~ s(Time, k=kgam), random = list(Ring=~1), data=df)
   
@@ -248,7 +247,7 @@ figure6 <- function(df, facesoilwater, faceraindaily, airt, kgam=18){
   
   # panel c
   par(mar=c(1.5,7,1.5,6), tcl=0.2)
-  with(subset(facesoilwater, Date > xl[1]), 
+  with(subset(simplemet, Date > xl[1]), 
        plot(Date, VWC, type='l', lwd=2, xlim=xl, ylim=c(0,0.4), axes=FALSE,
             col="cornflowerblue",
             ylab=expression(SWC~~(m^3~m^-3))))
@@ -257,7 +256,7 @@ figure6 <- function(df, facesoilwater, faceraindaily, airt, kgam=18){
   axis(2)
   box()
   par(new=TRUE)
-  with(faceraindaily, plot(Date, Rain.ROS, type='h', ylim=c(0,120), xlim=xl,
+  with(simplemet, plot(Date, Rain_mm_Tot, type='h', ylim=c(0,120), xlim=xl,
                            axes=FALSE, ann=FALSE))
   axis(4)
   mtext(expression(Rain~(mm~day^-1)), line=3, side=4, las=0, cex=0.9)
@@ -265,7 +264,7 @@ figure6 <- function(df, facesoilwater, faceraindaily, airt, kgam=18){
   
   # panel d
   par(mar=c(5,7,0,6), tcl=0.2)
-  smoothplot(Date, Tair, data=subset(airt, Date > xl[1]), 
+  smoothplot(Date, Tair, data=subset(simplemet, Date > xl[1]), 
              kgam=25, pointcols=alpha("grey",0.8), linecols="black",axes=FALSE,
              ylab=expression(T[air]~~(degree*C)), 
              xlab="",
