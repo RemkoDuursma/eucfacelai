@@ -10,7 +10,7 @@ The entire analysis is written in R.
 
 ## Data
 
-The raw data used by this repository is published here: [http://dx.doi.org/10.4225/35/563159f223739]()
+The raw data used by this repository is published here: http://dx.doi.org/10.4225/35/563159f223739
 
 
 ## Instructions
