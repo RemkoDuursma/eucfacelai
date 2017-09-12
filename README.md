@@ -5,7 +5,7 @@
 This repository contains the code for the paper:
   
 
-Remko A. Duursma, Teresa E. Gimeno, Matthias M. Boer, Kristine Y. Crous, Mark G. Tjoelker, David S. Ellsworth, **Canopy leaf area of a mature evergreen Eucalyptus woodland does not respond to elevated atmospheric [CO~2~] but tracks water availability**. Global Change Biology, accepted.
+Remko A. Duursma, Teresa E. Gimeno, Matthias M. Boer, Kristine Y. Crous, Mark G. Tjoelker, David S. Ellsworth, 2016, **Canopy leaf area of a mature evergreen Eucalyptus woodland does not respond to elevated atmospheric [CO~2~] but tracks water availability**. [Global Change Biology 22, 1666-1676](http://onlinelibrary.wiley.com/doi/10.1111/gcb.13151/full).
 
 
 ## Data
@@ -15,7 +15,7 @@ The raw data used by this repository is published here: http://dx.doi.org/10.422
 
 ## Instructions
 
-To generate **all figures and the manuscript** (.docx, using markdown), you should be able to do:
+To generate **all figures and the manuscript** (.docx, using rmarkdown), you should be able to do:
 
 ```r
 source("run.R")
@@ -26,7 +26,7 @@ This generates figures in PDF in the subdirectory `output/figures`, and two Word
 
 ## Dependencies
 
-The code will also attempt to install any missing packages. If you have problems with package dependencies, here is the list of packages you need to have (and their dependencies). All of these packages are on CRAN.
+The code will attempt to install any missing packages. If you have problems with package dependencies, here is the list of packages you need to have (and their dependencies). All of these packages are on CRAN.
 
 ```
 dplyr,doBy,gplots,mgcv,stringr,Hmisc,lubridate,rmarkdown,broom,lme4,lmerTest,car,reporttools
